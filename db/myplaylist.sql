@@ -2,23 +2,23 @@
 -- Archivo de base de datos --
 ------------------------------
 
+CREATE EXTENSION pgcrypto;
+
 DROP TABLE IF EXISTS usuarios CASCADE;
 
 CREATE TABLE usuarios (
     id bigserial PRIMARY KEY,
-    login varchar(11) NOT NULL UNIQUE
-                      CONSTRAINT ck_login_sin_espacios
-                      CHECK (nick NOT LIKE '% %'),
+    login varchar(11) NOT NULL UNIQUE CONSTRAINT ck_login_sin_espacios CHECK (LOGIN NOT LIKE '% %'),
     nombre varchar(255) NOT NULL,
-    apellidos varchar(255) NOT NULL ,
-    password varchar(11) NOT NULL,
-    email varchar(255) NOT NULL UNIQUE
-                                    CONSTRAINT email_correcto
-                                    CHECK (email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$'),
+    apellidos varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
+    email varchar(255) NOT NULL UNIQUE,
     created_at timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    token      VARCHAR(32),
-    rol        VARCHAR(255),
+    token varchar(32),
+    auth_key varchar(255),
+    rol varchar(255)
 );
+
 DROP TABLE IF EXISTS generos CASCADE;
 
 CREATE TABLE generos (
@@ -46,6 +46,9 @@ CREATE TABLE juegos (
     genero_id bigint NOT NULL REFERENCES generos (id),
     year_debut smallint CONSTRAINT ck_primer_videojuego CHECK (year_debut >= 1950)
 );
+
+INSERT INTO usuarios (id, LOGIN, nombre, apellidos, PASSWORD, email, rol)
+    VALUES (1, 'josesabor', 'José María', 'Saborido Monge', '$2y$13$IT4m7G6xRaN6M6AXWTfiZ.1m3/sV5ljpD64VWCPjX0vaOfGOaZvhG', 'josemaria.saborido@iesdonana.org', 'ADMIN');
 
 INSERT INTO consolas (denom)
     VALUES ('Android'), ('Gamecube'), ('NDS'), ('PS1'), ('PS2'), ('PS3'), ('PS4'), ('PC'), ('Raspberry'), ('Wii U'), ('XBOX 360');
@@ -488,7 +491,7 @@ INSERT INTO juegos (fecha, nombre, consola_id, pasado, genero_id, year_debut)
 INSERT INTO juegos (fecha, nombre, consola_id, pasado, genero_id, year_debut)
     VALUES ('2020/1/23', 'Colin McRae Dirt', 8, FALSE, 2, 2007);
 
+
 /* INSERT QUERY NO: 88 */
 INSERT INTO juegos (fecha, nombre, consola_id, pasado, genero_id, year_debut)
     VALUES ('2020/3/5', 'Resident Evil', 8, TRUE, 2, 1996);
-
