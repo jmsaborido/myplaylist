@@ -53,7 +53,7 @@ AppAsset::register($this);
                         ['label' => 'Login', 'url' => ['/site/login']],
                         ['label' => 'Registrarse', 'url' => ['usuarios/registrar']],
                     ] : [
-                        ['label' => 'Modificar', 'url' => ['/site/index']],
+                        ['label' => 'Modificar', 'url' => ['usuarios/update']],
                         (Html::beginForm(['/site/logout'], 'post')
                             . Html::submitButton(
                                 'Logout',
@@ -76,15 +76,6 @@ AppAsset::register($this);
             <?= $content ?>
         </div>
     </div>
-
-    <footer class="footer">
-        <div class="container">
-            <p class="float-left">&copy; My Company <?= date('Y') ?></p>
-
-            <p class="float-right"><?= Yii::powered() ?></p>
-        </div>
-    </footer>
-
     <?php $this->endBody() ?>
 </body>
 

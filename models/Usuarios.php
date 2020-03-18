@@ -21,6 +21,8 @@ use Yii;
 class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     const SCENARIO_CREAR = 'crear';
+    const SCENARIO_UPDATE = 'update';
+
 
     public $password_repeat;
     /**
@@ -37,7 +39,17 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     public function rules()
     {
         return [
-            [['login', 'nombre', 'apellidos', 'password', 'email'], 'required'],
+            [['login', 'nombre', 'apellidos', 'email'], 'required'],
+            [
+                ['password'],
+                'required',
+                'on' => [self::SCENARIO_DEFAULT, self::SCENARIO_CREAR],
+            ],
+            [
+                ['password'],
+                'trim',
+                'on' => [self::SCENARIO_CREAR, self::SCENARIO_UPDATE],
+            ],
             [['created_at'], 'safe'],
             [['login', 'password'], 'string', 'max' => 11],
             [['nombre', 'apellidos', 'email', 'auth_key', 'rol'], 'string', 'max' => 255],
@@ -115,8 +127,15 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                 $this->auth_key = $security->generateRandomString();
                 $this->password = $security->generatePasswordHash($this->password);
             }
+        } else {
+            if ($this->scenario === self::SCENARIO_UPDATE) {
+                if ($this->password === '') {
+                    $this->password = $this->getOldAttribute('password');
+                } else {
+                    $this->password = $security->generatePasswordHash($this->password);
+                }
+            }
         }
-
         return true;
     }
 }
