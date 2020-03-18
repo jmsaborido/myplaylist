@@ -47,8 +47,8 @@ CREATE TABLE juegos (
     year_debut smallint CONSTRAINT ck_primer_videojuego CHECK (year_debut >= 1950)
 );
 
-INSERT INTO usuarios (id, LOGIN, nombre, apellidos, PASSWORD, email, rol)
-    VALUES (1, 'josesabor', 'José María', 'Saborido Monge', '$2y$13$IT4m7G6xRaN6M6AXWTfiZ.1m3/sV5ljpD64VWCPjX0vaOfGOaZvhG', 'josemaria.saborido@iesdonana.org', 'ADMIN');
+INSERT INTO usuarios (LOGIN, nombre, apellidos, PASSWORD, email, rol)
+    VALUES ('josesabor', 'José María', 'Saborido Monge', '$2y$13$IT4m7G6xRaN6M6AXWTfiZ.1m3/sV5ljpD64VWCPjX0vaOfGOaZvhG', 'josemaria.saborido@iesdonana.org', 'ADMIN');
 
 INSERT INTO consolas (denom)
     VALUES ('Android'), ('Gamecube'), ('NDS'), ('PS1'), ('PS2'), ('PS3'), ('PS4'), ('PC'), ('Raspberry'), ('Wii U'), ('XBOX 360');
