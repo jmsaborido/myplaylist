@@ -44,8 +44,7 @@ AppAsset::register($this);
             'options' => ['class' => 'navbar-nav'],
             'items' => [
                 ['label' => 'Home', 'url' => ['/site/index']],
-                ['label' => 'About', 'url' => ['/site/about']],
-                ['label' => 'Contact', 'url' => ['/site/contact']],
+                ['label' => 'Juegos', 'url' => ['/juegos/index']],
                 [
                     'label' => Yii::$app->user->isGuest ? 'Usuarios' : Yii::$app->user->identity->nombre,
                     'items' =>
