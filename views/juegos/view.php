@@ -30,29 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ]) ?>
         </p>
     <?php endif ?>
-
-    <?php
-    $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
-    $searchBuilder2 = new SearchBuilder(Yii::$app->params['igdb']['key']);
-
-    //Add endpoint and search by id.
-    $imagen = $searchBuilder
-        ->addEndpoint('games')
-        ->addFields(['id', 'name'])
-        ->addSearch($model->nombre)
-        ->search()
-        ->get();
-
-    Yii::debug($imagen);
-
-    $url = $searchBuilder2
-        ->addEndpoint('images')
-        ->searchById($imagen->id, ["game"])
-        ->get();
-
-    Yii::debug($url);
-
-    ?>
     <?=
         // $url->url
         Html::img("juan")
