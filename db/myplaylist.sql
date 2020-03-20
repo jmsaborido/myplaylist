@@ -495,3 +495,8 @@ INSERT INTO juegos (fecha, nombre, consola_id, pasado, genero_id, year_debut)
 /* INSERT QUERY NO: 88 */
 INSERT INTO juegos (fecha, nombre, consola_id, pasado, genero_id, year_debut)
     VALUES ('2020/3/5', 'Resident Evil', 8, TRUE, 2, 1996);
+
+
+/* INSERT QUERY NO: 89 */
+INSERT INTO juegos (fecha, nombre, consola_id, pasado, genero_id, year_debut)
+    VALUES ('2020/3/10', 'Firewatch', 8, FALSE, 14, 2016);
