@@ -19,7 +19,7 @@ class JuegosSearch extends Juegos
     public function rules()
     {
         return [
-            [['id', 'consola_id', 'genero_id', 'year_debut'], 'integer'],
+            [['id', 'consola_id', 'genero_id', 'year_debut', 'usuario_id'], 'integer'],
             [['fecha', 'nombre', 'genero.denom', 'consola.denom'], 'safe'],
             [['pasado'], 'boolean'],
         ];
@@ -68,10 +68,10 @@ class JuegosSearch extends Juegos
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'usuario_id' => $this->usuario_id,
             'consola_id' => $this->getAttribute('consola.denom'),
             'pasado' => $this->pasado,
             'genero_id' =>  $this->getAttribute('genero.denom'),
-
         ]);
 
         $query->andFilterWhere(['ilike', 'nombre', $this->nombre])

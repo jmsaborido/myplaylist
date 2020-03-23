@@ -46,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'pasado:boolean',
                 'genero.denom',
                 'year_debut',
+                'usuario.login'
             ],
         ]) ?>
 

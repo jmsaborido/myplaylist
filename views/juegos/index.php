@@ -12,7 +12,7 @@ $this->title = 'Lista de Juegos';
         <div class="col text-center">
             <?=
                 !Yii::$app->user->isGuest ?
-                    Yii::$app->user->identity->id === 1 ?
+                    Yii::$app->user->identity->id === $juegosSearch->usuario_id ?
                     Html::a(
                         'Añadir Juego Completado',
                         ['juegos/create'],
@@ -22,6 +22,8 @@ $this->title = 'Lista de Juegos';
             ?>
         </div>
     </div>
+
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $juegosSearch,
@@ -56,8 +58,8 @@ $this->title = 'Lista de Juegos';
                 'class' => ActionColumn::class,
                 'visibleButtons' =>
                 [
-                    'update' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->id === 1 : false,
-                    'delete' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->id === 1 : false,
+                    'update' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->id === $juegosSearch->usuario_id : false,
+                    'delete' => !Yii::$app->user->isGuest ? Yii::$app->user->identity->id === $juegosSearch->usuario_id : false,
                 ]
             ],
         ],

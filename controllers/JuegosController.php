@@ -33,14 +33,14 @@ class JuegosController extends Controller
                         'allow' => true,
                         'actions' => ['create', 'update', 'delete'],
                         'roles' => ['@'],
-                        'matchCallback' => function ($rules, $action) {
-                            return Yii::$app->user->identity->id === 1;
-                        },
+                        // 'matchCallback' => function ($rules, $action) {
+                        //     return Yii::$app->user->id === 1;
+                        // },
                     ],
                     [
                         'allow' => true,
                         'actions' => ['index', 'view'],
-                        'roles' => ['?', '@'],
+                        'roles' => ['@'],
                     ],
                 ],
             ],
@@ -50,14 +50,13 @@ class JuegosController extends Controller
 
     public function actionIndex()
     {
-        $JuegosSearch = new JuegosSearch();
+        $JuegosSearch = new JuegosSearch(['usuario_id' => Yii::$app->user->id]);
         $dataProvider = $JuegosSearch->search(Yii::$app->request->queryParams);
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'juegosSearch' => $JuegosSearch,
             'totalG' => Generos::lista(),
             'totalC' => Consolas::lista(),
-
         ]);
     }
 
@@ -72,7 +71,7 @@ class JuegosController extends Controller
 
     public function actionCreate()
     {
-        $model = new Juegos();
+        $model = new Juegos(['usuario_id' => Yii::$app->user->id]);
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
@@ -112,8 +111,12 @@ class JuegosController extends Controller
     {
 
         $model = $this->findJuego($id);
-        $model->delete();
-        Yii::$app->session->setFlash('success', 'Fila borrada con éxito.');
+        if ($model->usuario_id === Yii::$app->user->id) {
+            $model->delete();
+            Yii::$app->session->setFlash('success', 'Fila borrada con éxito.');
+        } else {
+            Yii::$app->session->setFlash('error', 'Solo puedes borrar tus juegos.');
+        }
 
         return $this->redirect(['index']);
     }
