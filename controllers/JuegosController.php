@@ -71,7 +71,7 @@ class JuegosController extends Controller
 
     public function actionCreate()
     {
-        $model = new Juegos(['usuario_id' => Yii::$app->user->id]);
+        $model = new Juegos(['usuario_id' => Yii::$app->user->identity]);
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
