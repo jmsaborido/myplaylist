@@ -2,50 +2,42 @@
 
 /* @var $this yii\web\View */
 
+use yii\bootstrap4\Html;
+
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <h1>¡Bienvenido!</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">Podrás usar esta página para mantener un registro de tus juegos completados.</p>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+        <p><?= Html::a('Clicka aquí para ver tú lista', ['/juegos/index'], ['class' => "btn btn-lg btn-success"]) ?></p>
     </div>
-
     <div class="body-content">
 
         <div class="row">
             <div class="col-xl-4">
-                <h2>Heading</h2>
+                <h2>Géneros</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>Aquí podrás ver todos los géneros que tenemos en nuestra base de datos</p>
 
-                <p><a class="btn btn-outline-info" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+                <p><?= Html::a('Géneros', ['/juegos/index'], ['class' => "btn btn-outline-info"]) ?></p>
             </div>
             <div class="col-xl-4">
-                <h2>Heading</h2>
+                <h2>Consolas</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>Aquí podrás ver todas las consolas que tenemos en nuestra base de datos</p>
 
-                <p><a class="btn btn-outline-info" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+                <p><?= Html::a('Consolas', ['/juegos/index'], ['class' => "btn btn-outline-info"]) ?></p>
             </div>
             <div class="col-xl-4">
-                <h2>Heading</h2>
+                <h2>Juegos</h2>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+                <p>Aqui podras buscar a los usuarios</p>
 
-                <p><a class="btn btn-outline-info" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+                <p><?= Html::a('Usuarios', ['/juegos/index'], ['class' => "btn btn-outline-info"]) ?></p>
             </div>
         </div>
 
