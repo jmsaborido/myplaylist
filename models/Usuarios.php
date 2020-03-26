@@ -58,7 +58,13 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             [['email'], 'email'],
             [['login'], 'unique'],
             [['password_repeat'], 'required', 'on' => self::SCENARIO_CREAR],
-            [['password'], 'compare', 'on' => self::SCENARIO_CREAR],
+            [
+                ['password_repeat'],
+                'compare',
+                'compareAttribute' => 'password',
+                'skipOnEmpty' => false,
+                'on' => [self::SCENARIO_CREAR, self::SCENARIO_UPDATE],
+            ],
         ];
     }
 
