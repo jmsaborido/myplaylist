@@ -6,6 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
+use kartik\password\PasswordInput;
 
 $this->title = 'Registrar usuario';
 $this->params['breadcrumbs'][] = $this->title;
@@ -22,11 +23,33 @@ $this->params['breadcrumbs'][] = $this->title;
             'horizontalCssClasses' => ['wrapper' => 'col-sm-5'],
         ],
     ]); ?>
+    <?php Yii::debug(Yii::$app->getErrorHandler()) ?>
 
     <?= $form->field($model, 'login')->textInput(['autofocus' => true]) ?>
     <?= $form->field($model, 'nombre')->textInput() ?>
     <?= $form->field($model, 'apellidos')->textInput() ?>
-    <?= $form->field($model, 'password')->passwordInput() ?>
+    <?= $form->field($model, 'password')->widget(PasswordInput::classname(), [
+        'size' => 'lg',
+        'togglePlacement' => 'rigth',
+        'pluginOptions' => [
+            'verdictTitles' => [
+                0 => 'No definida',
+                1 => 'Muy debil',
+                2 => 'Debil',
+                3 => 'Buena',
+                4 => 'Muy buena',
+                5 => 'Excelente'
+            ],
+            'verdictClasses' => [
+                0 => 'text-muted',
+                1 => 'text-danger',
+                2 => 'text-warning',
+                3 => 'text-info',
+                4 => 'text-primary',
+                5 => 'text-success'
+            ],
+        ]
+    ]) ?>
     <?= $form->field($model, 'password_repeat')->passwordInput() ?>
     <?= $form->field($model, 'email')->textInput() ?>
 
