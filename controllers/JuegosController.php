@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\models\Consolas;
 use app\models\Generos;
 use app\models\Juegos;
 use app\models\JuegosSearch;
@@ -33,9 +32,9 @@ class JuegosController extends Controller
                         'allow' => true,
                         'actions' => ['create', 'update', 'delete'],
                         'roles' => ['@'],
-                        // 'matchCallback' => function ($rules, $action) {
-                        //     return Yii::$app->user->id === 1;
-                        // },
+                        'matchCallback' => function ($rules, $action) {
+                            return Yii::$app->user->rol === 'ADMIN';
+                        },
                     ],
                     [
                         'allow' => true,
@@ -50,13 +49,12 @@ class JuegosController extends Controller
 
     public function actionIndex()
     {
-        $JuegosSearch = new JuegosSearch(['usuario_id' => Yii::$app->user->id]);
+        $JuegosSearch = new JuegosSearch();
         $dataProvider = $JuegosSearch->search(Yii::$app->request->queryParams);
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'juegosSearch' => $JuegosSearch,
-            'totalG' => Generos::lista(),
-            'totalC' => Consolas::lista(),
+            'totalG' => Generos::lista()
         ]);
     }
 
@@ -71,7 +69,7 @@ class JuegosController extends Controller
 
     public function actionCreate()
     {
-        $model = new Juegos(['usuario_id' => Yii::$app->user->id]);
+        $model = new Juegos();
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
@@ -82,8 +80,7 @@ class JuegosController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'totalG' => Generos::lista(),
-            'totalC' => Consolas::lista(),
+            'totalG' => Generos::lista()
         ]);
     }
 
@@ -102,8 +99,7 @@ class JuegosController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'totalG' => Generos::lista(),
-            'totalC' => Consolas::lista(),
+            'totalG' => Generos::lista()
         ]);
     }
 
@@ -111,11 +107,11 @@ class JuegosController extends Controller
     {
 
         $model = $this->findJuego($id);
-        if ($model->usuario_id === Yii::$app->user->id) {
+        if (Yii::$app->user->rol === 'ADMIN') {
             $model->delete();
             Yii::$app->session->setFlash('success', 'Fila borrada con éxito.');
         } else {
-            Yii::$app->session->setFlash('error', 'Solo puedes borrar tus juegos.');
+            Yii::$app->session->setFlash('error', 'Solo puedes borrar los juegos los administradores.');
         }
 
         return $this->redirect(['index']);

@@ -5,9 +5,15 @@ namespace app\controllers;
 use Yii;
 use app\models\Completados;
 use app\models\CompletadosSearch;
+use app\models\Consolas;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
+use yii\bootstrap4\ActiveForm;
+
+
 
 /**
  * CompletadosController implements the CRUD actions for Completados model.
@@ -26,21 +32,40 @@ class CompletadosController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::class,
+                // 'only' => ['index'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'update', 'delete'],
+                        'roles' => ['@'],
+                        // 'matchCallback' => function ($rules, $action) {
+                        //     return Yii::$app->user->id === 1;
+                        // },
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view'],
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
         ];
     }
-
     /**
      * Lists all Completados models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CompletadosSearch();
+        $searchModel = new CompletadosSearch(['usuario_id' => Yii::$app->user->id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'totalC' => Consolas::lista()
         ]);
     }
 
@@ -64,14 +89,17 @@ class CompletadosController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Completados();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model = new Completados(['usuario_id' => Yii::$app->user->id]);
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
         }
-
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index']);
+        }
         return $this->render('create', [
             'model' => $model,
+            'totalC' => Consolas::lista()
         ]);
     }
 
@@ -86,12 +114,18 @@ class CompletadosController extends Controller
     {
         $model = $this->findModel($id);
 
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'totalC' => Consolas::lista()
         ]);
     }
 
@@ -104,8 +138,13 @@ class CompletadosController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findCompletado($id);
+        if ($model->usuario_id === Yii::$app->user->id) {
+            $model->delete();
+            Yii::$app->session->setFlash('success', 'Fila borrada con éxito.');
+        } else {
+            Yii::$app->session->setFlash('error', 'Solo puedes borrar tus juegos.');
+        }
         return $this->redirect(['index']);
     }
 
@@ -116,7 +155,7 @@ class CompletadosController extends Controller
      * @return Completados the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findCompletado($id)
     {
         if (($model = Completados::findOne($id)) !== null) {
             return $model;
