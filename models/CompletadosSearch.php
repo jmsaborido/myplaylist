@@ -18,7 +18,7 @@ class CompletadosSearch extends Completados
     {
         return [
             [['id', 'usuario_id', 'juego_id', 'consola_id'], 'integer'],
-            [['fecha'], 'safe'],
+            [['fecha', 'consola.denom', 'juego.nombre', 'juego.genero_id'], 'safe'],
             [['pasado'], 'boolean'],
         ];
     }
@@ -41,13 +41,25 @@ class CompletadosSearch extends Completados
      */
     public function search($params)
     {
-        $query = Completados::find();
+        $query = Completados::find()->innerJoinWith(['consola c'])->innerJoinWith(['juego j']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        $dataProvider->sort->attributes['consola.denom'] = [
+            'asc' => ['c.denom' => SORT_ASC],
+            'desc' => ['c.denom' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['juego.nombre'] = [
+            'asc' => ['j.nombre' => SORT_ASC],
+            'desc' => ['j.nombre' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['juego.genero_id'] = [
+            'asc' => ['j.genero_id' => SORT_ASC],
+            'desc' => ['j.genero_id' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -62,7 +74,7 @@ class CompletadosSearch extends Completados
             'id' => $this->id,
             'usuario_id' => $this->usuario_id,
             'juego_id' => $this->juego_id,
-            'consola_id' => $this->consola_id,
+            'consola_id' => $this->getAttribute('consola.denom'),
             'fecha' => $this->fecha,
             'pasado' => $this->pasado,
         ]);

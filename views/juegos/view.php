@@ -40,13 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
         DetailView::widget([
             'model' => $model,
             'attributes' => [
-                'fecha',
                 'nombre',
-                'consola.denom',
-                'pasado:boolean',
                 'genero.denom',
                 'year_debut',
-                'usuario.login'
             ],
         ]) ?>
 

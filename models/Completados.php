@@ -48,7 +48,7 @@ class Completados extends \yii\db\ActiveRecord
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['consola.denom']);
+        return array_merge(parent::attributes(), ['consola.denom'], ['juego.nombre'], ['juego.genero_id']);
     }
 
     /**

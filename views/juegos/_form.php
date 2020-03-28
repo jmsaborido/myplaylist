@@ -15,13 +15,7 @@ use yii\bootstrap4\ActiveForm;
         'enableAjaxValidation' => true,
     ]); ?>
 
-    <?= $form->field($model, 'fecha')->textInput() ?>
-
     <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'consola_id')->dropDownList($totalC)->label('Consola') ?>
-
-    <?= $form->field($model, 'pasado')->checkbox() ?>
 
     <?= $form->field($model, 'genero_id')->dropDownList($totalG)->label('Genero') ?>
 

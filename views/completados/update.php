@@ -1,5 +1,6 @@
 <?php
 
+use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 
 /* @var $this yii\web\View */
@@ -12,10 +13,19 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="completados-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?php $form = ActiveForm::begin(); ?>
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+    <?= $form->field($model, 'consola_id')->dropDownList($totalC)->label('Consola') ?>
+
+    <?= $form->field($model, 'fecha')->textInput() ?>
+
+    <?= $form->field($model, 'pasado')->checkbox() ?>
+
+    <div class="form-group">
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
 
 </div>

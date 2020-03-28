@@ -13,31 +13,60 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="completados-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Completados', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="row">
+        <div class="col text-center">
+            <p>
+                <?=
+                    Html::a(
+                        $dataProvider->totalCount ? 'Añadir Juego Completado' : 'Todavia no has añadido ningun juego. Pulsa este botón para crear tu lista',
+                        ['completados/create'],
+                        ['class' => 'btn btn-lg btn-outline-success']
+                    )
+                ?> </p>
+        </div>
+    </div>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);
+    ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'usuario_id',
-            'juego_id',
-            'consola_id',
-            'fecha',
-            //'pasado:boolean',
+    <?php if ($dataProvider->totalCount) : ?>
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'filterModel' => $searchModel,
+            'layout' => '{items}{pager}',
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                [
+                    'attribute' => 'juego.nombre',
+                    'headerOptions' => ['style' => 'width:100%']
+                ],
+                [
+                    'attribute' => 'consola.denom',
+                    'label' => 'Consola',
+                    'filter' => $totalC,
+                ],
+                [
+                    'attribute' => 'pasado',
+                    'label' => 'Completado anteriormente',
+                    'format' => 'boolean',
+                ],
+                [
+                    'attribute' => 'juego.genero.denom',
+                    'label' => 'Genero',
+                ],
+                [
+                    'attribute' => 'fecha',
+                    'format' => 'date',
+                ],
 
-    <?php Pjax::end(); ?>
+                ['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]); ?>
 
+        <?php Pjax::end(); ?>
+
+    <?php endif ?>
 </div>

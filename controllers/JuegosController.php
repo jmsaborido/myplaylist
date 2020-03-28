@@ -30,16 +30,15 @@ class JuegosController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'delete'],
-                        'roles' => ['@'],
-                        'matchCallback' => function ($rules, $action) {
-                            return Yii::$app->user->rol === 'ADMIN';
-                        },
+                        'actions' => ['index', 'view']
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view'],
+                        'actions' => ['create', 'update', 'delete'],
                         'roles' => ['@'],
+                        'matchCallback' => function ($rules, $action) {
+                            return Yii::$app->user->identity['rol'] === 'ADMIN';
+                        },
                     ],
                 ],
             ],
@@ -107,7 +106,7 @@ class JuegosController extends Controller
     {
 
         $model = $this->findJuego($id);
-        if (Yii::$app->user->rol === 'ADMIN') {
+        if (Yii::$app->user->identity['rol']) {
             $model->delete();
             Yii::$app->session->setFlash('success', 'Fila borrada con éxito.');
         } else {

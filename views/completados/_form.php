@@ -12,11 +12,9 @@ use yii\bootstrap4\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'usuario_id')->textInput() ?>
-
     <?= $form->field($model, 'juego_id')->textInput() ?>
 
-    <?= $form->field($model, 'consola_id')->textInput() ?>
+    <?= $form->field($model, 'consola_id')->dropDownList($totalC)->label('Consola') ?>
 
     <?= $form->field($model, 'fecha')->textInput() ?>
 

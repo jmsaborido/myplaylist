@@ -19,9 +19,8 @@ class JuegosSearch extends Juegos
     public function rules()
     {
         return [
-            [['id', 'consola_id', 'genero_id', 'year_debut', 'usuario_id'], 'integer'],
-            [['fecha', 'nombre', 'genero.denom', 'consola.denom'], 'safe'],
-            [['pasado'], 'boolean'],
+            [['id', 'genero_id', 'year_debut'], 'integer'],
+            [['nombre', 'genero.denom'], 'safe'],
         ];
     }
 
@@ -44,7 +43,7 @@ class JuegosSearch extends Juegos
      */
     public function search($params)
     {
-        $query = Juegos::find()->innerJoinWith(['consola c'])->innerJoinWith(['genero g']);
+        $query = Juegos::find()->innerJoinWith(['genero g']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -52,10 +51,7 @@ class JuegosSearch extends Juegos
             'asc' => ['g.denom' => SORT_ASC],
             'desc' => ['g.denom' => SORT_DESC],
         ];
-        $dataProvider->sort->attributes['consola.denom'] = [
-            'asc' => ['c.denom' => SORT_ASC],
-            'desc' => ['c.denom' => SORT_DESC],
-        ];
+
 
         $this->load($params);
 
@@ -68,9 +64,6 @@ class JuegosSearch extends Juegos
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'usuario_id' => $this->usuario_id,
-            'consola_id' => $this->getAttribute('consola.denom'),
-            'pasado' => $this->pasado,
             'genero_id' =>  $this->getAttribute('genero.denom'),
         ]);
 
