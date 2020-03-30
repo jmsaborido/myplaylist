@@ -17,8 +17,8 @@ class CompletadosSearch extends Completados
     public function rules()
     {
         return [
-            [['id', 'usuario_id', 'juego_id', 'consola_id'], 'integer'],
-            [['fecha', 'consola.denom', 'juego.nombre', 'juego.genero_id'], 'safe'],
+            [['id', 'usuario_id', 'juego_id', 'consola_id', 'juego.genero_id'], 'integer'],
+            [['fecha', 'consola.denom', 'juego.nombre', 'juego.year_debut', 'juego.genero.denom'], 'safe'],
             [['pasado'], 'boolean'],
         ];
     }
@@ -41,12 +41,14 @@ class CompletadosSearch extends Completados
      */
     public function search($params)
     {
-        $query = Completados::find()->innerJoinWith(['consola c'])->innerJoinWith(['juego j']);
+        $query = Completados::find()->innerJoinWith(['consola c'])->innerJoinWith(['juego j'])->innerJoinWith('genero g');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['fecha' => SORT_ASC]]
+
         ]);
         $dataProvider->sort->attributes['consola.denom'] = [
             'asc' => ['c.denom' => SORT_ASC],
@@ -56,9 +58,13 @@ class CompletadosSearch extends Completados
             'asc' => ['j.nombre' => SORT_ASC],
             'desc' => ['j.nombre' => SORT_DESC],
         ];
-        $dataProvider->sort->attributes['juego.genero_id'] = [
-            'asc' => ['j.genero_id' => SORT_ASC],
-            'desc' => ['j.genero_id' => SORT_DESC],
+        $dataProvider->sort->attributes['juego.genero.denom'] = [
+            'asc' => ['g.denom' => SORT_ASC],
+            'desc' => ['g.denom' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['juego.year_debut'] = [
+            'asc' => ['j.year_debut' => SORT_ASC],
+            'desc' => ['j.year_debut' => SORT_DESC],
         ];
 
         $this->load($params);
@@ -75,9 +81,13 @@ class CompletadosSearch extends Completados
             'usuario_id' => $this->usuario_id,
             'juego_id' => $this->juego_id,
             'consola_id' => $this->getAttribute('consola.denom'),
+            'j.genero_id' => $this->getAttribute('juego.genero.denom'),
             'fecha' => $this->fecha,
             'pasado' => $this->pasado,
+            'j.year_debut' =>  $this->getAttribute('juego.year_debut'),
         ]);
+        $query->andFilterWhere(['ilike', 'j.nombre', $this->getAttribute('juego.nombre')]);
+
 
         return $dataProvider;
     }

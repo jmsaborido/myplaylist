@@ -4,12 +4,41 @@
 use yii\bootstrap4\Html;
 use yii\widgets\DetailView;
 use Jschubert\Igdb\Builder\SearchBuilder;
-
+use yii\bootstrap4\Carousel;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Juegos */
 
-$this->title = $model->nombre;
+$searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
+$searchBuilder2 = new SearchBuilder(Yii::$app->params['igdb']['key']);
+$searchBuilder3 = new SearchBuilder(Yii::$app->params['igdb']['key']);
+$searchBuilder4 = new SearchBuilder(Yii::$app->params['igdb']['key']);
+
+//Add endpoint and search by id.
+$respuesta = $searchBuilder
+    ->addEndpoint('games')
+    ->searchById($model->id, ['*'])
+    ->get();
+
+$genero = $searchBuilder2
+    ->addEndpoint('genres')
+    ->searchById($respuesta->genres[0], ['*'])
+    ->get();
+$fecha = $searchBuilder3
+    ->addEndpoint('release_dates')
+    ->addFields(['*'])
+    ->addFilter('game', '=', $model->id)
+    ->search()
+    ->get();
+$imagen = $searchBuilder4
+    ->addEndpoint('games')
+    ->searchById($model->id, ['screenshots.*'])
+    ->get();
+
+// Yii::debug($imagen);
+// Yii::debug($genero);
+
+$this->title = $respuesta->name;
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -29,21 +58,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]) ?>
         </p>
-    <?php endif ?>
-    <?=
-        // $url->url
-        Html::img("juan")
-    ?>
+    <?php endif; ?>
 
-    <?=
+    <?= Html::img($imagen->screenshots['0']->url) ?>
 
-        DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                'nombre',
-                'genero.denom',
-                'year_debut',
-            ],
-        ]) ?>
+
+    <ul>
+        <li><?= $respuesta->summary ?></li>
+        <li><?= $genero->name ?></li>
+        <li>Fecha de salida: <?= Yii::$app->formatter->asDate($fecha[0]->date) ?></li>
+    </ul>
+
 
 </div>

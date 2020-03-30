@@ -18,7 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <p>
                 <?=
                     Html::a(
-                        $dataProvider->totalCount ? 'Añadir Juego Completado' : 'Todavia no has añadido ningun juego. Pulsa este botón para crear tu lista',
+                        (array_keys($dataProvider->query->where)[0] === 'usuario_id'
+                            && count(($dataProvider->query->where)) === 1
+                            && $dataProvider->count === 0)
+                            ? 'Todavia no has añadido ningun juego. Pulsa este botón para crear tu lista'
+                            : 'Añadir Juego Completado',
                         ['completados/create'],
                         ['class' => 'btn btn-lg btn-outline-success']
                     )
@@ -30,43 +34,45 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]);
     ?>
 
+    <?php yii::debug((count($dataProvider->query->where))) ?>
 
-    <?php if ($dataProvider->totalCount) : ?>
-
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'layout' => '{items}{pager}',
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
-                [
-                    'attribute' => 'juego.nombre',
-                    'headerOptions' => ['style' => 'width:100%']
-                ],
-                [
-                    'attribute' => 'consola.denom',
-                    'label' => 'Consola',
-                    'filter' => $totalC,
-                ],
-                [
-                    'attribute' => 'pasado',
-                    'label' => 'Completado anteriormente',
-                    'format' => 'boolean',
-                ],
-                [
-                    'attribute' => 'juego.genero.denom',
-                    'label' => 'Genero',
-                ],
-                [
-                    'attribute' => 'fecha',
-                    'format' => 'date',
-                ],
-
-                ['class' => 'yii\grid\ActionColumn'],
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'options' => ['class' => 'grid-view table-responsive'],
+        'layout' => '{items}{pager}',
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute' => 'juego.nombre',
+                'headerOptions' => ['style' => 'width:100%']
             ],
-        ]); ?>
+            'juego.year_debut',
+            [
+                'attribute' => 'juego.genero.denom',
+                'label' => 'Genero',
+                'filter' => $totalG,
+            ],
+            [
+                'attribute' => 'consola.denom',
+                'label' => 'Consola',
+                'filter' => $totalC,
+            ],
+            [
+                'attribute' => 'pasado',
+                'label' => 'Completado anteriormente',
+                'format' => 'boolean',
+            ],
+            [
+                'attribute' => 'fecha',
+                'format' => 'date',
+            ],
 
-        <?php Pjax::end(); ?>
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
 
-    <?php endif ?>
+    <?php Pjax::end(); ?>
+
+
 </div>

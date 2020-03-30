@@ -48,7 +48,7 @@ class Completados extends \yii\db\ActiveRecord
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['consola.denom'], ['juego.nombre'], ['juego.genero_id']);
+        return array_merge(parent::attributes(), ['consola.denom'], ['juego.nombre'], ['juego.year_debut'], ['genero.denom'], ['juego.genero_id'], ['juego.genero.denom']);
     }
 
     /**
@@ -94,5 +94,11 @@ class Completados extends \yii\db\ActiveRecord
     public function getUsuario()
     {
         return $this->hasOne(Usuarios::className(), ['id' => 'usuario_id']);
+    }
+
+
+    public function getGenero()
+    {
+        return $this->hasMany(Generos::class, ['id' => 'genero_id'])->via('juego');
     }
 }

@@ -6,6 +6,7 @@ use Yii;
 use app\models\Completados;
 use app\models\CompletadosSearch;
 use app\models\Consolas;
+use app\models\Generos;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -65,7 +66,8 @@ class CompletadosController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'totalC' => Consolas::lista()
+            'totalC' => Consolas::lista(),
+            'totalG' => Generos::lista()
         ]);
     }
 

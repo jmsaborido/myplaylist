@@ -46,6 +46,7 @@ class JuegosSearch extends Juegos
         $query = Juegos::find()->innerJoinWith(['genero g']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['id' => SORT_ASC]]
         ]);
         $dataProvider->sort->attributes['genero.denom'] = [
             'asc' => ['g.denom' => SORT_ASC],
