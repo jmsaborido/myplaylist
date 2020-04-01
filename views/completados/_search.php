@@ -1,15 +1,14 @@
-×
 <?php
 
 use yii\bootstrap4\Html;
 use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\JuegosSearch */
+/* @var $model app\models\CompletadosSearch */
 /* @var $form yii\bootstrap4\ActiveForm */
 ?>
 
-<div class="juegos-search">
+<div class="completados-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -21,11 +20,15 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'nombre') ?>
+    <?= $form->field($model, 'usuario_id') ?>
 
-    <?= $form->field($model, 'genero_id') ?>
+    <?= $form->field($model, 'juego_id') ?>
 
-    <?= $form->field($model, 'year_debut') ?>
+    <?= $form->field($model, 'consola_id') ?>
+
+    <?= $form->field($model, 'fecha') ?>
+
+    <?php // echo $form->field($model, 'pasado')->checkbox() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

@@ -12,11 +12,12 @@ $this->title = 'Lista de Juegos';
     <div class="row">
         <div class="col text-center">
             <?=
-                Html::a(
-                    $dataProvider->totalCount ? 'Añadir Juego Completado' : 'Todavia no has añadido ningun juego. Pulsa este botón para crear tu lista',
-                    ['juegos/create'],
-                    ['class' => 'btn btn-lg btn-outline-success']
-                )
+                Yii::$app->user->identity['rol'] === 'ADMIN' ?
+                    Html::a(
+                        'Añadir Juego',
+                        ['create'],
+                        ['class' => 'btn btn-lg btn-outline-success']
+                    ) : ""
             ?>
         </div>
     </div>
@@ -26,30 +27,17 @@ $this->title = 'Lista de Juegos';
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $juegosSearch,
+            'layout' => '{items}{pager}',
             'columns' => [
                 [
-                    'attribute' => 'fecha',
-                    'format' => 'date',
-                ],
-                [
                     'attribute' => 'nombre',
-                    'headerOptions' => ['style' => 'width:100%']
-                ],
-                [
-                    'attribute' => 'consola.denom',
-                    'label' => 'Consola',
-                    'filter' => $totalC,
-                ],
-                [
-                    'attribute' => 'pasado',
-                    'label' => 'Completado anteriormente',
-                    'format' => 'boolean',
                 ],
                 [
                     'attribute' => 'genero.denom',
                     'label' => 'Genero',
                     'filter' => $totalG,
                 ],
+
                 [
                     'attribute' => 'year_debut',
                 ],

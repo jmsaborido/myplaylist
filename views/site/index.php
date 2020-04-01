@@ -13,7 +13,7 @@ $this->title = 'My Yii Application';
 
         <p class="lead">Podrás usar esta página para mantener un registro de tus juegos completados.</p>
 
-        <p><?= Html::a('Clicka aquí para ver tú lista', ['/juegos/index'], ['class' => "btn btn-lg btn-success"]) ?></p>
+        <p><?= Html::a('Clicka aquí para ver tú lista', ['/completados/index'], ['class' => "btn btn-lg btn-success"]) ?></p>
     </div>
     <div class="body-content">
 
@@ -33,7 +33,7 @@ $this->title = 'My Yii Application';
                 <p><?= Html::a('Consolas', ['/juegos/index'], ['class' => "btn btn-outline-info"]) ?></p>
             </div>
             <div class="col-xl-4">
-                <h2>Juegos</h2>
+                <h2>Usuarios</h2>
 
                 <p>Aqui podras buscar a los usuarios</p>
 
