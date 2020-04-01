@@ -4,7 +4,6 @@
 use yii\bootstrap4\Html;
 use yii\widgets\DetailView;
 use Jschubert\Igdb\Builder\SearchBuilder;
-use yii\bootstrap4\Carousel;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Juegos */
@@ -24,17 +23,20 @@ $genero = $searchBuilder2
     ->searchById($respuesta->genres[0])
     ->get();
 
-// $tiempo = $searchBuilder3
-//     ->addEndpoint('time_to_beats')
-//     ->searchById($respuesta->time_to_beat, ['*'])
-//     ->get();
+$tiempo = $searchBuilder3
+    ->addEndpoint('genres')
+    ->addFields(['id,name'])
+    ->addOrder('id', 'asc')
+    ->addLimit('20')
+    ->search()
+    ->get();
 
 $imagen = $searchBuilder4
     ->addEndpoint('covers')
     ->searchById($respuesta->cover)
     ->get();
 
-Yii::debug($respuesta);
+Yii::debug($tiempo);
 
 $this->title = $respuesta->name;
 $this->params['breadcrumbs'][] = $this->title;
@@ -42,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="juegos-view">
+
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity['rol'] === 'ADMIN') : ?>
@@ -66,8 +69,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <ul>
         <li><?= $respuesta->summary ?></li>
-        <li>Puntuacion media: <?= round($respuesta->rating) ?></li>
-        <li><?= $genero->name ?></li>
+        <li>Puntuacion media: <?= round(isset($respuesta->aggregated_rating) ? $respuesta->aggregated_rating : isset($respuesta->rating) ? $respuesta->rating : 0) ?></li>
+        <li><?= $model->genero->denom ?></li>
         <li>Fecha de salida: <?= Yii::$app->formatter->asDate($respuesta->first_release_date) ?></li>
     </ul>
 
