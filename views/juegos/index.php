@@ -9,18 +9,13 @@ $this->title = 'Lista de Juegos';
 ?>
 
 <div class="generos-index">
-    <div class="row">
-        <div class="col text-center">
-            <?=
-                Yii::$app->user->identity['rol'] === 'ADMIN' ?
-                    Html::a(
-                        'Añadir Juego',
-                        ['create'],
-                        ['class' => 'btn btn-lg btn-outline-success']
-                    ) : ""
-            ?>
+    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity['rol'] === 'ADMIN') : ?>
+        <div class="row">
+            <div class="col text-center">
+                <?= Html::a('Añadir Juego', ['create'], ['class' => 'btn btn-lg btn-outline-success']) ?>
+            </div>
         </div>
-    </div>
+    <?php endif ?>
 
 
     <?php if ($dataProvider->totalCount) : ?>
