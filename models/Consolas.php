@@ -11,7 +11,7 @@ use Yii;
  * @property string $denom
  * @property string $created_at
  *
- * @property Juegos[] $juegos
+ * @property Completados[] $completados
  */
 class Consolas extends \yii\db\ActiveRecord
 {
@@ -38,6 +38,11 @@ class Consolas extends \yii\db\ActiveRecord
         ];
     }
 
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['completados.usuario_id']);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -57,23 +62,26 @@ class Consolas extends \yii\db\ActiveRecord
     public function getTotal()
     {
         if ($this->_total === null && !$this->isNewRecord) {
-            $this->setTotal($this->getJuegos()->count());
+            $this->setTotal($this->getCompletados()->count());
         }
         return $this->_total;
     }
 
     /**
+     * Gets query for [[Completados]].
+     *
      * @return \yii\db\ActiveQuery
      */
-    public function getJuegos()
+    public function getCompletados()
     {
-        return $this->hasMany(Juegos::className(), ['consola_id' => 'id']);
+        return $this->hasMany(Completados::className(), ['consola_id' => 'id']);
     }
+
     public static function findWithTotal()
     {
         return static::find()
-            ->select(['consolas.*', 'COUNT(j.id) AS total'])
-            ->joinWith('juegos j', false)
+            ->select(['consolas.*', 'COUNT(c.id) AS total'])
+            ->joinWith('completados c', false)
             ->groupBy('consolas.id');
     }
     public static function lista()

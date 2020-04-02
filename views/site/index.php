@@ -30,7 +30,7 @@ $this->title = 'My Yii Application';
 
                 <p>Aquí podrás ver todas las consolas que tenemos en nuestra base de datos</p>
 
-                <p><?= Html::a('Consolas', ['/juegos/index'], ['class' => "btn btn-outline-info"]) ?></p>
+                <p><?= Html::a('Consolas', ['/consolas/index'], ['class' => "btn btn-outline-info"]) ?></p>
             </div>
             <div class="col-xl-4">
                 <h2>Usuarios</h2>
