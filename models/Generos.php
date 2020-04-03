@@ -24,6 +24,11 @@ class Generos extends \yii\db\ActiveRecord
         return 'generos';
     }
 
+    public function attributes()
+    {
+        return array_merge(parent::attributes(), ['completados.usuario_id']);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -63,19 +68,27 @@ class Generos extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Juegos]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getJuegos()
     {
         return $this->hasMany(Juegos::className(), ['genero_id' => 'id']);
     }
+    public function getCompletados()
+    {
+        return $this->hasMany(Completados::class, ['id' => 'genero_id'])->via('juegos');
+    }
     public static function findWithTotal()
     {
         return static::find()
-            ->select(['generos.*', 'COUNT(j.id) AS total'])
-            ->joinWith('juegos j', false)
+            ->select(['generos.*', 'COUNT(c.id) AS total'])
+            ->joinWith('completados c', false)
             ->groupBy('generos.id');
     }
+
+
     public static function lista()
     {
         return static::find()->select('denom')->indexBy('id')->column();
