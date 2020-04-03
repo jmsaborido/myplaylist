@@ -23,7 +23,7 @@ $this->title = 'My Yii Application';
 
                 <p>Aquí podrás ver todos los géneros que tenemos en nuestra base de datos</p>
 
-                <p><?= Html::a('Géneros', ['/juegos/index'], ['class' => "btn btn-outline-info"]) ?></p>
+                <p><?= Html::a('Géneros', ['/generos/index'], ['class' => "btn btn-outline-info"]) ?></p>
             </div>
             <div class="col-xl-4">
                 <h2>Consolas</h2>
@@ -37,7 +37,7 @@ $this->title = 'My Yii Application';
 
                 <p>Aqui podras buscar a los usuarios</p>
 
-                <p><?= Html::a('Usuarios', ['/juegos/index'], ['class' => "btn btn-outline-info"]) ?></p>
+                <p><?= Html::a('Usuarios', ['/usuarios/index'], ['class' => "btn btn-outline-info"]) ?></p>
             </div>
         </div>
 

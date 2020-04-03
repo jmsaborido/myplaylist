@@ -4,18 +4,18 @@ use yii\bootstrap4\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\ConsolasSearch */
+/* @var $searchModel app\models\GenerosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Consolas';
+$this->title = 'Generos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="consolas-index">
+<div class="generos-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Consolas', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Generos', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function ($model, $key, $index, $column) {
                     return Html::a($model->total, [
-                        'completados/index', 'CompletadosSearch[consola.denom]' => $model->id
+                        'completados/index', 'CompletadosSearch[juego.genero.denom]' => $model->id
                     ]);
                 },
             ],
