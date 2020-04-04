@@ -35,14 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                 },
             ],
-            [
-                'attribute' => 'porcentaje',
-                'value' => function ($model, $key, $index, $column) {
-                    return $model->porcentaje . "%";
-                },
-            ],
-
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
