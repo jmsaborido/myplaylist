@@ -23,7 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'horizontalCssClasses' => ['wrapper' => 'col-sm-5'],
         ],
     ]); ?>
-    <?php Yii::debug(Yii::$app->getErrorHandler()) ?>
 
     <?= $form->field($model, 'login')->textInput(['autofocus' => true]) ?>
     <?= $form->field($model, 'nombre')->textInput() ?>

@@ -36,7 +36,6 @@ $imagen = $searchBuilder4
     ->searchById($respuesta->cover)
     ->get();
 
-Yii::debug($tiempo);
 
 $this->title = $respuesta->name;
 $this->params['breadcrumbs'][] = $this->title;

@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Completados;
 use yii\bootstrap4\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -34,12 +35,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]);
     ?>
 
-    <?php yii::debug((count($dataProvider->query->where))) ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'options' => ['class' => 'grid-view table-responsive'],
+        'options' => ['class' => 'grid-view table-responsive table-striped table-borderless text-center'],
         'layout' => '{items}{pager}',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -67,7 +67,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'fecha',
                 'format' => 'date',
             ],
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

@@ -11,13 +11,7 @@ $this->title = 'Generos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="generos-index">
-
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Generos', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]);
     ?>
@@ -25,6 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'options' => ['class' => 'grid-view table-responsive table-striped table-borderless text-center'],
+        'layout' => '{items}{pager}',
+
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -38,6 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]);
                 },
             ],
+            [
+                'attribute' => 'porcentaje',
+                'value' => function ($model, $key, $index, $column) {
+                    return $model->porcentaje . "%";
+                },
+            ],
+
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

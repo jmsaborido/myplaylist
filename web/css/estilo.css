@@ -1,0 +1,40 @@
+body {
+    background-color: #0e0e10;
+    color: #d1d1d3;
+}
+
+.table {
+    background-color: #18181a;
+    color: #d1d1d3;
+    border: none;
+}
+
+a {
+    color: #f25022;
+}
+
+.navbar {
+    background-color: #18181a !important;
+}
+
+div.summary {
+    display: none;
+}
+
+.breadcrumb {
+    background-color: #18181a;
+    color: #d1d1d3;
+}
+
+.page-link {
+    background-color: #18181a !important;
+    color: #f25022 !important;
+}
+
+.page-item.active .page-link {
+    border-color: #f25022 !important;
+}
+
+.page-item.disabled .page-link {
+    color: #4e1a0c !important;
+}
