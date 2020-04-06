@@ -46,6 +46,7 @@ class GenerosSearch extends Generos
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['total' => SORT_DESC]]
         ]);
         $dataProvider->sort->attributes['total'] = [
             'asc' => ['COUNT(c.id)' => SORT_ASC],

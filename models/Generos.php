@@ -78,7 +78,7 @@ class Generos extends \yii\db\ActiveRecord
     }
     public function getCompletados()
     {
-        return $this->hasMany(Completados::class, ['id' => 'genero_id'])->via('juegos');
+        return $this->hasMany(Completados::class, ['juego_id' => 'id'])->via('juegos');
     }
     public static function findWithTotal()
     {
