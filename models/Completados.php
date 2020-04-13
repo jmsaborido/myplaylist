@@ -61,8 +61,8 @@ class Completados extends \yii\db\ActiveRecord
             'usuario_id' => 'Usuario ID',
             'juego_id' => 'Juego ID',
             'consola_id' => 'Consola ID',
-            'fecha' => 'Fecha',
-            'pasado' => 'Pasado',
+            'fecha' => 'Completado el dia...',
+            'pasado' => '¿Habia sido completado antes?',
         ];
     }
 

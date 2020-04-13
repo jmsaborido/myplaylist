@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Generos;
 use app\models\Juegos;
 use app\models\JuegosSearch;
+use Jschubert\Igdb\Builder\SearchBuilder;
 use Yii;
 use yii\bootstrap4\ActiveForm;
 use yii\filters\AccessControl;
@@ -59,10 +60,34 @@ class JuegosController extends Controller
 
     public function actionView($id)
     {
+
         $model = $this->findJuego($id);
+
+        $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
+
+        $respuesta = $searchBuilder
+            ->addEndpoint('games')
+            ->searchById($model->id)
+            ->get();
+
+        $searchBuilder->clear();
+
+        $imagen = $searchBuilder
+            ->addEndpoint('covers')
+            ->searchById($respuesta->cover)
+            ->get();
+
+
+        $lista = Generos::lista();
+        $out = [];
+        foreach ($respuesta->genres as $value) array_push($out, $lista[$value]);
+        $generos = implode(', ', $out);
 
         return $this->render('view', [
             'model' => $model,
+            'respuesta' => $respuesta,
+            'imagen' => $imagen,
+            'generos' => $generos,
         ]);
     }
 

@@ -48,25 +48,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['style' => 'width:100%']
             ],
             'juego.year_debut',
-            [
-                'attribute' => 'juego.genero.denom',
-                'label' => 'Genero',
-                'filter' => $totalG,
-            ],
+            // [
+            //     'attribute' => 'juego.genero.denom',
+            //     'label' => 'Género',
+            //     'filter' => $totalG,
+            // ],
             [
                 'attribute' => 'consola.denom',
                 'label' => 'Consola',
                 'filter' => $totalC,
             ],
-            [
-                'attribute' => 'pasado',
-                'label' => 'Completado anteriormente',
-                'format' => 'boolean',
-            ],
-            [
-                'attribute' => 'fecha',
-                'format' => 'date',
-            ],
+            'pasado:boolean',
+            'fecha:date',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

@@ -7,6 +7,7 @@ use app\models\Completados;
 use app\models\CompletadosSearch;
 use app\models\Consolas;
 use app\models\Generos;
+use Jschubert\Igdb\Builder\SearchBuilder;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -62,6 +63,7 @@ class CompletadosController extends Controller
     {
         $searchModel = new CompletadosSearch(['usuario_id' => Yii::$app->user->id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        Yii::debug($dataProvider->models);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -79,8 +81,36 @@ class CompletadosController extends Controller
      */
     public function actionView($id)
     {
+
+        $model = $this->findCompletado($id);
+
+        $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
+
+        $respuesta = $searchBuilder
+            ->addEndpoint('games')
+            ->searchById($model->juego_id)
+            ->get();
+
+        $searchBuilder->clear();
+
+        $imagen = $searchBuilder
+            ->addEndpoint('covers')
+            ->searchById($respuesta->cover)
+            ->get();
+
+        $searchBuilder->clear();
+
+
+        $lista = Generos::lista();
+        $out = [];
+        foreach ($respuesta->genres as $value) array_push($out, $lista[$value]);
+        $generos = implode(', ', $out);
+
         return $this->render('view', [
-            'model' => $this->findCompletado($id),
+            'model' => $model,
+            'respuesta' => $respuesta,
+            'imagen' => $imagen,
+            'generos' => $generos,
         ]);
     }
 
