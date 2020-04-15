@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Completados;
+use kartik\date\DatePicker;
 use yii\bootstrap4\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -41,6 +42,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'options' => ['class' => 'grid-view table-responsive table-striped table-borderless text-center'],
         'layout' => '{items}{pager}',
+        'pager' => [
+            'options' => ['class' => 'pagination justify-content-center'],
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
@@ -48,18 +52,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['style' => 'width:100%']
             ],
             'juego.year_debut',
-            // [
-            //     'attribute' => 'juego.genero.denom',
-            //     'label' => 'Género',
-            //     'filter' => $totalG,
-            // ],
             [
                 'attribute' => 'consola.denom',
                 'label' => 'Consola',
                 'filter' => $totalC,
             ],
             'pasado:boolean',
-            'fecha:date',
+            [
+                'attribute' => 'fecha',
+                'format' => 'date',
+                'filter' => DatePicker::widget([
+                    'readonly' => true,
+                    'model' => $searchModel,
+                    'attribute' => 'fecha',
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                    ]
+                ])
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

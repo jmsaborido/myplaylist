@@ -31,7 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'options' => ['class' => 'grid-view table-responsive table-striped table-borderless text-center'],
         'layout' => '{items}{pager}',
-
+        'pager' => [
+            'options' => ['class' => 'pagination justify-content-center'],
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

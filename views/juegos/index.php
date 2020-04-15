@@ -28,7 +28,9 @@ $this->title = 'Lista de Juegos';
             'filterModel' => $juegosSearch,
             'options' => ['class' => 'grid-view table-responsive table-striped table-borderless text-center'],
             'layout' => '{items}{pager}',
-
+            'pager' => [
+                'options' => ['class' => 'pagination justify-content-center'],
+            ],
             'columns' => [
                 [
                     'attribute' => 'nombre',
