@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Completados;
+use Jschubert\Igdb\Builder\SearchBuilder;
 use kartik\date\DatePicker;
 use yii\bootstrap4\Html;
 use yii\grid\GridView;
@@ -32,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 
-    <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]);
     ?>
 
@@ -40,13 +40,26 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'options' => ['class' => 'grid-view table-responsive table-striped table-borderless text-center'],
+        'options' => ['class' => 'grid-view table-striped table-borderless text-center'],
         'layout' => '{items}{pager}',
         'pager' => [
             'options' => ['class' => 'pagination justify-content-center'],
         ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            [
+
+                'attribute' => 'img',
+
+                'format' => 'html',
+
+                'label' => 'Portada',
+
+                'value' => function ($model) {
+                    return Html::a(Html::img('https://images.igdb.com/igdb/image/upload/t_cover_small/' . $model->getImagenId() . '.jpg', ['width' => '60px']), ['completados/view', 'id' => $model->id]);
+                },
+
+            ],
             [
                 'attribute' => 'juego.nombre',
                 'headerOptions' => ['style' => 'width:100%']
@@ -70,11 +83,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]
                 ])
             ],
+
+
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
-    <?php Pjax::end(); ?>
 
 
 </div>

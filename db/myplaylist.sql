@@ -51,7 +51,8 @@ CREATE TABLE completados (
     juego_id bigint NOT NULL REFERENCES juegos (id),
     consola_id bigint NOT NULL REFERENCES consolas (id),
     fecha date NOT NULL DEFAULT CURRENT_DATE,
-    pasado boolean
+    pasado boolean,
+    imagen_id varchar(255)
 );
 
 DROP TABLE IF EXISTS seguidores CASCADE;

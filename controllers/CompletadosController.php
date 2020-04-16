@@ -63,13 +63,12 @@ class CompletadosController extends Controller
     {
         $searchModel = new CompletadosSearch(['usuario_id' => Yii::$app->user->id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        Yii::debug($dataProvider->models);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'totalC' => Consolas::lista(),
-            'totalG' => Generos::lista()
+            'totalG' => Generos::lista(),
         ]);
     }
 
@@ -93,14 +92,6 @@ class CompletadosController extends Controller
 
         $searchBuilder->clear();
 
-        $imagen = $searchBuilder
-            ->addEndpoint('covers')
-            ->searchById($respuesta->cover)
-            ->get();
-
-        $searchBuilder->clear();
-
-
         $lista = Generos::lista();
         $out = [];
         foreach ($respuesta->genres as $value) array_push($out, $lista[$value]);
@@ -109,7 +100,6 @@ class CompletadosController extends Controller
         return $this->render('view', [
             'model' => $model,
             'respuesta' => $respuesta,
-            'imagen' => $imagen,
             'generos' => $generos,
         ]);
     }
