@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     <div class="row mb-3">
         <div class="col text-center">
-            <?= Html::img('https://images.igdb.com/igdb/image/upload/t_cover_big/' .  $model->getImagenId() . '.jpg') ?>
+            <?= Html::img('https://images.igdb.com/igdb/image/upload/t_cover_big/' .  $model->getImagenId() . '.jpg', ['height' => '200px']) ?>
         </div>
     </div>
 
