@@ -48,17 +48,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
-
                 'attribute' => 'img',
-
                 'format' => 'html',
-
-                'label' => 'Portada',
-
+                'label' => '',
                 'value' => function ($model) {
                     return Html::a(Html::img('https://images.igdb.com/igdb/image/upload/t_cover_small/' . $model->getImagenId() . '.jpg', ['width' => '60px']), ['completados/view', 'id' => $model->id]);
                 },
-
             ],
             [
                 'attribute' => 'juego.nombre',

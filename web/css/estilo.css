@@ -11,6 +11,27 @@ body {
     border: none;
 }
 
+.btn-success {
+    background-color: #f25022;
+    border-color: #f25022;
+}
+
+.btn-success:hover {
+    background-color: #f27042;
+    border-color: #f25022;
+}
+
+.btn-outline-success {
+    border-color: #f25022;
+    color: #f25022;
+}
+
+.btn-outline-success:hover {
+    color: #fff;
+    background-color: #f25022;
+    border-color: #f25022;
+}
+
 a {
     color: #f25022;
 }
