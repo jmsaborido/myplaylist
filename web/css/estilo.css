@@ -32,8 +32,23 @@ body {
     border-color: #f25022;
 }
 
+.btn-outline-info {
+    border-color: #2205f2;
+    color: #2205f2;
+}
+
+.btn-outline-info:hover {
+    color: #fff;
+    background-color: #2205f2;
+    border-color: #2205f2;
+}
+
 a {
     color: #f25022;
+}
+
+a:hover {
+    color: #2205f2;
 }
 
 .navbar {

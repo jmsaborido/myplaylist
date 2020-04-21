@@ -22,32 +22,30 @@ $this->title = 'Lista de Juegos';
 
 
 
-    <?php if ($dataProvider->totalCount) : ?>
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $juegosSearch,
-            'options' => ['class' => 'grid-view table-responsive table-striped table-borderless text-center'],
-            'layout' => '{items}{pager}',
-            'pager' => [
-                'options' => ['class' => 'pagination justify-content-center'],
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $juegosSearch,
+        'options' => ['class' => 'grid-view table-responsive table-striped table-borderless text-center'],
+        'layout' => '{items}{pager}',
+        'pager' => [
+            'options' => ['class' => 'pagination justify-content-center'],
+        ],
+        'columns' => [
+            [
+                'attribute' => 'nombre',
             ],
-            'columns' => [
-                [
-                    'attribute' => 'nombre',
-                ],
-                [
-                    'attribute' => 'genero.denom',
-                    'label' => 'Genero',
-                    'filter' => $totalG,
-                ],
+            [
+                'attribute' => 'genero.denom',
+                'label' => 'Genero',
+                'filter' => $totalG,
+            ],
 
-                [
-                    'attribute' => 'year_debut',
-                ],
-                [
-                    'class' => ActionColumn::class,
-                ],
+            [
+                'attribute' => 'year_debut',
             ],
-        ]) ?>
+            [
+                'class' => ActionColumn::class,
+            ],
+        ],
+    ]) ?>
 </div>
-<?php endif ?>
