@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Seguidores;
 use app\models\Usuarios;
 use app\models\UsuariosSearch;
 use Yii;
@@ -58,6 +59,8 @@ class UsuariosController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'siguiendo' => Seguidores::find()->where(['seguidor_id' => $id])->count(),
+            'seguidores' => Seguidores::find()->where(['seguido_id' => $id])->count(),
         ]);
     }
 

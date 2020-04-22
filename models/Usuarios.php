@@ -21,7 +21,7 @@ use Yii;
  * @property Comentarios[] $comentarios
  * @property Completados[] $completados
  * @property Seguidores[] $seguidores
- * @property Seguidores[] $seguidores0
+ * @property Seguidores[] $seguidos
  */
 class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -178,5 +178,25 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->select(['usuarios.*', 'COUNT(c.id) AS total'])
             ->joinWith('completados c', false)
             ->groupBy('usuarios.id');
+    }
+
+    /**
+     * Gets query for [[Seguidores]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSeguidores()
+    {
+        return $this->hasMany(Seguidores::className(), ['seguidor_id' => 'id'])->inverseOf('seguidor');
+    }
+
+    /**
+     * Gets query for [[Seguidos]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSeguidos()
+    {
+        return $this->hasMany(Seguidores::className(), ['seguido_id' => 'id'])->inverseOf('seguido');
     }
 }

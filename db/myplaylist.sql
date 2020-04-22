@@ -98,9 +98,14 @@ VALUES
         'pepe',
         'pepe',
         '$2a$10$Tr9k2vCnBdxsqOSQqjClEeFat22FdTWAZyJc4U9a5U/ERmmSF74ru',
-        'pepe@iesdoñana.org',
+        'pepe@iesdoñana.pepe',
         'USER'
     );
+
+INSERT INTO
+    seguidores(seguidor_id, seguido_id)
+VALUES
+    (1, 2);
 
 INSERT INTO
     consolas (denom)
