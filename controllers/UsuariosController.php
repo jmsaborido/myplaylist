@@ -59,8 +59,8 @@ class UsuariosController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'siguiendo' => Seguidores::find()->where(['seguidor_id' => $id])->count(),
-            'seguidores' => Seguidores::find()->where(['seguido_id' => $id])->count(),
+            'siguiendo' => Seguidores::find()->where(['seguidor_id' => $id, 'ended_at' => null],)->count(),
+            'seguidores' => Seguidores::find()->where(['seguido_id' => $id, 'ended_at' => null])->count(),
         ]);
     }
 

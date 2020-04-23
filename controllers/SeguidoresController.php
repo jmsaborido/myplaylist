@@ -5,9 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\Seguidores;
 use app\models\SeguidoresSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Url;
 
 /**
  * SeguidoresController implements the CRUD actions for Seguidores model.
@@ -26,8 +28,31 @@ class SeguidoresController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['index', 'create', 'get-seguidores', 'get-bloqueados', 'follow', 'block'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['delete', 'update',],
+                        'allow' => true,
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rule, $action) {
+                            $relacion = Seguidores::findOne(Yii::$app->request->get('id'));
+                            if ($relacion !== null) {
+                                return $relacion->seguidor_id == Yii::$app->user->identity->id;
+                            }
+                            return false;
+                        }
+                    ],
+                ],
+            ],
         ];
     }
+
 
     /**
      * Lists all Seguidores models.
@@ -125,5 +150,25 @@ class SeguidoresController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionFollow($seguido_id)
+    {
+        $antiguo = Seguidores::find()->andWhere([
+            'seguido_id' => $seguido_id,
+            'seguidor_id' => Yii::$app->user->id,
+        ])->one();
+        if ($antiguo) {
+            $antiguo->ended_at = $antiguo->ended_at === null ? gmdate('Y-m-d H:i:s') : null;
+        } else {
+            $antiguo = new Seguidores(
+                [
+                    'seguido_id' => $seguido_id,
+                    'seguidor_id' => Yii::$app->user->id
+                ]
+            );
+        }
+        $antiguo->save();
+        return $this->goBack();
     }
 }

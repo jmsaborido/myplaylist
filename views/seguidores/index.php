@@ -28,8 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'created_at',
+            'created_at:dateTime',
             'seguido.login',
+            'ended_at',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

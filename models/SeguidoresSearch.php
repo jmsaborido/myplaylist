@@ -67,8 +67,7 @@ class SeguidoresSearch extends Seguidores
             'blocked_at' => $this->blocked_at,
             'seguidor_id' => $this->seguidor_id,
             'seguido_id' => $this->seguido_id,
-        ]);
-
+        ])->andWhere(['ended_at' => null,]);
         $query->andFilterWhere(['ilike', 's.login', $this->getAttribute('seguido.login')]);
 
         return $dataProvider;
