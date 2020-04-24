@@ -81,4 +81,16 @@ class Seguidores extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Usuarios::className(), ['id' => 'seguido_id'])->inverseOf('seguidos');
     }
+
+    public static function estaSiguiendo($seguido_id)
+    {
+        $dev = Seguidores::find()->where(
+            [
+                'seguidor_id' => Yii::$app->user->id,
+                'seguido_id' => $seguido_id,
+                'ended_at' => null,
+            ]
+        );
+        return $dev->exists();
+    }
 }

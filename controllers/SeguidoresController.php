@@ -32,7 +32,7 @@ class SeguidoresController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index', 'create', 'get-seguidores', 'get-bloqueados', 'follow', 'block'],
+                        'actions' => ['index', 'index2', 'create', 'get-seguidores', 'get-bloqueados', 'follow', 'block'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -63,6 +63,20 @@ class SeguidoresController extends Controller
         $seguidor_id ? $seguidor_id : Yii::$app->user->id;
 
         $searchModel = new SeguidoresSearch(['seguidor_id' => $seguidor_id]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    /**
+     * Lists all Seguidores models.
+     * @return mixed
+     */
+    public function actionIndex2($seguido_id)
+    {
+        $searchModel = new SeguidoresSearch(['seguido_id' => $seguido_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

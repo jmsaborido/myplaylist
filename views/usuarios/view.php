@@ -17,10 +17,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Yii::$app->user->id === $model->id ?  Html::a('Modificar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary'])
-            : Yii::$app->user->isGuest ? "" : Html::a('Seguir', ['seguidores/follow', 'seguido_id' => $model->id], ['class' => 'btn btn-primary'])
+        <?= Yii::$app->user->id === $model->id ? Html::a(
+            'Modificar',
+            ['update', 'id' => $model->id],
+            ['class' => 'btn btn-outline-info']
+        ) : "" ?>
+        <?= Yii::$app->user->isGuest || (Yii::$app->user->id === $model->id) ? ""
+            : Html::a(
+                !Seguidores::estaSiguiendo($model->id) ?
+                    'Seguir' : 'Dejar de seguir',
+                ['seguidores/follow', 'seguido_id' => $model->id],
+                ['class' => 'btn btn-outline-info']
+            )
         ?>
-        <?= Html::a('Ver Seguidos', ['/seguidores/index', 'seguidor_id' => $model->id], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -31,10 +40,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'nombre',
             [
                 'attribute' => 'siguiendo',
-                'value' => $siguiendo,
-            ],    [
+                'label' => 'Siguiendo a',
+                'format' => 'raw',
+                'value' =>  Html::a($siguiendo, ['/seguidores/index', 'seguidor_id' => $model->id]),
+            ],
+            [
                 'attribute' => 'seguidores',
-                'value' => $seguidores
+                'format' => 'raw',
+                'value' =>  Html::a($seguidores, ['/seguidores/index2', 'seguido_id' => $model->id]),
             ],
             'apellidos',
             'email:email',
