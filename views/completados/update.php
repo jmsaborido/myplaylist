@@ -8,7 +8,6 @@ use yii\bootstrap4\Html;
 
 $this->title = 'Update Completados: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Completados', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="completados-update">

@@ -17,11 +17,18 @@ use Yii;
  * @property string|null $token
  * @property string|null $auth_key
  * @property string|null $rol
+ *
+ * @property Comentarios[] $comentarios
+ * @property Completados[] $completados
+ * @property Seguidores[] $seguidores
+ * @property Seguidores[] $seguidos
  */
 class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     const SCENARIO_CREAR = 'crear';
     const SCENARIO_UPDATE = 'update';
+    private $_total = null;
+
 
 
     public $password_repeat;
@@ -81,11 +88,25 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             'password' => 'Contraseña',
             'password_repeat' => 'Repetir contraseña',
             'email' => 'Email',
-            'created_at' => 'Created At',
+            'created_at' => 'Dia de registro',
+            'total' => 'Juegos completados',
             'token' => 'Token',
             'auth_key' => 'Auth Key',
             'rol' => 'Rol',
         ];
+    }
+
+    public function setTotal($total)
+    {
+        $this->_total = $total;
+    }
+
+    public function getTotal()
+    {
+        if ($this->_total === null && !$this->isNewRecord) {
+            $this->setTotal($this->getCompletados()->count());
+        }
+        return $this->_total;
     }
 
     public static function findIdentity($id)
@@ -144,5 +165,38 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             }
         }
         return true;
+    }
+
+    public function getCompletados()
+    {
+        return $this->hasMany(Completados::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
+    }
+
+    public static function findWithTotal()
+    {
+        return static::find()
+            ->select(['usuarios.*', 'COUNT(c.id) AS total'])
+            ->joinWith('completados c', false)
+            ->groupBy('usuarios.id');
+    }
+
+    /**
+     * Gets query for [[Seguidores]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSeguidores()
+    {
+        return $this->hasMany(Seguidores::className(), ['seguidor_id' => 'id'])->inverseOf('seguidor');
+    }
+
+    /**
+     * Gets query for [[Seguidos]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSeguidos()
+    {
+        return $this->hasMany(Seguidores::className(), ['seguido_id' => 'id'])->inverseOf('seguido');
     }
 }

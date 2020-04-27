@@ -7,7 +7,6 @@ use yii\bootstrap4\Html;
 
 $this->title = 'Update Consolas: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Consolas', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="consolas-update">

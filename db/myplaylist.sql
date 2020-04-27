@@ -51,7 +51,31 @@ CREATE TABLE completados (
     juego_id bigint NOT NULL REFERENCES juegos (id),
     consola_id bigint NOT NULL REFERENCES consolas (id),
     fecha date NOT NULL DEFAULT CURRENT_DATE,
-    pasado boolean
+    pasado boolean,
+    imagen_id varchar(255)
+);
+
+DROP TABLE IF EXISTS seguidores CASCADE;
+
+CREATE TABLE seguidores (
+    id BIGSERIAL PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ended_at TIMESTAMP,
+    blocked_at TIMESTAMP,
+    seguidor_id BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    seguido_id BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS comentarios CASCADE;
+
+CREATE TABLE comentarios (
+    id BIGSERIAL PRIMARY KEY,
+    cuerpo TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    edited_at TIMESTAMP,
+    padre_id BIGINT,
+    completado_id BIGINT NOT NULL REFERENCES completados (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    usuario_id BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO
@@ -74,9 +98,14 @@ VALUES
         'pepe',
         'pepe',
         '$2a$10$Tr9k2vCnBdxsqOSQqjClEeFat22FdTWAZyJc4U9a5U/ERmmSF74ru',
-        'pepe@iesdoñana.org',
+        'pepe@iesdoñana.pepe',
         'USER'
     );
+
+INSERT INTO
+    seguidores(seguidor_id, seguido_id)
+VALUES
+    (1, 2);
 
 INSERT INTO
     consolas (denom)
@@ -294,7 +323,9 @@ VALUES
     ),
     (943, 'Colin McRae: Dirt', 10, 2007),
     (424, 'Resident Evil', 31, 1996),
-    (9730, 'Firewatch', 31, 2016);
+    (9730, 'Firewatch', 31, 2016),
+    (6643, 'Tony Hawk ''s American Sk8land', 14, 2005),
+    (22917, 'GRIS', 8, 2018);
 
 INSERT INTO
     completados(usuario_id, juego_id, consola_id, fecha, pasado)
@@ -386,4 +417,6 @@ VALUES
     (1, 943, 8, '2020/1/23', FALSE),
     (1, 424, 8, '2020/3/5', TRUE),
     (1, 9730, 8, '2020/3/10', FALSE),
+    (1, 6643, 3, '2020/4/8', FALSE),
+    (1, 22917, 8, '2020/4/25', FALSE),
     (2, 9730, 4, '2020/3/27', FALSE);

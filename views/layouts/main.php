@@ -33,7 +33,7 @@ AppAsset::register($this);
     <div class="wrap">
         <?php
         NavBar::begin([
-            'brandLabel' => Yii::$app->name,
+            'brandLabel' => Html::img('@web/img/logo.png', ['class' => 'navbar-logo', 'alt' => 'logo', 'width' => '125px']),
             'brandUrl' => Yii::$app->homeUrl,
             'options' => [
                 'class' => 'navbar-dark bg-dark navbar-expand-md fixed-top',
@@ -55,6 +55,7 @@ AppAsset::register($this);
                         ['label' => 'Login', 'url' => ['/site/login']],
                         ['label' => 'Registrarse', 'url' => ['usuarios/registrar']],
                     ] : [
+                        ['label' => 'Ver Perfil', 'url' => ['usuarios/view', 'id' => Yii::$app->user->id]],
                         ['label' => 'Modificar', 'url' => ['usuarios/update']],
                         (Html::beginForm(['/site/logout'], 'post')
                             . Html::submitButton(

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Jschubert\Igdb\Builder\SearchBuilder;
 use Yii;
 
 /**
@@ -11,6 +12,7 @@ use Yii;
  * @property int $usuario_id
  * @property int $juego_id
  * @property int $consola_id
+ * @property string $imagen_id
  * @property string $fecha
  * @property bool|null $pasado
  *
@@ -23,6 +25,8 @@ class Completados extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
+
     public static function tableName()
     {
         return 'completados';
@@ -37,7 +41,7 @@ class Completados extends \yii\db\ActiveRecord
             [['usuario_id', 'juego_id', 'consola_id'], 'required'],
             [['usuario_id', 'juego_id', 'consola_id'], 'default', 'value' => null],
             [['usuario_id', 'juego_id', 'consola_id'], 'integer'],
-            [['fecha'], 'safe'],
+            [['fecha', 'imagen_id'], 'safe'],
             [['fecha'], 'default', 'value' => date("d/M/y")],
             [['pasado'], 'boolean'],
             [['consola_id'], 'exist', 'skipOnError' => true, 'targetClass' => Consolas::className(), 'targetAttribute' => ['consola_id' => 'id']],
@@ -61,8 +65,8 @@ class Completados extends \yii\db\ActiveRecord
             'usuario_id' => 'Usuario ID',
             'juego_id' => 'Juego ID',
             'consola_id' => 'Consola ID',
-            'fecha' => 'Fecha',
-            'pasado' => 'Pasado',
+            'fecha' => 'Completado el dia...',
+            'pasado' => '¿Habia sido completado antes?',
         ];
     }
 
@@ -75,6 +79,36 @@ class Completados extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Consolas::className(), ['id' => 'consola_id']);
     }
+
+    public function setImagenId()
+    {
+        if ($this->imagen_id === null && !$this->isNewRecord) {
+
+            $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
+            $respuesta = $searchBuilder
+                ->addEndpoint('games')
+                ->searchById($this->juego_id)
+                ->get();
+            $searchBuilder->clear();
+
+            $imagen = $searchBuilder
+                ->addEndpoint('covers')
+                ->searchById($respuesta->cover)
+                ->get();
+            $searchBuilder->clear();
+            $this->imagen_id = $imagen->image_id;
+            $this->save();
+        }
+    }
+
+    public function getImagenId()
+    {
+        if ($this->imagen_id === null && !$this->isNewRecord) {
+            $this->setImagenId();
+        }
+        return $this->imagen_id;
+    }
+
 
     /**
      * Gets query for [[Juego]].

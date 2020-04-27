@@ -2,7 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Seguidores;
 use app\models\Usuarios;
+use app\models\UsuariosSearch;
 use Yii;
 use yii\bootstrap4\Alert;
 use yii\filters\AccessControl;
@@ -29,6 +31,39 @@ class UsuariosController extends Controller
             ],
         ];
     }
+
+    /**
+     * Lists all Usuarios models.
+     * @return mixed
+     */
+
+    public function actionIndex()
+    {
+        $searchModel = new UsuariosSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+
+
+    /**
+     * Displays a single Usuarios model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+            'siguiendo' => Seguidores::find()->where(['seguidor_id' => $id, 'ended_at' => null],)->count(),
+            'seguidores' => Seguidores::find()->where(['seguido_id' => $id, 'ended_at' => null])->count(),
+        ]);
+    }
+
 
     public function actionRegistrar()
     {
@@ -112,4 +147,10 @@ class UsuariosController extends Controller
 
         throw new NotFoundHttpException('La página no existe.');
     }
+
+    // public function actionDelete($id)
+    // {
+    //     $this->findModel($id)->delete();
+    //     return $this->redirect(['index']);
+    // }
 }

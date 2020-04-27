@@ -4,7 +4,7 @@
 
 use yii\bootstrap4\Html;
 
-$this->title = 'My Yii Application';
+$this->title = 'MyPlayList';
 ?>
 <div class="site-index">
 
@@ -13,7 +13,7 @@ $this->title = 'My Yii Application';
 
         <p class="lead">Podrás usar esta página para mantener un registro de tus juegos completados.</p>
 
-        <p><?= Html::a('Clicka aquí para ver tú lista', ['/completados/index'], ['class' => "btn btn-lg btn-success"]) ?></p>
+        <p><?= Html::a('Clicka aquí para ver tú lista', ['/completados/index'], ['class' => "btn btn-lg btn-outline-success"]) ?></p>
     </div>
     <div class="body-content">
 
