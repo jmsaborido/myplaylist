@@ -7,7 +7,8 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\SeguidoresSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Usuarios que sigue ' . $searchModel->seguidor->login;
+
+$this->title = 'Usuarios que siguen a ' . $searchModel->seguido->login;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="seguidores-index">
@@ -30,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'created_at:dateTime',
-            'seguido.login',
+            'seguidor.login',
             'ended_at',
 
             ['class' => 'yii\grid\ActionColumn'],

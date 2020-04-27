@@ -18,7 +18,7 @@ class SeguidoresSearch extends Seguidores
     {
         return [
             [['id', 'seguidor_id', 'seguido_id'], 'integer'],
-            [['created_at', 'ended_at', 'blocked_at', 'seguido.login'], 'safe'],
+            [['created_at', 'ended_at', 'blocked_at', 'seguido.login', 'seguidor.login'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class SeguidoresSearch extends Seguidores
      */
     public function search($params)
     {
-        $query = Seguidores::find()->joinWith('seguido s');;
+        $query = Seguidores::find()->joinWith('seguido s')->joinWith('seguidor r');
 
         // add conditions that should always apply here
 
@@ -50,6 +50,10 @@ class SeguidoresSearch extends Seguidores
         $dataProvider->sort->attributes['seguido.login'] = [
             'asc' => ['s.login' => SORT_ASC],
             'desc' => ['s.login' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['seguidor.login'] = [
+            'asc' => ['r.login' => SORT_ASC],
+            'desc' => ['r.login' => SORT_DESC],
         ];
         $this->load($params);
 
@@ -69,6 +73,7 @@ class SeguidoresSearch extends Seguidores
             'seguido_id' => $this->seguido_id,
         ])->andWhere(['ended_at' => null,]);
         $query->andFilterWhere(['ilike', 's.login', $this->getAttribute('seguido.login')]);
+        $query->andFilterWhere(['ilike', 'r.login', $this->getAttribute('seguidor.login')]);
 
         return $dataProvider;
     }

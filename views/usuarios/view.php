@@ -17,17 +17,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Yii::$app->user->id === $model->id ? Html::a(
-            'Modificar',
-            ['update', 'id' => $model->id],
-            ['class' => 'btn btn-outline-info']
-        ) : "" ?>
         <?= Yii::$app->user->isGuest || (Yii::$app->user->id === $model->id) ? ""
             : Html::a(
                 !Seguidores::estaSiguiendo($model->id) ?
                     'Seguir' : 'Dejar de seguir',
                 ['seguidores/follow', 'seguido_id' => $model->id],
-                ['class' => 'btn btn-outline-info']
+                ['class' => 'btn btn-info']
             )
         ?>
     </p>
@@ -47,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'seguidores',
                 'format' => 'raw',
-                'value' =>  Html::a($seguidores, ['/seguidores/index2', 'seguido_id' => $model->id]),
+                'value' =>  Html::a($seguidores, ['/seguidores/index-siguiendo', 'seguido_id' => $model->id]),
             ],
             'apellidos',
             'email:email',
@@ -56,5 +51,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'rol',
         ],
     ]) ?>
-
+    <?= Yii::$app->user->id === $model->id ? Html::a(
+        'Modificar',
+        ['update', 'id' => $model->id],
+        ['class' => 'btn btn-info']
+    ) : "" ?>
 </div>

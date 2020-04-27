@@ -29,7 +29,7 @@ class Seguidores extends \yii\db\ActiveRecord
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['seguido.login']);
+        return array_merge(parent::attributes(), ['seguido.login'], ['seguidor.login']);
     }
 
     /**
