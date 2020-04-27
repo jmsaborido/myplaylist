@@ -324,7 +324,8 @@ VALUES
     (943, 'Colin McRae: Dirt', 10, 2007),
     (424, 'Resident Evil', 31, 1996),
     (9730, 'Firewatch', 31, 2016),
-    (6643, 'Tony Hawk ''s American Sk8land', 14, 2005);
+    (6643, 'Tony Hawk ''s American Sk8land', 14, 2005),
+    (22917, 'GRIS', 8, 2018);
 
 INSERT INTO
     completados(usuario_id, juego_id, consola_id, fecha, pasado)
@@ -417,4 +418,5 @@ VALUES
     (1, 424, 8, '2020/3/5', TRUE),
     (1, 9730, 8, '2020/3/10', FALSE),
     (1, 6643, 3, '2020/4/8', FALSE),
+    (1, 22917, 8, '2020/4/25', FALSE),
     (2, 9730, 4, '2020/3/27', FALSE);
