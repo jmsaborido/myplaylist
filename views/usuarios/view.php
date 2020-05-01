@@ -55,10 +55,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at:dateTime',
             'rol',
         ],
-    ]) ?>
-    <?= Yii::$app->user->id === $model->id ? Html::a(
-        'Modificar',
-        ['update', 'id' => $model->id],
-        ['class' => 'btn btn-info']
-    ) : "" ?>
+    ]);
+    if (Yii::$app->user->id === $model->id) {
+
+        echo (Html::a(
+            'Modificar',
+            ['update', 'id' => $model->id],
+            ['class' => 'btn btn-info']
+        ));
+        echo (Html::a(
+            'Cambiar Imagen',
+            ['upload', 'id' => $model->id],
+            ['class' => 'btn btn-info']
+        ));
+    }
+
+    ?>
+
 </div>
