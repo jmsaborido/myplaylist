@@ -84,3 +84,16 @@ a:hover {
 .page-item.disabled .page-link {
     color: #4e1a0c !important;
 }
+
+#linea-seguidores {
+    margin: auto;
+    display: inline-block;
+}
+
+#linea-seguidores h3 {
+    display: inline-block;
+}
+
+#linea-seguidores h3:nth-child(2) {
+    padding-left: 1.5em;
+}

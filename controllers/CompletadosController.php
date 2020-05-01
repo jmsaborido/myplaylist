@@ -59,9 +59,10 @@ class CompletadosController extends Controller
      * Lists all Completados models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($usuario_id = null)
     {
-        $searchModel = new CompletadosSearch(['usuario_id' => Yii::$app->user->id]);
+        $usuario_id = $usuario_id === null ? Yii::$app->user->id : $usuario_id;
+        $searchModel = new CompletadosSearch(['usuario_id' => $usuario_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

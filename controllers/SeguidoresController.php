@@ -32,7 +32,7 @@ class SeguidoresController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['index', 'index-siguiendo', 'create', 'get-seguidores', 'get-bloqueados', 'follow', 'block'],
+                        'actions' => ['index', 'index-siguiendo', 'create', 'get-seguidores', 'get-bloqueados', 'follow', 'block', 'view'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

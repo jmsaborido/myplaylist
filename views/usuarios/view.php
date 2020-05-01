@@ -27,27 +27,32 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
     </p>
 
+    <div class="completados">
+        <h2>
+            <?= Html::a($model->total . " " . ($model->total === 1 ? "Juego Completado" : "Juegos Completados"), ['/completados/index', 'usuario_id' => $model->id]) ?>
+        </h2>
+    </div>
+
+    <div id="linea-seguidores">
+        <h3>
+            <?= Html::a($siguiendo . " Siguiendo", ['/seguidores/index', 'seguidor_id' => $model->id]) ?>
+        </h3>
+        <h3>
+            <?= Html::a($seguidores . " Seguidores", ['/seguidores/index-siguiendo', 'seguido_id' => $model->id]) ?>
+        </h3>
+    </div>
+
+
+
     <?= DetailView::widget([
         'model' => $model,
         'options' => ['class' => 'table table-striped table-borderless detail-view'],
         'attributes' => [
             'login',
             'nombre',
-            [
-                'attribute' => 'siguiendo',
-                'label' => 'Siguiendo a',
-                'format' => 'raw',
-                'value' =>  Html::a($siguiendo, ['/seguidores/index', 'seguidor_id' => $model->id]),
-            ],
-            [
-                'attribute' => 'seguidores',
-                'format' => 'raw',
-                'value' =>  Html::a($seguidores, ['/seguidores/index-siguiendo', 'seguido_id' => $model->id]),
-            ],
             'apellidos',
-            'email:email',
-            'total',
-            'created_at',
+            'email',
+            'created_at:dateTime',
             'rol',
         ],
     ]) ?>
