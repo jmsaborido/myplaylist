@@ -2,7 +2,10 @@
 
 namespace app\models;
 
+use yii\web\UploadedFile;
+use \yii\imagine\Image;
 use Yii;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "usuarios".
@@ -28,6 +31,8 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     const SCENARIO_CREAR = 'crear';
     const SCENARIO_UPDATE = 'update';
     private $_total = null;
+    const IMAGE = '@img/user.png';
+    public $eventImage;
 
 
 
@@ -65,6 +70,8 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             [['email'], 'email'],
             [['login'], 'unique'],
             [['password_repeat'], 'required', 'on' => self::SCENARIO_CREAR],
+            [['eventImage'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [
                 ['password_repeat'],
                 'compare',
@@ -198,5 +205,27 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     public function getSeguidos()
     {
         return $this->hasMany(Seguidores::className(), ['seguido_id' => 'id'])->inverseOf('seguido');
+    }
+
+    public function upload()
+    {
+        if ($this->validate()) {
+            $path = $this->uploadPath() . $this->id . '.' . $this->eventImage->extension;
+            $this->eventImage->saveAs($path);
+            $this->image = $this->id . '.' . $this->eventImage->extension;
+            $this->eventImage->saveAs($this->image);
+
+            //try delete imageFile file variable before save model
+
+            $this->eventImage = null;
+
+            $this->save();
+            return true;
+        }
+        return false;
+    }
+    public function uploadPath()
+    {
+        return Url::to('@uploads/');
     }
 }

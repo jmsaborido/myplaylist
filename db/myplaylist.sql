@@ -13,6 +13,7 @@ CREATE TABLE usuarios (
     password varchar(255) NOT NULL,
     email varchar(255) NOT NULL UNIQUE,
     created_at timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    image TEXT DEFAULT 'user.png',
     token varchar(32),
     auth_key varchar(255),
     rol varchar(255)

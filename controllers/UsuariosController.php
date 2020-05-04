@@ -6,11 +6,11 @@ use app\models\Seguidores;
 use app\models\Usuarios;
 use app\models\UsuariosSearch;
 use Yii;
-use yii\bootstrap4\Alert;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 class UsuariosController extends Controller
 {
@@ -147,7 +147,19 @@ class UsuariosController extends Controller
 
         throw new NotFoundHttpException('La página no existe.');
     }
+    public function actionUpload($id)
+    {
+        $model = $this->findModel($id);
 
+        if (Yii::$app->request->isPost) {
+            $model->eventImage = UploadedFile::getInstance($model, 'eventImage');
+            if ($model->upload()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        }
+
+        return $this->render('upload', ['model' => $model]);
+    }
     // public function actionDelete($id)
     // {
     //     $this->findModel($id)->delete();

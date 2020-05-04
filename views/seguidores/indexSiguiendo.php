@@ -31,8 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'created_at:dateTime',
-            'seguidor.login',
-            'ended_at',
+            [
+                'attribute' => 'seguidor.login',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::a($model->seguidor->login, ['/usuarios/view', 'id' => $model->seguidor_id]);
+                },
+            ],            'ended_at',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
