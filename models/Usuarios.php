@@ -11,7 +11,7 @@ use yii\helpers\Url;
  * This is the model class for table "usuarios".
  *
  * @property int $id
- * @property string $login
+ * @property string $username
  * @property string $nombre
  * @property string $apellidos
  * @property string $password
@@ -51,7 +51,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     public function rules()
     {
         return [
-            [['login', 'nombre', 'apellidos', 'email'], 'required'],
+            [['username', 'nombre', 'apellidos', 'email'], 'required'],
             [
                 ['password'],
                 'required',
@@ -63,12 +63,12 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                 'on' => [self::SCENARIO_CREAR, self::SCENARIO_UPDATE],
             ],
             [['created_at'], 'safe'],
-            [['login'], 'string', 'max' => 11],
+            [['username'], 'string', 'max' => 11],
             [['nombre', 'apellidos', 'email', 'auth_key', 'rol'], 'string', 'max' => 255],
             [['token'], 'string', 'max' => 32],
             [['email'], 'unique'],
             [['email'], 'email'],
-            [['login'], 'unique'],
+            [['username'], 'unique'],
             [['password_repeat'], 'required', 'on' => self::SCENARIO_CREAR],
             [['eventImage'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
@@ -89,7 +89,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         return [
             'id' => 'ID',
-            'login' => 'Login',
+            'username' => 'username',
             'nombre' => 'Nombre',
             'apellidos' => 'Apellidos',
             'password' => 'Contraseña',
@@ -138,7 +138,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
 
     public static function findPorNombre($nombre)
     {
-        return static::findOne(['login' => $nombre]);
+        return static::findOne(['username' => $nombre]);
     }
 
     public function validateAuthKey($authKey)

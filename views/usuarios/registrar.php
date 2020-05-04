@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'login')->textInput(['autofocus' => true]) ?>
+    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
     <?= $form->field($model, 'nombre')->textInput() ?>
     <?= $form->field($model, 'apellidos')->textInput() ?>
     <?= $form->field($model, 'password')->widget(PasswordInput::classname(), [

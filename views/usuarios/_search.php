@@ -20,7 +20,7 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'login') ?>
+    <?= $form->field($model, 'username') ?>
 
     <?= $form->field($model, 'nombre') ?>
 
@@ -28,15 +28,20 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'password') ?>
 
-    <?php // echo $form->field($model, 'email') ?>
+    <?php // echo $form->field($model, 'email') 
+    ?>
 
-    <?php // echo $form->field($model, 'created_at') ?>
+    <?php // echo $form->field($model, 'created_at') 
+    ?>
 
-    <?php // echo $form->field($model, 'token') ?>
+    <?php // echo $form->field($model, 'token') 
+    ?>
 
-    <?php // echo $form->field($model, 'auth_key') ?>
+    <?php // echo $form->field($model, 'auth_key') 
+    ?>
 
-    <?php // echo $form->field($model, 'rol') ?>
+    <?php // echo $form->field($model, 'rol') 
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

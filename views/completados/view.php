@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Completados */
 
-$this->title = $respuesta->name . " completado por " . $model->usuario->login;
+$this->title = $respuesta->name . " completado por " . $model->usuario->username;
 $this->params['breadcrumbs'][] = ['label' => 'Completados', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);

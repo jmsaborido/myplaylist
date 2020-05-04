@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS usuarios CASCADE;
 
 CREATE TABLE usuarios (
     id bigserial PRIMARY KEY,
-    login varchar(11) NOT NULL UNIQUE CONSTRAINT ck_login_sin_espacios CHECK (LOGIN NOT LIKE '% %'),
+    username varchar(11) NOT NULL UNIQUE CONSTRAINT ck_username_sin_espacios CHECK (username NOT LIKE '% %'),
     nombre varchar(255) NOT NULL,
     apellidos varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
@@ -81,7 +81,14 @@ CREATE TABLE comentarios (
 );
 
 INSERT INTO
-    usuarios (LOGIN, nombre, apellidos, PASSWORD, email, rol)
+    usuarios (
+        username,
+        nombre,
+        apellidos,
+        PASSWORD,
+        email,
+        rol
+    )
 VALUES
     (
         'josesabor',
@@ -90,12 +97,8 @@ VALUES
         '$2y$13$IT4m7G6xRaN6M6AXWTfiZ.1m3/sV5ljpD64VWCPjX0vaOfGOaZvhG',
         'josemaria.saborido@iesdonana.org',
         'ADMIN'
-    );
-
-INSERT INTO
-    usuarios (LOGIN, nombre, apellidos, PASSWORD, email, rol)
-VALUES
-    (
+    ),
+(
         'pepe',
         'pepe',
         'pepe',

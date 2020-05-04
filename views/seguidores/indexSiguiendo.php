@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 
-$this->title = 'Usuarios que siguen a ' . $searchModel->seguido->login;
+$this->title = 'Usuarios que siguen a ' . $searchModel->seguido->username;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="seguidores-index">
@@ -32,10 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'created_at:dateTime',
             [
-                'attribute' => 'seguidor.login',
+                'attribute' => 'seguidor.username',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return Html::a($model->seguidor->login, ['/usuarios/view', 'id' => $model->seguidor_id]);
+                    return Html::a($model->seguidor->username, ['/usuarios/view', 'id' => $model->seguidor_id]);
                 },
             ],            'ended_at',
 

@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Usuarios */
 
-$this->title = $model->login;
+$this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => 'Usuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'options' => ['class' => 'table table-striped table-borderless detail-view'],
         'attributes' => [
-            'login',
+            'username',
             'nombre',
             'apellidos',
             'email',
@@ -69,6 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'btn btn-info']
         ));
     }
+
 
     ?>
 
