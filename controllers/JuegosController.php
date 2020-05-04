@@ -67,7 +67,7 @@ class JuegosController extends Controller
 
         $respuesta = $searchBuilder
             ->addEndpoint('games')
-            ->searchById($model->id)
+            ->searchById($model->api)
             ->get();
 
         $searchBuilder->clear();

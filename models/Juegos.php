@@ -9,6 +9,8 @@ use yii\helpers\ArrayHelper;
  * This is the model class for table "juegos".
  *
  * @property int $id
+ * @property int|null $api
+ * @property string|null $img_api
  * @property string $nombre
  * @property int $genero_id
  * @property int|null $year_debut
@@ -32,9 +34,10 @@ class Juegos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'genero_id'], 'required'],
+            [['api', 'nombre', 'genero_id'], 'required'],
             [['genero_id', 'year_debut'], 'default', 'value' => null],
             [['genero_id', 'year_debut'], 'integer'],
+            [['img_api'], 'string', 'max' => 255],
             [['nombre'], 'string', 'max' => 100],
             [['genero_id'], 'exist', 'skipOnError' => true, 'targetClass' => Generos::className(), 'targetAttribute' => ['genero_id' => 'id']],
         ];
@@ -51,6 +54,8 @@ class Juegos extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'api' => 'id de la API',
+            'img_api' => 'Portada',
             'nombre' => 'Nombre',
             'genero_id' => 'Genero ID',
             'year_debut' => 'Año Debut',
@@ -62,7 +67,7 @@ class Juegos extends \yii\db\ActiveRecord
      */
     public function getCompletados()
     {
-        return $this->hasMany(Completados::className(), ['juego_id' => 'id']);
+        return $this->hasMany(Completados::className(), ['juego_id' => 'id'])->inverseOf('juego');
     }
 
     /**
@@ -70,6 +75,6 @@ class Juegos extends \yii\db\ActiveRecord
      */
     public function getGenero()
     {
-        return $this->hasOne(Generos::className(), ['id' => 'genero_id']);
+        return $this->hasOne(Generos::className(), ['id' => 'genero_id'])->inverseOf('juegos');
     }
 }

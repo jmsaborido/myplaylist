@@ -41,7 +41,7 @@ class Completados extends \yii\db\ActiveRecord
             [['usuario_id', 'juego_id', 'consola_id'], 'required'],
             [['usuario_id', 'juego_id', 'consola_id'], 'default', 'value' => null],
             [['usuario_id', 'juego_id', 'consola_id'], 'integer'],
-            [['fecha', 'imagen_id'], 'safe'],
+            [['fecha', 'juego.img_api'], 'safe'],
             [['fecha'], 'default', 'value' => date("d/M/y")],
             [['pasado'], 'boolean'],
             [['consola_id'], 'exist', 'skipOnError' => true, 'targetClass' => Consolas::className(), 'targetAttribute' => ['consola_id' => 'id']],
@@ -52,7 +52,7 @@ class Completados extends \yii\db\ActiveRecord
 
     public function attributes()
     {
-        return array_merge(parent::attributes(), ['consola.denom'], ['juego.nombre'], ['juego.year_debut'], ['genero.denom'], ['juego.genero_id'], ['juego.genero.denom']);
+        return array_merge(parent::attributes(), ['consola.denom'], ['juego.nombre'], ['juego.year_debut'], ['genero.denom'], ['juego.genero_id'], ['juego.genero.denom'], ['juego.img_api']);
     }
 
     /**
@@ -69,6 +69,8 @@ class Completados extends \yii\db\ActiveRecord
             'pasado' => '¿Habia sido completado antes?',
         ];
     }
+
+
 
     /**
      * Gets query for [[Consola]].
@@ -117,7 +119,7 @@ class Completados extends \yii\db\ActiveRecord
      */
     public function getJuego()
     {
-        return $this->hasOne(Juegos::className(), ['id' => 'juego_id']);
+        return $this->hasOne(Juegos::className(), ['id' => 'juego_id'])->inverseOf('completados');
     }
 
     /**
@@ -127,12 +129,12 @@ class Completados extends \yii\db\ActiveRecord
      */
     public function getUsuario()
     {
-        return $this->hasOne(Usuarios::className(), ['id' => 'usuario_id']);
+        return $this->hasOne(Usuarios::className(), ['id' => 'usuario_id'])->inverseOf('completados');
     }
 
 
     public function getGenero()
     {
-        return $this->hasMany(Generos::class, ['id' => 'genero_id'])->via('juego');
+        return $this->hasMany(Generos::class, ['id' => 'genero_id'])->via('juego')->inverseOf('completados');
     }
 }

@@ -88,7 +88,7 @@ class CompletadosController extends Controller
 
         $respuesta = $searchBuilder
             ->addEndpoint('games')
-            ->searchById($model->juego_id)
+            ->searchById($model->juego->api)
             ->get();
 
         $searchBuilder->clear();
