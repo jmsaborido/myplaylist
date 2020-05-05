@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Completados;
 use app\models\Seguidores;
 use app\models\Usuarios;
 use app\models\UsuariosSearch;
@@ -46,7 +47,6 @@ class UsuariosController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
 
 
     /**
@@ -165,4 +165,14 @@ class UsuariosController extends Controller
     //     $this->findModel($id)->delete();
     //     return $this->redirect(['index']);
     // }
+
+    public function actionStats($id = null)
+    {
+        $id = $id === null ? Yii::$app->user->id : $id;
+
+        return $this->render('stats', [
+            'datos' => Completados::obtenerDatos($id),
+            'model' => $this->findModel($id)
+        ]);
+    }
 }

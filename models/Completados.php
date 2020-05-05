@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use DateTime;
 use Jschubert\Igdb\Builder\SearchBuilder;
 use Yii;
 
@@ -136,5 +137,38 @@ class Completados extends \yii\db\ActiveRecord
     public function getGenero()
     {
         return $this->hasMany(Generos::class, ['id' => 'genero_id'])->via('juego')->inverseOf('completados');
+    }
+
+    public static function obtenerDatos($id)
+    {
+        $datos['debut'] = static::find()
+            ->select('juegos.year_debut')
+            ->joinWith('juego')
+            ->where(['usuario_id' => $id])
+            ->indexBy('id')
+            ->column();
+        $datos['total'] = count($datos['debut']);
+        if ($datos['total'] === 0) {
+            return [];
+        }
+        $datos['anterior'] = static::find()
+            ->where(['usuario_id' => $id, 'pasado' => false])
+            ->count();
+        $datos['fecha'] = static::find()
+            ->select('fecha')
+            ->where(['usuario_id' => $id])
+            ->indexBy('id')
+            ->column();
+        foreach ($datos['fecha'] as $key => $value) {
+            $value = new DateTime($value);
+            $datos['años'][$key] = $value->format('Y');
+            $datos['meses'][$key] = $value->format('m');
+            $datos['dias'][$key] = $value->format('d');
+        }
+        $hoy = new DateTime();
+        $datos['diasT'] = $hoy
+            ->diff(new DateTime($datos['fecha'][array_key_first($datos['fecha'])]))
+            ->days;
+        return $datos;
     }
 }
