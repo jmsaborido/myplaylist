@@ -98,7 +98,7 @@ VALUES
         'josemaria.saborido@iesdonana.org',
         'ADMIN'
     ),
-(
+    (
         'pepe',
         'pepe',
         'pepe',

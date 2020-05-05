@@ -61,16 +61,19 @@ $this->params['breadcrumbs'][] = $this->title;
         echo (Html::a(
             'Modificar',
             ['update', 'id' => $model->id],
-            ['class' => 'btn btn-info']
+            ['class' => 'btn btn-success']
         ));
         echo (Html::a(
             'Cambiar Imagen',
             ['upload', 'id' => $model->id],
-            ['class' => 'btn btn-info']
+            ['class' => 'btn btn-success']
         ));
     }
-
-
+    echo (Html::a(
+        'Estadisticas',
+        ['stats', 'id' => $model->id],
+        ['class' => 'btn btn-success']
+    ));
     ?>
 
 </div>
