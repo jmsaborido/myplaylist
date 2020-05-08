@@ -21,6 +21,9 @@ use yii\helpers\Url;
  * @property string|null $auth_key
  * @property string|null $rol
  *
+ * @property Conversaciones[] $conversaciones
+ * @property Conversaciones[] $conversaciones0
+ * @property Mensajes[] $mensajes
  * @property Comentarios[] $comentarios
  * @property Completados[] $completados
  * @property Seguidores[] $seguidores
@@ -206,6 +209,37 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     {
         return $this->hasMany(Seguidores::className(), ['seguido_id' => 'id'])->inverseOf('seguido');
     }
+
+    /**
+     * Gets query for [[Conversaciones]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getConversaciones()
+    {
+        return $this->hasMany(Conversaciones::className(), ['id_user1' => 'id'])->inverseOf('user1');
+    }
+
+    /**
+     * Gets query for [[Conversaciones0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getConversaciones0()
+    {
+        return $this->hasMany(Conversaciones::className(), ['id_user2' => 'id'])->inverseOf('user2');
+    }
+
+    /**
+     * Gets query for [[Mensajes]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMensajes()
+    {
+        return $this->hasMany(Mensajes::className(), ['id_sender' => 'id'])->inverseOf('sender');
+    }
+
 
     public function upload()
     {
