@@ -16,7 +16,7 @@ CREATE TABLE usuarios (
     image TEXT DEFAULT 'user.png',
     token varchar(32),
     auth_key varchar(255),
-    rol varchar(255)
+    rol varchar(255) DEFAULT 'USER'
 );
 
 DROP TABLE IF EXISTS generos CASCADE;
