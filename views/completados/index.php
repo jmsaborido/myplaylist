@@ -18,15 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col text-center">
             <p>
                 <?=
-                    Html::a(
-                        (array_keys($dataProvider->query->where)[0] === 'usuario_id'
-                            && count(($dataProvider->query->where)) === 1
-                            && $dataProvider->count === 0)
-                            ? 'Todavia no has añadido ningun juego. Pulsa este botón para crear tu lista'
-                            : 'Añadir Juego Completado',
-                        ['completados/create'],
-                        ['class' => 'btn btn-lg btn-outline-success']
-                    )
+                    (array_keys($dataProvider->query->where)[0] === 'usuario_id'
+                        && count(($dataProvider->query->where)) === 1
+                        && $dataProvider->count === 0)
+                        ? 'Todavia no has añadido ningun juego. Visita la lista de juegos y selecciona cual has completado'
+                        : ''
                 ?> </p>
         </div>
     </div>

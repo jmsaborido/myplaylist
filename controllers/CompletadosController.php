@@ -7,6 +7,7 @@ use app\models\Completados;
 use app\models\CompletadosSearch;
 use app\models\Consolas;
 use app\models\Generos;
+use app\models\Juegos;
 use Jschubert\Igdb\Builder\SearchBuilder;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -110,7 +111,7 @@ class CompletadosController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new Completados(['usuario_id' => Yii::$app->user->id]);
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
@@ -122,7 +123,8 @@ class CompletadosController extends Controller
         }
         return $this->render('create', [
             'model' => $model,
-            'totalC' => Consolas::lista()
+            'totalC' => Consolas::lista(),
+            'juego' => Juegos::findOne(['id' => $id])
         ]);
     }
 

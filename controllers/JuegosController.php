@@ -27,7 +27,6 @@ class JuegosController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::class,
-                // 'only' => ['index'],
                 'rules' => [
                     [
                         'allow' => true,
