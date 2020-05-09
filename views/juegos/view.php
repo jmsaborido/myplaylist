@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
     <p>
-        <?= Html::a('Modificar', ['update', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Marcar Juego como Completado', ['completados/create', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a('Borrar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [

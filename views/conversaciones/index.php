@@ -48,13 +48,5 @@ $this->title = 'Conversaciones';
                 'template' => '{view}{delete}',
             ]
         ]
-
-        // 'itemView' => function ($model, $key, $index, $widget) {
-        //     Yii::debug($model);
-        //     return $this->render('_view.php', [
-        //         'model' => $model,
-        //         'index' => $index,
-        //     ]);
-        // }
     ]) ?>
 </div>

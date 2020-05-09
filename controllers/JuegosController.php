@@ -27,7 +27,6 @@ class JuegosController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::class,
-                // 'only' => ['index'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -35,7 +34,12 @@ class JuegosController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'delete'],
+                        'actions' => ['create', 'create-api'],
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['delete'],
                         'roles' => ['@'],
                         'matchCallback' => function ($rules, $action) {
                             return Yii::$app->user->identity['rol'] === 'ADMIN';
@@ -94,9 +98,32 @@ class JuegosController extends Controller
     public function actionCreate()
     {
         $model = new Juegos();
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($model);
+
+        if ($model->load(Yii::$app->request->post())) {
+            $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
+
+            try {
+                $respuesta = $searchBuilder
+                    ->addEndpoint('games')
+                    ->addFields(['*'])
+                    ->addSearch($model->nombre)
+                    ->search()
+                    ->get();
+            } catch (\Throwable $th) {
+
+                return $this->render('create', [
+                    'model' => $model,
+                    'noEnc' => true
+                ]);
+            }
+
+
+            return $this->render('create', [
+                'model' => $model,
+                'respuesta' => $respuesta
+            ]);
+
+            // return ActiveForm::validate($model);
         }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
@@ -104,28 +131,27 @@ class JuegosController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'totalG' => Generos::lista()
         ]);
     }
 
-    public function actionUpdate($id)
-    {
+    // public function actionUpdate($id)
+    // {
 
-        $model = $this->findJuego($id);
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($model);
-        }
+    //     $model = $this->findJuego($id);
+    //     if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+    //         Yii::$app->response->format = Response::FORMAT_JSON;
+    //         return ActiveForm::validate($model);
+    //     }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
-        }
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //         return $this->redirect(['index']);
+    //     }
 
-        return $this->render('update', [
-            'model' => $model,
-            'totalG' => Generos::lista()
-        ]);
-    }
+    //     return $this->render('update', [
+    //         'model' => $model,
+    //         'totalG' => Generos::lista()
+    //     ]);
+    // }
 
     public function actionDelete($id)
     {
@@ -148,5 +174,47 @@ class JuegosController extends Controller
         }
 
         return $juego;
+    }
+
+
+    public function actionCreateApi($id)
+    {
+
+
+        $total = Juegos::find()->where(['api' => $id])->count();
+        if ($total === 0) {
+            $model = new Juegos();
+
+            $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
+
+            $respuesta = $searchBuilder
+                ->addEndpoint('games')
+                ->searchById($id)
+                ->get();
+
+            $searchBuilder->clear();
+
+            if (!isset($respuesta->cover)) {
+                goto terminar;
+            }
+            $imagen = $searchBuilder
+                ->addEndpoint('covers')
+                ->searchById($respuesta->cover)
+                ->get();
+            $model->img_api = $imagen->image_id;
+
+            $model->api = $id;
+            $model->nombre = $respuesta->name;
+            $model->year_debut = isset($respuesta->first_release_date) ? date("Y",  $respuesta->first_release_date) : 0;
+            if (is_array($respuesta->genres)) {
+                $model->genero_id = $respuesta->genres[0];
+            } else {
+                $model->genero_id = $respuesta->genres;
+            }
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            terminar: return $this->goBack();
+        }
     }
 }

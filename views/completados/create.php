@@ -9,7 +9,7 @@ use yii\bootstrap4\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Completados */
 
-$this->title = 'Create Completados';
+$this->title = 'Completando ' . $juego->nombre;
 $this->params['breadcrumbs'][] = ['label' => 'Completados', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -18,12 +18,17 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="completados-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <div class="row mb-3">
+        <div class="col text-center">
+            <?= Html::img('https://images.igdb.com/igdb/image/upload/t_cover_big/' . $juego->img_api . '.jpg') ?>
+        </div>
+    </div>
 
     <div class="completados-form">
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'juego_id')->textInput() ?>
+        <?= $form->field($model, 'juego_id')->hiddenInput(['value' => $juego->id])->label(false) ?>
 
         <?= $form->field($model, 'consola_id')->dropDownList($totalC)->label('Consola') ?>
 
@@ -46,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($model, 'pasado')->checkbox() ?>
 
         <div class="form-group">
-            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton('Marcar como completado', ['class' => 'btn btn-success']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

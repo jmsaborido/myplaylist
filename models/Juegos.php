@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
  * This is the model class for table "juegos".
  *
  * @property int $id
- * @property int|null $api
+ * @property int $api
  * @property string|null $img_api
  * @property string $nombre
  * @property int $genero_id
@@ -35,10 +35,11 @@ class Juegos extends \yii\db\ActiveRecord
     {
         return [
             [['api', 'nombre', 'genero_id'], 'required'],
-            [['genero_id', 'year_debut'], 'default', 'value' => null],
-            [['genero_id', 'year_debut'], 'integer'],
+            [['api', 'genero_id', 'year_debut'], 'default', 'value' => null],
+            [['api', 'genero_id', 'year_debut'], 'integer'],
             [['img_api'], 'string', 'max' => 255],
             [['nombre'], 'string', 'max' => 100],
+            [['api'], 'unique'],
             [['genero_id'], 'exist', 'skipOnError' => true, 'targetClass' => Generos::className(), 'targetAttribute' => ['genero_id' => 'id']],
         ];
     }
@@ -63,6 +64,8 @@ class Juegos extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Completados]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getCompletados()
@@ -71,6 +74,8 @@ class Juegos extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Genero]].
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getGenero()

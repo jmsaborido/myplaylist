@@ -88,11 +88,7 @@ class ConversacionesController extends Controller
     {
         // $this->layout = 'mensajes';
         $model = new Conversaciones();
-        Yii::debug($model->validate());
-        Yii::debug($model->errors);
-
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            Yii::debug("Entramos2");
             $model->id_user2 = Usuarios::find()->select('id')->where(['username' => $model->username])->scalar();
             $model->id_user1 = Yii::$app->user->id;
             $conversacion = Conversaciones::find()

@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Group */
 
-$url = Url::to(['/conversacions/buscar-usuarios']);
+$url = Url::to(['/conversaciones/buscar-usuarios']);
 $js = <<<EOT
     $('#conversacion-username').on('focus keyup', function () {
         $.ajax({

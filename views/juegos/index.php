@@ -11,7 +11,7 @@ $this->title = 'Lista de Juegos';
 
 <div class="generos-index">
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity['rol'] === 'ADMIN') : ?>
+    <?php if (!Yii::$app->user->isGuest) : ?>
         <div class="row">
             <div class="col text-center">
                 <p>
@@ -43,8 +43,16 @@ $this->title = 'Lista de Juegos';
             [
                 'attribute' => 'year_debut',
             ],
+
             [
-                'class' => ActionColumn::class,
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {completar} {delete}',
+                'visible' => !Yii::$app->user->isGuest,
+                'buttons' => [
+                    'completar' => function ($url, $model, $key) {
+                        return Html::a('<span class="glyphicon glyphicon-check"></span>', ['completados/create', 'id' => $model->id]);
+                    }
+                ],
             ],
         ],
     ]) ?>
