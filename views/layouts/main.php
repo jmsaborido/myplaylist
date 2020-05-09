@@ -56,6 +56,7 @@ AppAsset::register($this);
                         ['label' => 'Registrarse', 'url' => ['usuarios/registrar']],
                     ] : [
                         ['label' => 'Ver Perfil', 'url' => ['usuarios/view', 'id' => Yii::$app->user->id]],
+                        ['label' => 'Conversaciones', 'url' => ['conversaciones/index', 'id' => Yii::$app->user->id]],
                         ['label' => 'Modificar', 'url' => ['usuarios/update']],
                         (Html::beginForm(['/site/logout'], 'post')
                             . Html::submitButton(

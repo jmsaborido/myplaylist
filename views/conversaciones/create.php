@@ -30,7 +30,7 @@ $this->registerJs($js);
 $this->title = 'Buscar Usuarios';
 ?>
 <div class="group-create">
-    <?= Html::a('Volver A Las Conversaciones', Url::to(['conversaciones/index']), ['class' => 'btn btn-primary']) ?>
+    <?= Html::a('Volver A Las Conversaciones', ['conversaciones/index', 'id' => Yii::$app->user->id], ['class' => 'btn btn-primary']) ?>
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="conversacion-form">

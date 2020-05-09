@@ -36,15 +36,16 @@ class ConversacionesController extends Controller
      * Lists all Conversaciones models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id)
     {
         Conversaciones::vacias();
         $dataProvider = new ActiveDataProvider([
-            'query' => Conversaciones::find()->where(['or', ['id_user1' => Yii::$app->user->id], ['id_user2' => Yii::$app->user->id]]),
+            'query' => Conversaciones::find()->where(['or', ['id_user1' => $id], ['id_user2' => $id]]),
             'pagination' => ['pageSize' => 5],
         ]);
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+
         ]);
     }
 
@@ -56,7 +57,6 @@ class ConversacionesController extends Controller
      */
     public function actionView($id)
     {
-        // $this->layout = 'Mensaje';
         $mensaje = new Mensajes();
         $model = $this->findModel($id);
         $dataProvider = new ActiveDataProvider([
@@ -67,6 +67,7 @@ class ConversacionesController extends Controller
             $mensaje->id_sender = Yii::$app->user->id;
             $mensaje->id_conversacion = $id;
             $mensaje->save();
+
             return $this->redirect(['view', 'id' => $id]);
         }
         return $this->render('view', [
@@ -74,6 +75,7 @@ class ConversacionesController extends Controller
             'mensaje' => $mensaje,
             'model' => $model,
             'id' => $id,
+            'receiver' => $model->getReceiver(),
         ]);
     }
 
@@ -86,16 +88,18 @@ class ConversacionesController extends Controller
     {
         // $this->layout = 'mensajes';
         $model = new Conversaciones();
-        Yii::debug("Entramos");
+        Yii::debug($model->validate());
+        Yii::debug($model->errors);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            Yii::debug("Entramos");
+            Yii::debug("Entramos2");
             $model->id_user2 = Usuarios::find()->select('id')->where(['username' => $model->username])->scalar();
             $model->id_user1 = Yii::$app->user->id;
             $conversacion = Conversaciones::find()
                 ->where(['id_user1' => $model->id_user1, 'id_user2' => $model->id_user2])
                 ->orWhere(['id_user2' => $model->id_user1, 'id_user1' => $model->id_user2])->one();
             if ($conversacion == null) {
+
                 $model->save();
                 $model->refresh();
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -110,26 +114,6 @@ class ConversacionesController extends Controller
     }
 
     /**
-     * Updates an existing Conversaciones model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
      * Deletes an existing Conversaciones model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -140,7 +124,7 @@ class ConversacionesController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'id' => Yii::$app->user->id]);
     }
 
     /**

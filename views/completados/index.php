@@ -73,6 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'attribute' => 'fecha',
                     'pluginOptions' => [
                         'autoclose' => true,
+                        'format' => 'yyyy/m/dd'
                     ]
                 ])
             ],

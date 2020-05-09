@@ -23,8 +23,8 @@ $templateMessage = '{label}<div class="input-group">{input}
 </span></div>{hint}{error}';
 
 ?>
-<?= Html::a('Volver A Las Conversaciones', Url::to(['conversaciones/index']), ['class' => 'btn btn-primary']) ?>
-<h3>Hola</h3>
+<?= Html::a('Volver A Las Conversaciones', Url::to(['conversaciones/index', 'id' => Yii::$app->user->id]), ['class' => 'btn btn-primary']) ?>
+<h3>Mensajes con <?= $receiver->nombre . " " . $receiver->apellidos  ?></h3>
 <div class="list" id="list">
     <?= ListView::widget([
         'dataProvider' => $dataProvider,

@@ -35,7 +35,6 @@ class Conversaciones extends \yii\db\ActiveRecord
     {
         return [
             [['username'], 'required'],
-            [['id_user1', 'id_user2'], 'required'],
             [['id_user1', 'id_user2'], 'default', 'value' => null],
             [['id_user1', 'id_user2'], 'integer'],
             [['id_user1'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['id_user1' => 'id']],
@@ -107,11 +106,7 @@ class Conversaciones extends \yii\db\ActiveRecord
      */
     public function getReceiver()
     {
-        if ($this->id_user1 == Yii::$app->user->id) {
-            return $this->id_user2;
-        } else {
-            return $this->id_user1;
-        }
+        return Usuarios::findOne(['id' => $this->id_user1 == Yii::$app->user->id ? $this->id_user2 : $this->id_user1]);
     }
 
 
