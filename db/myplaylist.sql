@@ -80,6 +80,25 @@ CREATE TABLE comentarios (
     usuario_id BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+DROP TABLE IF EXISTS conversaciones CASCADE;
+
+CREATE TABLE conversaciones (
+    id BIGSERIAL PRIMARY KEY,
+    id_user1 BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    id_user2 BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS mensajes CASCADE;
+
+CREATE TABLE mensajes (
+    id BIGSERIAL PRIMARY KEY,
+    id_sender BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    cuerpo TEXT,
+    leido BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id_conversacion BIGINT NOT NULL REFERENCES conversaciones(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 INSERT INTO
     usuarios (
         username,
@@ -111,6 +130,16 @@ INSERT INTO
     seguidores(seguidor_id, seguido_id)
 VALUES
     (1, 2);
+
+INSERT INTO
+    conversaciones(id_user1, id_user2)
+VALUES
+    (1, 2);
+
+INSERT INTO
+    mensajes(id_sender, id_conversacion, cuerpo)
+VALUES
+    (1, 1, 'Hola');
 
 INSERT INTO
     consolas (denom)
