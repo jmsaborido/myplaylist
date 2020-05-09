@@ -39,11 +39,11 @@ DROP TABLE IF EXISTS juegos CASCADE;
 
 CREATE TABLE juegos (
     id bigserial PRIMARY KEY,
-    api bigint,
+    api bigint NOT NULL UNIQUE,
     img_api varchar(255),
     nombre varchar(100) NOT NULL,
     genero_id bigint NOT NULL REFERENCES generos (id),
-    year_debut smallint CONSTRAINT ck_primer_videojuego CHECK (year_debut >= 1950)
+    year_debut smallint
 );
 
 DROP TABLE IF EXISTS completados CASCADE;
