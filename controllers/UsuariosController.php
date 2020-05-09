@@ -20,14 +20,21 @@ class UsuariosController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['registrar'],
+                'only' => ['registrar', 'update'],
                 'rules' => [
                     // allow authenticated users
                     [
                         'allow' => true,
+                        'actions' => ['update'],
+                        'roles' => ['@'],
+                        'matchCallback' => function ($rules, $action) {
+                            return Yii::$app->user->id == Yii::$app->request->get()['id'];
+                        },
+                    ],
+                    [
+                        'allow' => true,
                         'roles' => ['?'],
                     ],
-                    // everything else is denied by default
                 ],
             ],
         ];

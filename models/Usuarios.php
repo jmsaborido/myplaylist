@@ -164,6 +164,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                 $this->auth_key = $security->generateRandomString();
                 $this->token = $security->generateRandomString(32);
                 $this->password = $security->generatePasswordHash($this->password);
+                $this->rol = 'USER';
             }
         } else {
             if ($this->scenario === self::SCENARIO_UPDATE) {
