@@ -51,7 +51,7 @@ $this->title = 'Lista de Juegos';
                 'buttons' => [
                     'completar' => function ($url, $model, $key) {
                         return Html::a('<span class="glyphicon glyphicon-check"></span>', ['completados/create', 'id' => $model->id]);
-                    }
+                    },
                 ],
             ],
         ],

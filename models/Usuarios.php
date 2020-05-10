@@ -242,6 +242,15 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
     }
 
 
+    public static function correoAdmin()
+    {
+        return static::find()
+            ->select('email')
+            ->where(['rol' => 'ADMIN'])
+            ->indexBy('id')
+            ->column();
+    }
+
     public function upload()
     {
         if ($this->validate()) {

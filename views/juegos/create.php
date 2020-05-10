@@ -27,19 +27,26 @@ $this->title = 'Buscar Juegos';
         <div class="select">
             <h3>Selecciona tu juego</h3>
             <?php
-            foreach ($respuesta as $key => $value) {
+            if (is_array($respuesta)) :
+                foreach ($respuesta as $key => $value) {
             ?>
+                    <div>
+
+                        <?= (Html::a($value->name, ['create-api', 'id' => $value->id])) ?>
+                        <p><?= (isset($value->first_release_date) ? Yii::$app->formatter->asDate($value->first_release_date) : 'Aun no ha sido lanzado')  ?></p>
+                    </div>
+                <?php
+                } else :
+                ?>
                 <div>
 
-                    <?= (Html::a($value->name, ['create-api', 'id' => $value->id])) ?>
-                    <p><?= (isset($value->first_release_date) ? Yii::$app->formatter->asDate($value->first_release_date) : "Aun no ha sido lanzado")  ?></p>
+                    <?= (Html::a($respuesta->name, ['create-api', 'id' => $respuesta->id])) ?>
+                    <p><?= (isset($respuesta->first_release_date) ? Yii::$app->formatter->asDate($respuesta->first_release_date) : 'Aun no ha sido lanzado')  ?></p>
                 </div>
-            <?php
-            }
-            ?>
         </div>
     <?php endif ?>
-    <?php if (isset($noEnc)) : ?>
-        <p>No ha habido resultados.</p>
+<?php endif ?>
+<?php if (isset($noEnc)) : ?>
+    <p>No ha habido resultados.</p>
 
-    <?php endif ?>
+<?php endif ?>
