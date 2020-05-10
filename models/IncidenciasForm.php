@@ -6,9 +6,9 @@ use Yii;
 use yii\base\Model;
 
 /**
- * ContactForm is the model behind the contact form.
+ * IncidenciasForm is the model behind the contact form.
  */
-class ContactForm extends Model
+class IncidenciasForm extends Model
 {
     public $name;
     public $email;
@@ -38,7 +38,11 @@ class ContactForm extends Model
     public function attributeLabels()
     {
         return [
-            'verifyCode' => 'Verification Code',
+            'name' => 'Nombre',
+            'email' => 'Correo electronico',
+            'subject' => 'Asunto',
+            'body' => 'Cuerpo',
+            'verifyCode' => 'Codigo de verificación',
         ];
     }
 

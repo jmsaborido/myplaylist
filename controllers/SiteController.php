@@ -8,7 +8,8 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\IncidenciasForm;
+use app\models\Usuarios;
 
 class SiteController extends Controller
 {
@@ -99,19 +100,34 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays contact page.
+     * Displays Incidencias page.
      *
      * @return Response|string
      */
-    public function actionContact()
+    public function actionIncidencias()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
+        $model = new IncidenciasForm();
+        if ($model->load(Yii::$app->request->post())) {
 
+            $actual = Yii::$app->formatter->asDatetime(time());
+            $body = <<<EOT
+                <h2>Incidencia.<h2>
+                <p>Nombre del usuario que la ha enviado: $model->name</p>
+                <p>Correo del usuario que la ha enviado: $model->email</p>
+                <p>Asunto: $model->subject</p>
+                <p>Cuerpo: $model->body</p>
+                <p>Hora de la incidencia: $actual</p>
+
+            EOT;
+            $correos = Usuarios::correoAdmin();
+            foreach ($correos as $key => $value) {
+                $this->enviarMail($body, $value);
+            }
+
+            Yii::$app->session->setFlash('Incidencia Enviada');
             return $this->refresh();
         }
-        return $this->render('contact', [
+        return $this->render('incidencias', [
             'model' => $model,
         ]);
     }
@@ -123,6 +139,30 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
+        // if ($model->load(Yii::$app->request->post())) {
+        //     $url = Url::to([
+        //         'usuarios/activar',
+        //         'id' => $model->id,
+        //         'token' => $model->token,
+        //     ], true);
+
+        //     $body = <<<EOT
+        //         <h2>Pulsa el siguiente enlace para confirmar la cuenta de correo.<h2>
+        //         <a href="$url">Confirmar cuenta</a>
+        //     EOT;
+        //     $this->enviarMail($body, $model->email);
+        //     Yii::$app->session->setFlash('success', 'Se ha creado el usuario correctamente.');
+        //     return $this->redirect(['site/login']);
+        // }
         return $this->render('about');
+    }
+    public function enviarMail($cuerpo, $dest)
+    {
+        return Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['smtpUsername'])
+            ->setTo($dest)
+            ->setSubject("Incidencia ADMIN myplaylist")
+            ->setHtmlBody($cuerpo)
+            ->send();
     }
 }

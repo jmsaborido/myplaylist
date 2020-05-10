@@ -134,30 +134,11 @@ class JuegosController extends Controller
         ]);
     }
 
-    // public function actionUpdate($id)
-    // {
-
-    //     $model = $this->findJuego($id);
-    //     if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-    //         Yii::$app->response->format = Response::FORMAT_JSON;
-    //         return ActiveForm::validate($model);
-    //     }
-
-    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-    //         return $this->redirect(['index']);
-    //     }
-
-    //     return $this->render('update', [
-    //         'model' => $model,
-    //         'totalG' => Generos::lista()
-    //     ]);
-    // }
-
     public function actionDelete($id)
     {
 
         $model = $this->findJuego($id);
-        if (Yii::$app->user->identity['rol']) {
+        if (Yii::$app->user->identity['rol'] == 'ADMIN') {
             $model->delete();
             Yii::$app->session->setFlash('success', 'Fila borrada con éxito.');
         } else {
@@ -212,8 +193,12 @@ class JuegosController extends Controller
                 $model->genero_id = $respuesta->genres;
             }
             $model->save();
+            Yii::$app->session->setFlash('success', $model->nombre . " se ha creado con exito");
+
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            Yii::$app->session->setFlash('error', 'El juego no se ha podido crear');
+
             terminar: return $this->goBack();
         }
     }
