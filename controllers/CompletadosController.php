@@ -85,7 +85,8 @@ class CompletadosController extends Controller
     {
 
         $model = $this->findCompletado($id);
-        $comentarios = ComentariosCompletados::find()->where(['completado_id' => $id])->all();
+        $model2 = new ComentariosCompletados(['usuario_id' => Yii::$app->user->id]);
+        $comentarios = ComentariosCompletados::find()->where(['completado_id' => $id])->orderBy('created_at')->all();
 
         $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
 
@@ -103,6 +104,7 @@ class CompletadosController extends Controller
 
         return $this->render('view', [
             'model' => $model,
+            'model2' => $model2,
             'respuesta' => $respuesta,
             'generos' => $generos,
             'comentarios' => $comentarios

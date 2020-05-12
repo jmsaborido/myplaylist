@@ -4,14 +4,14 @@ namespace app\controllers;
 
 
 use Yii;
-use app\models\ComentariosCompletados;
+use app\models\ComentariosUsuarios;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 
-class ComentariosCompletadosController extends Controller
+class ComentariosUsuariosController extends Controller
 {
     public function behaviors()
     {
@@ -37,15 +37,15 @@ class ComentariosCompletadosController extends Controller
     }
     public function actionComentar()
     {
-        $datos = Yii::$app->request->post()['ComentariosCompletados'];
+        $datos = Yii::$app->request->post()['ComentariosUsuarios'];
         if ($datos) {
-            $model = new ComentariosCompletados();
+            $model = new ComentariosUsuarios();
             $model->cuerpo = $datos['cuerpo'];
             $model->usuario_id = Yii::$app->user->id;
-            $model->completado_id = $datos['id'];
+            $model->perfil_id = $datos['id'];
             $model->save();
             Yii::$app->session->setFlash('success', 'Comentario realizado con exito');
-            return $this->redirect(['/completados/view', 'id' => $datos['id']]);
+            return $this->redirect(['/usuarios/view', 'id' => $datos['id']]);
         }
         Yii::$app->session->setFlash('error', 'El comentario ha fallado');
 
@@ -55,10 +55,10 @@ class ComentariosCompletadosController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $id = $model->completado_id;
+        $id = $model->perfil_id;
         $model->delete();
 
-        return $this->redirect(['/completados/view', 'id' => $id]);
+        return $this->redirect(['/usuarios/view', 'id' => $id]);
     }
 
     public function actionUpdate($id)
@@ -66,7 +66,7 @@ class ComentariosCompletadosController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['/usuarios/view', 'id' => $model->id]);
+            return $this->redirect(['/usuarios/view', 'id' => $model->perfil_id]);
         }
 
         return $this->render('update', [
@@ -76,7 +76,7 @@ class ComentariosCompletadosController extends Controller
 
     protected function findModel($id)
     {
-        if (($model = ComentariosCompletados::findOne($id)) !== null) {
+        if (($model = ComentariosUsuarios::findOne($id)) !== null) {
             return $model;
         }
 

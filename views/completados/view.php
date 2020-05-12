@@ -49,42 +49,64 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+    <?php if (!Yii::$app->user->isGuest && $model->usuario_id === Yii::$app->user->id) : ?>
 
+        <p>
+            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
+            <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+        </p>
+    <?php endif ?>
+
+
+    <?php if ($comentarios != null) ?>
     <div class="comentarios">
-        <?php if ($comentarios != null)
-            foreach ($comentarios as $key => $value) {
-        ?>
+        <?php foreach ($comentarios as $key => $value) { ?>
             <div>
                 <p>
-                    <?= $value->usuario->username . ": " . $value->cuerpo ?>
+                    <?= Html::encode($value->usuario->username) . ": " .
+                        Html::encode($value->cuerpo) . " " .
+                        Yii::$app->formatter->asDateTime($value->created_at) .
+                        ($value->usuario_id === Yii::$app->user->id ?
+                            Html::a(
+                                '<span class="glyphicon glyphicon-pencil"></span>',
+                                ['comentarios-completados/update', 'id' => $value->id]
+                            ) . Html::a(
+                                '<span class="glyphicon glyphicon-trash"></span>',
+                                ['comentarios-completados/delete', 'id' => $value->id,],
+                                ['data-method' => 'post']
+                            ) : " ")
+                    ?>
                 </p>
             </div>
-        <?php
-            }
-
-        ?>
     </div>
+<?php } ?>
 
-    <div class="completados-form">
+<?php if (!Yii::$app->user->isGuest) : ?>
+    <?php $form = ActiveForm::begin(['action' => ['comentarios-completados/comentar']]);
+    ?>
 
-        <p>
-            <?= Html::textarea('cuerpo') ?>
-        </p>
-
-
-        <p>
-            <?= Html::a('comentar', ['Comentarios-Completados/create'], ['class' => 'btn btn-success']) ?>
-        </p>
+    <?= $form->field($model2, 'cuerpo')->label(false) ?>
+    <?= $form->field($model2, 'id')->hiddenInput(['value' => $model->id])->label(false) ?>
 
 
+    <div class="form-group">
+        <?= Html::submitButton('Comentar', ['class' => 'btn btn-success']) ?>
     </div>
+    <?php ActiveForm::end(); ?>
+
+<?php endif ?>
+
+
+
+
+
+
+
+
+</div>
