@@ -21,6 +21,9 @@ use yii\helpers\Url;
  * @property string|null $auth_key
  * @property string|null $rol
  *
+ * @property ComentariosCompletados[] $comentariosCompletados
+ * @property ComentariosUsuarios[] $comentariosUsuarios
+ * @property ComentariosUsuarios[] $comentariosUsuarios0
  * @property Conversaciones[] $conversaciones
  * @property Conversaciones[] $conversaciones0
  * @property Mensajes[] $mensajes
@@ -189,6 +192,37 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->select(['usuarios.*', 'COUNT(c.id) AS total'])
             ->joinWith('completados c', false)
             ->groupBy('usuarios.id');
+    }
+
+
+    /**
+     * Gets query for [[ComentariosCompletados]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComentariosCompletados()
+    {
+        return $this->hasMany(ComentariosCompletados::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
+    }
+
+    /**
+     * Gets query for [[ComentariosUsuarios]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComentariosUsuarios()
+    {
+        return $this->hasMany(ComentariosUsuarios::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
+    }
+
+    /**
+     * Gets query for [[ComentariosUsuarios0]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComentariosUsuarios0()
+    {
+        return $this->hasMany(ComentariosUsuarios::className(), ['perfil_id' => 'id'])->inverseOf('perfil');
     }
 
     /**

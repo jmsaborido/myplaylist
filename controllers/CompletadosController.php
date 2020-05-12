@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\ComentariosCompletados;
 use Yii;
 use app\models\Completados;
 use app\models\CompletadosSearch;
@@ -84,6 +85,7 @@ class CompletadosController extends Controller
     {
 
         $model = $this->findCompletado($id);
+        $comentarios = ComentariosCompletados::find()->where(['completado_id' => $id])->all();
 
         $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
 
@@ -103,6 +105,7 @@ class CompletadosController extends Controller
             'model' => $model,
             'respuesta' => $respuesta,
             'generos' => $generos,
+            'comentarios' => $comentarios
         ]);
     }
 

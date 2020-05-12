@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\DomCrawler\Form;
+use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 use yii\widgets\DetailView;
 
@@ -58,4 +60,31 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-</div>
+    <div class="comentarios">
+        <?php if ($comentarios != null)
+            foreach ($comentarios as $key => $value) {
+        ?>
+            <div>
+                <p>
+                    <?= $value->usuario->username . ": " . $value->cuerpo ?>
+                </p>
+            </div>
+        <?php
+            }
+
+        ?>
+    </div>
+
+    <div class="completados-form">
+
+        <p>
+            <?= Html::textarea('cuerpo') ?>
+        </p>
+
+
+        <p>
+            <?= Html::a('comentar', ['Comentarios-Completados/create'], ['class' => 'btn btn-success']) ?>
+        </p>
+
+
+    </div>
