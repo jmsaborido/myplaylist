@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\ComentariosUsuarios;
 use app\models\Completados;
 use app\models\Seguidores;
 use app\models\Usuarios;
@@ -64,10 +65,14 @@ class UsuariosController extends Controller
      */
     public function actionView($id)
     {
+
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'model2' => new ComentariosUsuarios(['usuario_id' => Yii::$app->user->id]),
             'siguiendo' => Seguidores::find()->where(['seguidor_id' => $id, 'ended_at' => null],)->count(),
             'seguidores' => Seguidores::find()->where(['seguido_id' => $id, 'ended_at' => null])->count(),
+            'comentarios' => ComentariosUsuarios::find()->where(['perfil_id' => $id])->orderBy('created_at')->all()
         ]);
     }
 

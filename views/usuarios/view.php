@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Seguidores;
+use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 use yii\widgets\DetailView;
 
@@ -75,5 +76,45 @@ $this->params['breadcrumbs'][] = $this->title;
         ['class' => 'btn btn-success']
     ));
     ?>
+
+
+    <?php if ($comentarios != null) ?>
+    <div class="comentarios">
+        <?php foreach ($comentarios as $key => $value) { ?>
+            <div>
+                <p>
+                    <?= Html::encode($value->usuario->username) . ": " .
+                        Html::encode($value->cuerpo) . " " .
+                        Yii::$app->formatter->asDateTime($value->created_at) .
+                        ($value->usuario_id === Yii::$app->user->id ?
+                            Html::a(
+                                '<span class="glyphicon glyphicon-pencil"></span>',
+                                ['comentarios-usuarios/update', 'id' => $value->id]
+                            ) . Html::a(
+                                '<span class="glyphicon glyphicon-trash"></span>',
+                                ['comentarios-usuarios/delete', 'id' => $value->id,],
+                                ['data-method' => 'post']
+                            ) : " ")
+                    ?>
+                </p>
+            </div>
+    </div>
+<?php } ?>
+
+<?php if (!Yii::$app->user->isGuest) : ?>
+    <?php $form = ActiveForm::begin(['action' => ['comentarios-usuarios/comentar']]);
+    ?>
+
+    <?= $form->field($model2, 'cuerpo')->label(false) ?>
+    <?= $form->field($model2, 'id')->hiddenInput(['value' => $model->id])->label(false) ?>
+
+
+    <div class="form-group">
+        <?= Html::submitButton('Comentar', ['class' => 'btn btn-success']) ?>
+    </div>
+    <?php ActiveForm::end(); ?>
+
+<?php endif ?>
+
 
 </div>

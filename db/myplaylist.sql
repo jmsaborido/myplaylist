@@ -68,16 +68,26 @@ CREATE TABLE seguidores (
     seguido_id BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS comentarios CASCADE;
+DROP TABLE IF EXISTS comentarios_usuarios CASCADE;
 
-CREATE TABLE comentarios (
+CREATE TABLE comentarios_usuarios (
     id BIGSERIAL PRIMARY KEY,
-    cuerpo TEXT,
+    usuario_id BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    perfil_id BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    cuerpo TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    edited_at TIMESTAMP,
-    padre_id BIGINT,
+    edited_at TIMESTAMP
+);
+
+DROP TABLE IF EXISTS comentarios_completados CASCADE;
+
+CREATE TABLE comentarios_completados (
+    id BIGSERIAL PRIMARY KEY,
+    usuario_id BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE,
     completado_id BIGINT NOT NULL REFERENCES completados (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    usuario_id BIGINT NOT NULL REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE
+    cuerpo TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    edited_at TIMESTAMP
 );
 
 DROP TABLE IF EXISTS conversaciones CASCADE;
@@ -652,3 +662,8 @@ VALUES
     (1, 85, 3, '2020/4/8', FALSE),
     (1, 86, 8, '2020/4/25', FALSE),
     (2, 85, 4, '2020/3/27', FALSE);
+
+INSERT INTO
+    comentarios_completados (usuario_id, completado_id, cuerpo)
+VALUES
+    (1, 1, 'hola');
