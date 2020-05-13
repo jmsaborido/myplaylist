@@ -24,6 +24,7 @@ use yii\helpers\Url;
  * @property ComentariosCompletados[] $comentariosCompletados
  * @property ComentariosUsuarios[] $comentariosUsuarios
  * @property ComentariosUsuarios[] $comentariosUsuarios0
+ * @property Pendientes[] $pendientes
  * @property Conversaciones[] $conversaciones
  * @property Conversaciones[] $conversaciones0
  * @property Mensajes[] $mensajes
@@ -215,6 +216,15 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return $this->hasMany(ComentariosUsuarios::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
     }
 
+    /**
+     * Gets query for [[Pendientes]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPendientes()
+    {
+        return $this->hasMany(Pendientes::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
+    }
     /**
      * Gets query for [[ComentariosUsuarios0]].
      *

@@ -12,6 +12,7 @@ use Yii;
  * @property string $created_at
  *
  * @property Completados[] $completados
+ * @property Pendientes[] $pendientes
  */
 class Consolas extends \yii\db\ActiveRecord
 {
@@ -75,6 +76,19 @@ class Consolas extends \yii\db\ActiveRecord
     public function getCompletados()
     {
         return $this->hasMany(Completados::className(), ['consola_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Pendientes]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPendientes()
+    {
+        return static::find()
+            ->select(['consolas.*', 'COUNT(c.id) AS total'])
+            ->joinWith('completados c', false)
+            ->groupBy('consolas.id');
     }
 
     public static function findWithTotal()

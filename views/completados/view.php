@@ -67,41 +67,38 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if ($comentarios != null) ?>
     <div class="comentarios">
         <?php foreach ($comentarios as $key => $value) { ?>
-            <div>
-                <p>
-                    <?= Html::encode($value->usuario->username) . ": " .
-                        Html::encode($value->cuerpo) . " " .
-                        Yii::$app->formatter->asDateTime($value->created_at) .
-                        ($value->usuario_id === Yii::$app->user->id ?
-                            Html::a(
-                                '<span class="glyphicon glyphicon-pencil"></span>',
-                                ['comentarios-completados/update', 'id' => $value->id]
-                            ) . Html::a(
-                                '<span class="glyphicon glyphicon-trash"></span>',
-                                ['comentarios-completados/delete', 'id' => $value->id,],
-                                ['data-method' => 'post']
-                            ) : " ")
-                    ?>
-                </p>
-            </div>
+            <p>
+                <?= Html::encode($value->usuario->username) . ": " .
+                    Html::encode($value->cuerpo) . " " .
+                    Yii::$app->formatter->asDateTime($value->created_at) .
+                    ($value->usuario_id === Yii::$app->user->id ?
+                        Html::a(
+                            '<span class="glyphicon glyphicon-pencil"></span>',
+                            ['comentarios-completados/update', 'id' => $value->id]
+                        ) . Html::a(
+                            '<span class="glyphicon glyphicon-trash"></span>',
+                            ['comentarios-completados/delete', 'id' => $value->id,],
+                            ['data-method' => 'post']
+                        ) : " ")
+                ?>
+            </p>
+        <?php } ?>
     </div>
-<?php } ?>
 
-<?php if (!Yii::$app->user->isGuest) : ?>
-    <?php $form = ActiveForm::begin(['action' => ['comentarios-completados/comentar']]);
-    ?>
+    <?php if (!Yii::$app->user->isGuest) : ?>
+        <?php $form = ActiveForm::begin(['action' => ['comentarios-completados/comentar']]);
+        ?>
 
-    <?= $form->field($model2, 'cuerpo')->label(false) ?>
-    <?= $form->field($model2, 'id')->hiddenInput(['value' => $model->id])->label(false) ?>
+        <?= $form->field($model2, 'cuerpo')->label(false) ?>
+        <?= $form->field($model2, 'id')->hiddenInput(['value' => $model->id])->label(false) ?>
 
 
-    <div class="form-group">
-        <?= Html::submitButton('Comentar', ['class' => 'btn btn-success']) ?>
-    </div>
-    <?php ActiveForm::end(); ?>
+        <div class="form-group">
+            <?= Html::submitButton('Comentar', ['class' => 'btn btn-success']) ?>
+        </div>
+        <?php ActiveForm::end(); ?>
 
-<?php endif ?>
-
+    <?php endif ?>
 
 
 
@@ -109,4 +106,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
+
+</div>
 </div>

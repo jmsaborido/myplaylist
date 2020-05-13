@@ -7,7 +7,7 @@ use yii\bootstrap4\Html;
 /* @var $model app\models\Completados */
 
 $this->title = 'Modificando: ' . $model->juego->nombre;
-$this->params['breadcrumbs'][] = ['label' => 'Completados', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Pendientes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="completados-update">
@@ -22,9 +22,9 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $form->field($model, 'consola_id')->dropDownList($totalC)->label('Consola') ?>
 
-    <?= $form->field($model, 'fecha')->textInput() ?>
-
     <?= $form->field($model, 'pasado')->checkbox() ?>
+
+    <?= $form->field($model, 'tengo')->checkbox() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Modificar', ['class' => 'btn btn-success']) ?>

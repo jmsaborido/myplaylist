@@ -57,6 +57,17 @@ CREATE TABLE completados (
     pasado boolean
 );
 
+DROP TABLE IF EXISTS pendientes CASCADE;
+
+CREATE TABLE pendientes (
+    id bigserial PRIMARY KEY,
+    usuario_id bigint NOT NULL REFERENCES usuarios (id),
+    juego_id bigint NOT NULL REFERENCES juegos (id),
+    consola_id bigint NOT NULL REFERENCES consolas (id),
+    pasado boolean,
+    tengo boolean
+);
+
 DROP TABLE IF EXISTS seguidores CASCADE;
 
 CREATE TABLE seguidores (
@@ -667,3 +678,8 @@ INSERT INTO
     comentarios_completados (usuario_id, completado_id, cuerpo)
 VALUES
     (1, 1, 'hola');
+
+INSERT INTO
+    pendientes (usuario_id, juego_id, consola_id, pasado, tengo)
+VALUES
+    (2, 69, 4, false, true);

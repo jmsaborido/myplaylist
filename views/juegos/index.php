@@ -46,11 +46,14 @@ $this->title = 'Lista de Juegos';
 
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} {completar} {delete}',
+                'template' => '{view} {completar} {pendiente} {delete}',
                 'visible' => !Yii::$app->user->isGuest,
                 'buttons' => [
                     'completar' => function ($url, $model, $key) {
                         return Html::a('<span class="glyphicon glyphicon-check"></span>', ['completados/create', 'id' => $model->id]);
+                    },
+                    'pendiente' => function ($url, $model, $key) {
+                        return Html::a('<span class="glyphicon glyphicon-exclamation-sign"></span>', ['pendientes/create', 'id' => $model->id]);
                     },
                 ],
             ],

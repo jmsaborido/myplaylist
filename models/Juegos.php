@@ -17,6 +17,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property Completados[] $completados
  * @property Generos $genero
+ * @property Pendientes[] $pendientes
  */
 class Juegos extends \yii\db\ActiveRecord
 {
@@ -81,5 +82,15 @@ class Juegos extends \yii\db\ActiveRecord
     public function getGenero()
     {
         return $this->hasOne(Generos::className(), ['id' => 'genero_id'])->inverseOf('juegos');
+    }
+
+    /**
+     * Gets query for [[Pendientes]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPendientes()
+    {
+        return $this->hasMany(Pendientes::className(), ['juego_id' => 'id'])->inverseOf('juego');
     }
 }
