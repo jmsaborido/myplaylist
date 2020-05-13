@@ -9,6 +9,7 @@ use app\models\CompletadosSearch;
 use app\models\Consolas;
 use app\models\Generos;
 use app\models\Juegos;
+use app\models\Pendientes;
 use Jschubert\Igdb\Builder\SearchBuilder;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -116,7 +117,7 @@ class CompletadosController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id)
+    public function actionCreate($id, $pasado = null, $consola = null, $pend_id = null)
     {
         $model = new Completados(['usuario_id' => Yii::$app->user->id]);
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
@@ -124,12 +125,19 @@ class CompletadosController extends Controller
             return ActiveForm::validate($model);
         }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if (isset(Yii::$app->request->post()['Pendientes'])) {
+                Pendientes::findOne(['id' => Yii::$app->request->post()['Pendientes']['id']])->delete();
+            }
             return $this->redirect(['index']);
         }
+
+        $pendiente = new Pendientes(['id' => $pend_id, 'juego_id' => $id, 'pasado' => $pasado, 'consola_id' => $consola]);
+
         return $this->render('create', [
             'model' => $model,
             'totalC' => Consolas::lista(),
-            'juego' => Juegos::findOne(['id' => $id])
+            'juego' => Juegos::findOne(['id' => $id]),
+            'pendiente' => $pendiente
         ]);
     }
 

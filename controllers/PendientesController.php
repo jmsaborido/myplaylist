@@ -8,6 +8,7 @@ use app\models\Juegos;
 use Yii;
 use app\models\Pendientes;
 use app\models\PendientesSearch;
+use Jschubert\Igdb\Builder\SearchBuilder;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -61,8 +62,26 @@ class PendientesController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
+
+        $respuesta = $searchBuilder
+            ->addEndpoint('games')
+            ->searchById($model->juego->api)
+            ->get();
+
+        $searchBuilder->clear();
+
+        $lista = Generos::lista();
+        $out = [];
+        foreach ($respuesta->genres as $value) array_push($out, $lista[$value]);
+        $generos = implode(', ', $out);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'respuesta' => $respuesta,
+            'generos' => $generos,
         ]);
     }
 
@@ -105,6 +124,7 @@ class PendientesController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'totalC' => Consolas::lista(),
         ]);
     }
 

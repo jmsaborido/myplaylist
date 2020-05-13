@@ -107,6 +107,7 @@ class JuegosController extends Controller
                     ->addEndpoint('games')
                     ->addFields(['*'])
                     ->addSearch($model->nombre)
+                    ->addFilter('first_release_date', '>', '0')
                     ->search()
                     ->get();
             } catch (\Throwable $th) {

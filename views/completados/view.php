@@ -52,8 +52,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if (!Yii::$app->user->isGuest && $model->usuario_id === Yii::$app->user->id) : ?>
 
         <p>
-            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
-            <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+            <?= Html::a('Modificar', ['update', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Borrar', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => 'Are you sure you want to delete this item?',

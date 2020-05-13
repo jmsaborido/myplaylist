@@ -53,7 +53,7 @@ $this->title = 'Lista de Juegos';
                         return Html::a('<span class="glyphicon glyphicon-check"></span>', ['completados/create', 'id' => $model->id]);
                     },
                     'pendiente' => function ($url, $model, $key) {
-                        return Html::a('<span class="glyphicon glyphicon-exclamation-sign"></span>', ['pendientes/create', 'id' => $model->id]);
+                        return Html::a('<span class="glyphicon glyphicon-pushpin"></span>', ['pendientes/create', 'id' => $model->id]);
                     },
                 ],
             ],

@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visible' => !Yii::$app->user->isGuest && Yii::$app->user->id === $searchModel->usuario_id,
                 'buttons' => [
                     'completar' => function ($url, $model, $key) {
-                        return Html::a('<span class="glyphicon glyphicon-check"></span>', ['completados/create', 'id' => $model->juego_id]);
+                        return Html::a('<span class="glyphicon glyphicon-check"></span>', ['completados/create', 'id' => $model->juego_id, 'pasado' => $model->pasado, 'consola' => $model->consola_id, 'pend_id' => $model->id]);
                     },
                 ],
             ],
