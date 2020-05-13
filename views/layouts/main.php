@@ -47,6 +47,7 @@ AppAsset::register($this);
             'items' => [
                 ['label' => 'Home', 'url' => ['/site/index']],
                 ['label' => 'Juegos', 'url' => ['/juegos/index']],
+                ['label' => 'Pendientes', 'url' => ['/pendientes/index']],
                 ['label' => 'Completados', 'url' => ['/completados/index']],
                 [
                     'label' => Yii::$app->user->isGuest ? 'Usuarios' : Yii::$app->user->identity->nombre,

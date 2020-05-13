@@ -17,6 +17,7 @@ use Yii;
  * @property string $fecha
  * @property bool|null $pasado
  *
+ * @property ComentariosCompletados[] $comentariosCompletados
  * @property Consolas $consola
  * @property Juegos $juego
  * @property Usuarios $usuario
@@ -81,6 +82,17 @@ class Completados extends \yii\db\ActiveRecord
     public function getConsola()
     {
         return $this->hasOne(Consolas::className(), ['id' => 'consola_id']);
+    }
+
+
+    /**
+     * Gets query for [[ComentariosCompletados]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComentariosCompletados()
+    {
+        return $this->hasMany(ComentariosCompletados::className(), ['completado_id' => 'id'])->inverseOf('completado');
     }
 
     public function setImagenId()

@@ -8,12 +8,12 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Completados */
 
-$this->title = $respuesta->name . " completado por " . $model->usuario->username;
+$this->title = $respuesta->name . " pendiente de completar por " . $model->usuario->username;
 $this->params['breadcrumbs'][] = ['label' => 'Completados', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="completados-view">
+<div class="pendientes-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -27,11 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'options' => ['class' => 'table table-striped table-borderless detail-view'],
         'attributes' => [
-            'fecha:date',
             'pasado:boolean',
+            'tengo:boolean',
             [
                 'attribute' => 'consola.denom',
-                'label' => 'Completado en',
+                'label' => 'Quiero completar en:',
             ],
             [
                 'label' => 'Fecha de salida',
@@ -53,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <p>
             <?= Html::a('Modificar', ['update', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Marcar juego como completado', ['completados/create', 'id' => $model->juego_id, 'pasado' => $model->pasado, 'consola' => $model->consola_id, 'pend_id' => $model->id], ['class' => 'btn btn-success']) ?>
             <?= Html::a('Borrar', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
@@ -64,41 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php endif ?>
 
 
-    <?php if ($comentarios != null) ?>
-    <div class="comentarios">
-        <?php foreach ($comentarios as $key => $value) { ?>
-            <p>
-                <?= Html::encode($value->usuario->username) . ": " .
-                    Html::encode($value->cuerpo) . " " .
-                    Yii::$app->formatter->asDateTime($value->created_at) .
-                    ($value->usuario_id === Yii::$app->user->id ?
-                        Html::a(
-                            '<span class="glyphicon glyphicon-pencil"></span>',
-                            ['comentarios-completados/update', 'id' => $value->id]
-                        ) . Html::a(
-                            '<span class="glyphicon glyphicon-trash"></span>',
-                            ['comentarios-completados/delete', 'id' => $value->id,],
-                            ['data-method' => 'post']
-                        ) : " ")
-                ?>
-            </p>
-        <?php } ?>
-    </div>
 
-    <?php if (!Yii::$app->user->isGuest) : ?>
-        <?php $form = ActiveForm::begin(['action' => ['comentarios-completados/comentar']]);
-        ?>
-
-        <?= $form->field($model2, 'cuerpo')->label(false) ?>
-        <?= $form->field($model2, 'id')->hiddenInput(['value' => $model->id])->label(false) ?>
-
-
-        <div class="form-group">
-            <?= Html::submitButton('Comentar', ['class' => 'btn btn-success']) ?>
-        </div>
-        <?php ActiveForm::end(); ?>
-
-    <?php endif ?>
 
 
 

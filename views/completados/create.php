@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Pendientes;
 use kartik\date\DatePicker;
 use kartik\datecontrol\DateControl;
 use yii\bootstrap4\ActiveForm;
@@ -30,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'juego_id')->hiddenInput(['value' => $juego->id])->label(false) ?>
 
-        <?= $form->field($model, 'consola_id')->dropDownList($totalC)->label('Consola') ?>
+        <?= $form->field($model, 'consola_id')->dropDownList($totalC, ['value' => isset($pendiente) ? $pendiente->consola_id : 0])->label('Consola') ?>
 
         <?= $form->field($model, 'fecha')
             ->widget(
@@ -48,7 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 ]
             ); ?>
-        <?= $form->field($model, 'pasado')->checkbox() ?>
+        <?= $form->field($model, 'pasado')->checkbox(['checked' => isset($pendiente) ? $pendiente->pasado == 1 : false]) ?>
+
+        <?= isset($pendiente->id) ? $form->field($pendiente, 'id')->hiddenInput(['value' => $pendiente->id])->label(false) : "" ?>
 
         <div class="form-group">
             <?= Html::submitButton('Marcar como completado', ['class' => 'btn btn-success']) ?>
