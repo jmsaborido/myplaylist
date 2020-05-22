@@ -55,6 +55,12 @@ body {
     border-color: #2205f2;
 }
 
+.btn-info:focus {
+    color: #fff;
+    background-color: #2205f2;
+    border-color: #2205f2;
+}
+
 a {
     color: #f25022;
 }
