@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
+use yii\web\Response;
 
 /**
  * SeguidoresController implements the CRUD actions for Seguidores model.
@@ -183,6 +184,7 @@ class SeguidoresController extends Controller
             );
         }
         $antiguo->save();
-        return $this->goBack();
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        return array_merge([Seguidores::estaSiguiendo($seguido_id)], [Seguidores::find()->where(['seguido_id' => $seguido_id, 'ended_at' => null])->count()]);
     }
 }

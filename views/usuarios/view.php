@@ -3,6 +3,7 @@
 use app\models\Seguidores;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -12,6 +13,32 @@ $this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => 'Usuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$url = Url::to(['seguidores/follow']);
+$js = <<<EOT
+var boton= $("#siguiendo");
+boton.click(function(event) {
+    event.preventDefault();
+    $.ajax({
+        method: 'GET',
+        url: '$url',
+        data: {
+            'seguido_id': $model->id
+        },
+        success: function (data, code, jqXHR) {
+            var texto= data[0]?"Dejar de seguir":"Seguir"
+            boton.toggle("slide",1000);
+            setTimeout( ()=> {
+                boton.html(texto);
+                $("#num").html(data[1] + " Seguidores")
+            }, 1000);
+            boton.toggle("slide",1000);
+            boton.blur();
+    }
+    });
+});
+EOT;
+$this->registerJs($js);
 ?>
 <div class="usuarios-view">
 
@@ -23,7 +50,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 !Seguidores::estaSiguiendo($model->id) ?
                     'Seguir' : 'Dejar de seguir',
                 ['seguidores/follow', 'seguido_id' => $model->id],
-                ['class' => 'btn btn-info']
+                ['class' => 'btn btn-info', 'id' => 'siguiendo'],
+
             )
         ?>
     </p>
@@ -39,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a($siguiendo . " Siguiendo", ['/seguidores/index', 'seguidor_id' => $model->id]) ?>
         </h3>
         <h3>
-            <?= Html::a($seguidores . " Seguidores", ['/seguidores/index-siguiendo', 'seguido_id' => $model->id]) ?>
+            <?= Html::a($seguidores . " Seguidores", ['/seguidores/index-siguiendo', 'seguido_id' => $model->id], ['id' => 'num']) ?>
         </h3>
     </div>
 
