@@ -183,6 +183,6 @@ class SeguidoresController extends Controller
             );
         }
         $antiguo->save();
-        return $this->goBack();
+        return Seguidores::estaSiguiendo($seguido_id);
     }
 }

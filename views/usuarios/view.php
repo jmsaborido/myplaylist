@@ -3,6 +3,7 @@
 use app\models\Seguidores;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -12,6 +13,30 @@ $this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => 'Usuarios', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+
+// $.ajax({
+//     method: 'GET',
+//     url: '$url',
+//     data: {
+//         'seguido_id' => $model->id
+//     },
+//     success: function (data, code, jqXHR) {
+//     }
+//
+// });
+Yii::debug(Seguidores::estaSiguiendo($model->id));
+$url = Url::to(['seguidores/follow']);
+$js = <<<EOT
+var boton= $("#siguiendo");
+boton.click(function(event) {
+    event.preventDefault();
+    console.log(($model->id));
+});
+EOT;
+
+
+$this->registerJs($js);
 ?>
 <div class="usuarios-view">
 
@@ -23,7 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 !Seguidores::estaSiguiendo($model->id) ?
                     'Seguir' : 'Dejar de seguir',
                 ['seguidores/follow', 'seguido_id' => $model->id],
-                ['class' => 'btn btn-info']
+                ['class' => 'btn btn-info', 'id' => 'siguiendo'],
+
             )
         ?>
     </p>
