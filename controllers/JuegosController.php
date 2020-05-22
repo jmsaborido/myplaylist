@@ -13,6 +13,8 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use app\models\RecomendarForm;
+use yii\helpers\Url;
 
 class JuegosController extends Controller
 {
@@ -30,7 +32,7 @@ class JuegosController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view']
+                        'actions' => ['index', 'view', 'recomendar']
                     ],
                     [
                         'allow' => true,
@@ -202,5 +204,42 @@ class JuegosController extends Controller
 
             terminar: return $this->goBack();
         }
+    }
+
+
+    public function actionRecomendar($id)
+    {
+        $model = new RecomendarForm();
+        $juego = Juegos::findOne($id);
+        if ($model->load(Yii::$app->request->post())) {
+            $url = Url::to([
+                'juegos/view',
+                'id' => $juego->id,
+            ], true);
+            $subject = 'Te han recomendado ' . $juego->nombre;
+            $body = <<<EOT
+                <p>Hola $model->email te han recomendado completar $juego->nombre</p>
+                <p>Mira la entrada del juego <a href="$url">aqui</a> en nuestra web</p>
+            EOT;
+            $this->enviarMail($body, $model->email, $subject);
+
+            Yii::$app->session->setFlash('success', 'Juego recomendado');
+            return $this->refresh();
+        }
+        return $this->render('recomendar', [
+            'model' => $model,
+            'juego' => $juego,
+        ]);
+    }
+
+
+    public function enviarMail($cuerpo, $dest, $subject)
+    {
+        return Yii::$app->mailer->compose()
+            ->setFrom(Yii::$app->params['smtpUsername'])
+            ->setTo($dest)
+            ->setSubject($subject)
+            ->setHtmlBody($cuerpo)
+            ->send();
     }
 }
