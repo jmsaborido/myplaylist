@@ -43,7 +43,7 @@ class CompletadosController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'delete'],
+                        'actions' => ['update', 'delete'],
                         'roles' => ['@'],
                         'matchCallback' => function ($rules, $action) {
                             $model = Completados::findOne(Yii::$app->request->get()['id']);
@@ -52,7 +52,7 @@ class CompletadosController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view'],
+                        'actions' => ['index', 'view', 'create'],
                         'roles' => ['@'],
                     ],
                 ],
