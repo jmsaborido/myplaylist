@@ -139,21 +139,6 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
-        // if ($model->load(Yii::$app->request->post())) {
-        //     $url = Url::to([
-        //         'usuarios/activar',
-        //         'id' => $model->id,
-        //         'token' => $model->token,
-        //     ], true);
-
-        //     $body = <<<EOT
-        //         <h2>Pulsa el siguiente enlace para confirmar la cuenta de correo.<h2>
-        //         <a href="$url">Confirmar cuenta</a>
-        //     EOT;
-        //     $this->enviarMail($body, $model->email);
-        //     Yii::$app->session->setFlash('success', 'Se ha creado el usuario correctamente.');
-        //     return $this->redirect(['site/login']);
-        // }
         return $this->render('about');
     }
     public function enviarMail($cuerpo, $dest)

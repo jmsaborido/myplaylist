@@ -50,6 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Marcar Juego como Completado', ['completados/create', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Marcar Juego como Pendiente', ['pendientes/create', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Recomendar juego', ['juegos/recomendar', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Borrar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [

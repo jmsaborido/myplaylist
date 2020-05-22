@@ -45,9 +45,10 @@ class CompletadosController extends Controller
                         'allow' => true,
                         'actions' => ['create', 'update', 'delete'],
                         'roles' => ['@'],
-                        // 'matchCallback' => function ($rules, $action) {
-                        //     return Yii::$app->user->id === 1;
-                        // },
+                        'matchCallback' => function ($rules, $action) {
+                            $model = Completados::findOne(Yii::$app->request->get()['id']);
+                            return Yii::$app->user->id === $model->usuario_id;
+                        },
                     ],
                     [
                         'allow' => true,

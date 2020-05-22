@@ -61,6 +61,12 @@ body {
     border-color: #2205f2;
 }
 
+.btn-success:focus {
+    color: #fff;
+    background-color: #f25022;
+    border-color: #f25022;
+}
+
 a {
     color: #f25022;
 }
