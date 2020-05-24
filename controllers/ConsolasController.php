@@ -15,6 +15,9 @@ use yii\filters\VerbFilter;
  */
 class ConsolasController extends Controller
 {
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -140,7 +143,6 @@ class ConsolasController extends Controller
         if (($model = Consolas::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

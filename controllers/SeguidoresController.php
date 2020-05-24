@@ -62,10 +62,8 @@ class SeguidoresController extends Controller
     public function actionIndex($seguidor_id)
     {
         $seguidor_id ? $seguidor_id : Yii::$app->user->id;
-
         $searchModel = new SeguidoresSearch(['seguidor_id' => $seguidor_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -79,7 +77,6 @@ class SeguidoresController extends Controller
     {
         $searchModel = new SeguidoresSearch(['seguido_id' => $seguido_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('indexSiguiendo', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -107,11 +104,9 @@ class SeguidoresController extends Controller
     public function actionCreate()
     {
         $model = new Seguidores();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -127,11 +122,9 @@ class SeguidoresController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
         return $this->render('update', [
             'model' => $model,
         ]);
@@ -147,7 +140,6 @@ class SeguidoresController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
@@ -163,10 +155,15 @@ class SeguidoresController extends Controller
         if (($model = Seguidores::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    /**
+     * Sigues o dejas de seguir a un usuario dependiendo si lo seguias o no.
+     *
+     * @param int $seguido_id el ID del usuario a seguir
+     * @return void
+     */
     public function actionFollow($seguido_id)
     {
         $antiguo = Seguidores::find()->andWhere([
