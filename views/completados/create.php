@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'todayHighlight' => true,
                         'todayBtn' => true,
                         'autoclose' => true,
-                        'format' => 'yyyy/dd/m'
+                        'format' => 'yyyy/m/dd'
                     ]
 
                 ]

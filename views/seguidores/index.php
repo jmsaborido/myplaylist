@@ -14,13 +14,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Seguidores', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);
-    ?>
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -37,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($model->seguido->username, ['/usuarios/view', 'id' => $model->seguido_id]);
                 },
             ],
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

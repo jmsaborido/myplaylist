@@ -132,15 +132,7 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
+
     public function enviarMail($cuerpo, $dest)
     {
         return Yii::$app->mailer->compose()

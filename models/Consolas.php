@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $denom
- * @property string $created_at
+ * @property string|null $created_at
  *
  * @property Completados[] $completados
  * @property Pendientes[] $pendientes
@@ -55,6 +55,7 @@ class Consolas extends \yii\db\ActiveRecord
             'created_at' => 'Añadido en',
         ];
     }
+
     public function setTotal($total)
     {
         $this->_total = $total;
@@ -75,7 +76,7 @@ class Consolas extends \yii\db\ActiveRecord
      */
     public function getCompletados()
     {
-        return $this->hasMany(Completados::className(), ['consola_id' => 'id']);
+        return $this->hasMany(Completados::className(), ['consola_id' => 'id'])->inverseOf('consola');;
     }
 
     /**

@@ -21,7 +21,7 @@ use yii\bootstrap4\ActiveForm;
     <?= $form->field($model, 'pasado')->checkbox() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Completar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

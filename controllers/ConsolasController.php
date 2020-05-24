@@ -82,7 +82,10 @@ class ConsolasController extends Controller
     {
         $model = new Consolas();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            date_default_timezone_set(Yii::$app->formatter->timeZone);
+            $model->created_at = date('Y/m/d H:i:s');
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

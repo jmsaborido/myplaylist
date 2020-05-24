@@ -32,7 +32,7 @@ DROP TABLE IF EXISTS consolas CASCADE;
 CREATE TABLE consolas (
     id bigserial PRIMARY KEY,
     denom varchar(255) NOT NULL UNIQUE,
-    created_at timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp(0) DEFAULT CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS juegos CASCADE;

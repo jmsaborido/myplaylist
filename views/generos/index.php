@@ -25,19 +25,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'options' => ['class' => 'pagination justify-content-center'],
         ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'denom',
+            [
+                'attribute' => 'denom',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::a($model->denom, ['generos/view', 'id' => $model->id], ['style' => 'color:white']);
+                }
+            ],
             [
                 'attribute' => 'total',
                 'format' => 'raw',
                 'value' => function ($model, $key, $index, $column) {
                     return Html::a($model->total, [
                         'completados/index', 'CompletadosSearch[juego.genero.denom]' => $model->id
-                    ]);
+                    ], ['style' => 'color:white']);
                 },
             ],
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

@@ -5,7 +5,7 @@ use yii\bootstrap4\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Consolas */
 
-$this->title = 'Create Consolas';
+$this->title = 'Creando Consolas';
 $this->params['breadcrumbs'][] = ['label' => 'Consolas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
