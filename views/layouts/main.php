@@ -82,6 +82,10 @@ AppAsset::register($this);
             <?= $content ?>
         </div>
     </div>
+
+    <?php if (!Yii::$app->getRequest()->getCookies()->getValue('aceptar')) {
+        Yii::$app->session->setFlash('error', 'Este sitio usa cookies, pulsa ' . Html::a('aquí', ['site/cookie']) . ' para confirmar que aceptas el uso de cookies</p>');
+    } ?>
     <?php $this->endBody() ?>
 </body>
 

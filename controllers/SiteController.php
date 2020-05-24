@@ -127,4 +127,22 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    /**
+     * Envia la cookie para confirmar que aceptas las cookies
+     *
+     * @return void
+     */
+    public function actionCookie()
+    {
+        $cookies = Yii::$app->response->cookies;
+        $cookies->add(new \yii\web\Cookie([
+            'name' => 'aceptar',
+            'value' => '1',
+            'expire' => time() + 3600 * 24 * 365,
+            'domain' => '',
+        ]));
+        Yii::debug($cookies);
+        return $this->goBack();
+    }
 }
