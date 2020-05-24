@@ -54,11 +54,22 @@ class Generos extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * Define cual es el total de juegos completados en este género
+     *
+     * @param int $total el total de juegos completados
+     * @return void
+     */
     public function setTotal($total)
     {
         $this->_total = $total;
     }
 
+    /**
+     * Devuelve el total de juegos completados en este género
+     *
+     * @return $_total el total de juegos completados
+     */
     public function getTotal()
     {
         if ($this->_total === null && !$this->isNewRecord) {
@@ -76,10 +87,22 @@ class Generos extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Juegos::className(), ['genero_id' => 'id']);
     }
+
+    /**
+     * Gets query for [[Completados]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
     public function getCompletados()
     {
         return $this->hasMany(Completados::class, ['juego_id' => 'id'])->via('juegos');
     }
+
+    /**
+     * Busca los generos con el atributo virtual total
+     *
+     * @return ActiveQuery
+     */
     public static function findWithTotal()
     {
         return static::find()
@@ -88,7 +111,11 @@ class Generos extends \yii\db\ActiveRecord
             ->groupBy('generos.id');
     }
 
-
+    /**
+     * Devuelve una lista de las generos
+     *
+     * @return [] La lista de generos
+     */
     public static function lista()
     {
         return static::find()->select('denom')->indexBy('id')->column();

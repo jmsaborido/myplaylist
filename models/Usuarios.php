@@ -35,13 +35,30 @@ use yii\helpers\Url;
  */
 class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
+    /**
+     * Escenario de crear un usuario
+     */
     const SCENARIO_CREAR = 'crear';
+
+    /**
+     * Escenario de modificar un usuario
+     */
     const SCENARIO_UPDATE = 'update';
+
+    /**
+     * Total de juegos completados
+     *
+     * @var int
+     */
     private $_total = null;
+
+    /**
+     * Imagen por defecto.
+     * @var string
+     */
     const IMAGE = '@img/user.png';
-    public $eventImage;
 
-
+    // public $eventImage;
 
     public $password_repeat;
     /**
@@ -110,11 +127,22 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         ];
     }
 
+    /**
+     * Define el total de juegos completados
+     *
+     * @param int $total El total de juegos completados
+     * @return void
+     */
     public function setTotal($total)
     {
         $this->_total = $total;
     }
 
+    /**
+     * Devuelve el total de juegos completados
+     *
+     * @return int
+     */
     public function getTotal()
     {
         if ($this->_total === null && !$this->isNewRecord) {
@@ -123,39 +151,68 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return $this->_total;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function findIdentity($id)
     {
         return static::findOne($id);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return static::findOne(['access_token' => $token]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getAuthKey()
     {
         return $this->auth_key;
     }
 
+    /**
+     * Devuelve un usuario por su username
+     *
+     * @param string $nombre el nombre del usuario a buscar
+     * @return Usuario modelo del usuario encontrado
+     */
     public static function findPorNombre($nombre)
     {
         return static::findOne(['username' => $nombre]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function validateAuthKey($authKey)
     {
         return $this->auth_key === $authKey;
     }
+
+    /**
+     * {@inheritdoc}
+     */
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);
     }
+
+    /**
+     * {@inheritdoc}
+     */
     public function beforeSave($insert)
     {
         if (!parent::beforeSave($insert)) {
@@ -182,11 +239,11 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return true;
     }
 
-    public function getCompletados()
-    {
-        return $this->hasMany(Completados::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
-    }
-
+    /**
+     * Busca los usuarios con el atributo virtual total
+     *
+     * @return ActiveQuery
+     */
     public static function findWithTotal()
     {
         return static::find()
@@ -195,6 +252,15 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->groupBy('usuarios.id');
     }
 
+    /**
+     * Gets query for [[Completados]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCompletados()
+    {
+        return $this->hasMany(Completados::className(), ['usuario_id' => 'id'])->inverseOf('usuario');
+    }
 
     /**
      * Gets query for [[ComentariosCompletados]].
@@ -285,7 +351,11 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
         return $this->hasMany(Mensajes::className(), ['id_sender' => 'id'])->inverseOf('sender');
     }
 
-
+    /**
+     * Devuelve los correos de los admin
+     *
+     * @return ActiveQuery
+     */
     public static function correoAdmin()
     {
         return static::find()
@@ -295,25 +365,25 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             ->column();
     }
 
-    public function upload()
-    {
-        if ($this->validate()) {
-            $path = $this->uploadPath() . $this->id . '.' . $this->eventImage->extension;
-            $this->eventImage->saveAs($path);
-            $this->image = $this->id . '.' . $this->eventImage->extension;
-            $this->eventImage->saveAs($this->image);
+    // public function upload()
+    // {
+    //     if ($this->validate()) {
+    //         $path = $this->uploadPath() . $this->id . '.' . $this->eventImage->extension;
+    //         $this->eventImage->saveAs($path);
+    //         $this->image = $this->id . '.' . $this->eventImage->extension;
+    //         $this->eventImage->saveAs($this->image);
 
-            //try delete imageFile file variable before save model
+    //         //try delete imageFile file variable before save model
 
-            $this->eventImage = null;
+    //         $this->eventImage = null;
 
-            $this->save();
-            return true;
-        }
-        return false;
-    }
-    public function uploadPath()
-    {
-        return Url::to('@uploads/');
-    }
+    //         $this->save();
+    //         return true;
+    //     }
+    //     return false;
+    // }
+    // public function uploadPath()
+    // {
+    //     return Url::to('@uploads/');
+    // }
 }

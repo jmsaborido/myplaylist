@@ -47,7 +47,6 @@ class ConsolasSearch extends Consolas
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => ['total' => SORT_DESC]]
-
         ]);
         $dataProvider->sort->attributes['total'] = [
             'asc' => ['COUNT(c.id)' => SORT_ASC],
@@ -72,7 +71,6 @@ class ConsolasSearch extends Consolas
         $query->andFilterWhere(['ilike', 'denom', $this->denom]);
         $query->andFilterHaving(['COUNT(c.id)' => $this->total]);
         $query->andFilterHaving(['>', 'COUNT(c.id)', 0]);
-
 
         return $dataProvider;
     }

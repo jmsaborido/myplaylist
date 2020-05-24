@@ -88,7 +88,6 @@ class CompletadosSearch extends Completados
         ]);
         $query->andFilterWhere(['ilike', 'j.nombre', $this->getAttribute('juego.nombre')]);
 
-
         return $dataProvider;
     }
 }

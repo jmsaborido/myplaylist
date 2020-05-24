@@ -27,8 +27,6 @@ class Completados extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-
-
     public static function tableName()
     {
         return 'completados';
@@ -52,6 +50,9 @@ class Completados extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function attributes()
     {
         return array_merge(parent::attributes(), ['consola.denom'], ['juego.nombre'], ['juego.year_debut'], ['genero.denom'], ['juego.genero_id'], ['juego.genero.denom'], ['juego.img_api']);
@@ -95,36 +96,6 @@ class Completados extends \yii\db\ActiveRecord
         return $this->hasMany(ComentariosCompletados::className(), ['completado_id' => 'id'])->inverseOf('completado');
     }
 
-    public function setImagenId()
-    {
-        if ($this->imagen_id === null && !$this->isNewRecord) {
-
-            $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
-            $respuesta = $searchBuilder
-                ->addEndpoint('games')
-                ->searchById($this->juego_id)
-                ->get();
-            $searchBuilder->clear();
-
-            $imagen = $searchBuilder
-                ->addEndpoint('covers')
-                ->searchById($respuesta->cover)
-                ->get();
-            $searchBuilder->clear();
-            $this->imagen_id = $imagen->image_id;
-            $this->save();
-        }
-    }
-
-    public function getImagenId()
-    {
-        if ($this->imagen_id === null && !$this->isNewRecord) {
-            $this->setImagenId();
-        }
-        return $this->imagen_id;
-    }
-
-
     /**
      * Gets query for [[Juego]].
      *
@@ -145,12 +116,22 @@ class Completados extends \yii\db\ActiveRecord
         return $this->hasOne(Usuarios::className(), ['id' => 'usuario_id'])->inverseOf('completados');
     }
 
-
+    /**
+     * Gets query for [[Genero]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
     public function getGenero()
     {
         return $this->hasMany(Generos::class, ['id' => 'genero_id'])->via('juego')->inverseOf('completados');
     }
 
+    /**
+     * Obtiene los datos para calcular las estadisticas a mostrar de un usuario
+     *
+     * @param int $id El ID del usuario
+     * @return [] $datos Los datos calculados
+     */
     public static function obtenerDatos($id)
     {
         $datos['debut'] = static::find()
