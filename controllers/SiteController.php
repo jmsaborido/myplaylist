@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\helpers\Utility;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -75,12 +76,10 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
-
         $model->password = '';
         return $this->render('login', [
             'model' => $model,
@@ -95,7 +94,6 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 
@@ -108,7 +106,6 @@ class SiteController extends Controller
     {
         $model = new IncidenciasForm();
         if ($model->load(Yii::$app->request->post())) {
-
             $actual = Yii::$app->formatter->asDatetime(time());
             $body = <<<EOT
                 <h2>Incidencia.<h2>
@@ -117,29 +114,17 @@ class SiteController extends Controller
                 <p>Asunto: $model->subject</p>
                 <p>Cuerpo: $model->body</p>
                 <p>Hora de la incidencia: $actual</p>
-
             EOT;
+            $subject = "Incidencia ADMIN myplaylist";
             $correos = Usuarios::correoAdmin();
             foreach ($correos as $key => $value) {
-                $this->enviarMail($body, $value);
+                Utility::enviarMail($body, $value, $subject);
             }
-
             Yii::$app->session->setFlash('Incidencia Enviada');
             return $this->refresh();
         }
         return $this->render('incidencias', [
             'model' => $model,
         ]);
-    }
-
-
-    public function enviarMail($cuerpo, $dest)
-    {
-        return Yii::$app->mailer->compose()
-            ->setFrom(Yii::$app->params['smtpUsername'])
-            ->setTo($dest)
-            ->setSubject("Incidencia ADMIN myplaylist")
-            ->setHtmlBody($cuerpo)
-            ->send();
     }
 }

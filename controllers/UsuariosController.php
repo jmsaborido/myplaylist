@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\helpers\Utility;
 use app\models\ComentariosUsuarios;
 use app\models\Completados;
 use app\models\Seguidores;
@@ -16,6 +17,9 @@ use yii\web\UploadedFile;
 
 class UsuariosController extends Controller
 {
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -65,8 +69,6 @@ class UsuariosController extends Controller
      */
     public function actionView($id)
     {
-
-
         return $this->render('view', [
             'model' => $this->findModel($id),
             'model2' => new ComentariosUsuarios(['usuario_id' => Yii::$app->user->id]),
@@ -76,32 +78,40 @@ class UsuariosController extends Controller
         ]);
     }
 
-
+    /**
+     * Registra los usuarios y les envia un correo de confirmacion
+     *
+     * @return mixed
+     */
     public function actionRegistrar()
     {
         $model = new Usuarios(['scenario' => Usuarios::SCENARIO_CREAR]);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $url = Url::to([
                 'usuarios/activar',
                 'id' => $model->id,
                 'token' => $model->token,
             ], true);
-
             $body = <<<EOT
                 <h2>Pulsa el siguiente enlace para confirmar la cuenta de correo.<h2>
                 <a href="$url">Confirmar cuenta</a>
             EOT;
-            $this->enviarMail($body, $model->email);
+            $subject = "Confirmar Cuenta";
+            Utility::enviarMail($body, $model->email, $subject);
             Yii::$app->session->setFlash('success', 'Se ha creado el usuario correctamente.');
             return $this->redirect(['site/login']);
         }
-
         return $this->render('registrar', [
             'model' => $model,
         ]);
     }
-
+    /**
+     * Updates an existing Usuarios model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionUpdate($id = null)
     {
         if ($id === null) {
@@ -114,31 +124,25 @@ class UsuariosController extends Controller
         } else {
             $model = Usuarios::findOne($id);
         }
-
         $model->scenario = Usuarios::SCENARIO_UPDATE;
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Se ha modificado correctamente.');
             return $this->goHome();
         }
-
         $model->password = '';
         $model->password_repeat = '';
-
         return $this->render('update', [
             'model' => $model,
         ]);
     }
-    public function enviarMail($cuerpo, $dest)
-    {
-        return Yii::$app->mailer->compose()
-            ->setFrom(Yii::$app->params['smtpUsername'])
-            ->setTo($dest)
-            ->setSubject("Confirmar Cuenta")
-            ->setHtmlBody($cuerpo)
-            ->send();
-    }
 
+    /**
+     * Comprueba que el token del usuario es el mismo que el token recibido y valida al usuario
+     *
+     * @param int $id el ID del usuario
+     * @param string $token el token a comprobar
+     * @return mixed
+     */
     public function actionActivar($id, $token)
     {
         $usuario = $this->findModel($id);
@@ -151,37 +155,43 @@ class UsuariosController extends Controller
         Yii::$app->session->setFlash('error', 'La validación no es correcta.');
         return $this->redirect(['site/index']);
     }
+    /**
+     * Finds the Usuarios model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Usuarios the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     protected function findModel($id)
     {
         if (($model = Usuarios::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('La página no existe.');
     }
-    public function actionUpload($id)
-    {
-        $model = $this->findModel($id);
 
-        if (Yii::$app->request->isPost) {
-            $model->eventImage = UploadedFile::getInstance($model, 'eventImage');
-            if ($model->upload()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        }
 
-        return $this->render('upload', ['model' => $model]);
-    }
-    // public function actionDelete($id)
+    // public function actionUpload($id)
     // {
-    //     $this->findModel($id)->delete();
-    //     return $this->redirect(['index']);
+    //     $model = $this->findModel($id);
+    //     if (Yii::$app->request->isPost) {
+    //         $model->eventImage = UploadedFile::getInstance($model, 'eventImage');
+    //         if ($model->upload()) {
+    //             return $this->redirect(['view', 'id' => $model->id]);
+    //         }
+    //     }
+    //     return $this->render('upload', ['model' => $model]);
     // }
 
+    /**
+     * Renderiza la vista de las estadisticas de un usuario
+     *
+     * @param int $id el ID del usuario
+     * @return mixed
+     */
     public function actionStats($id = null)
     {
         $id = $id === null ? Yii::$app->user->id : $id;
-
         return $this->render('stats', [
             'datos' => Completados::obtenerDatos($id),
             'model' => $this->findModel($id)

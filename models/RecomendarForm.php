@@ -12,8 +12,6 @@ class RecomendarForm extends Model
 {
     public $email;
 
-
-
     /**
      * @return array the validation rules.
      */

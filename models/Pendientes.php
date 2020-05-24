@@ -45,6 +45,9 @@ class Pendientes extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function attributes()
     {
         return array_merge(parent::attributes(), ['consola.denom'], ['juego.nombre'], ['juego.year_debut'], ['genero.denom'], ['juego.genero_id'], ['juego.genero.denom'], ['juego.img_api']);
@@ -95,6 +98,11 @@ class Pendientes extends \yii\db\ActiveRecord
         return $this->hasOne(Usuarios::className(), ['id' => 'usuario_id'])->inverseOf('pendientes');
     }
 
+    /**
+     * Gets query for [[Genero]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
     public function getGenero()
     {
         return $this->hasMany(Generos::class, ['id' => 'genero_id'])->via('juego')->inverseOf('completados');

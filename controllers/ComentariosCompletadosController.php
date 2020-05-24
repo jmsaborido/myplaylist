@@ -13,6 +13,9 @@ use yii\filters\VerbFilter;
 
 class ComentariosCompletadosController extends Controller
 {
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -35,6 +38,11 @@ class ComentariosCompletadosController extends Controller
             ],
         ];
     }
+    /**
+     * Permite comentar juegos completados
+     *
+     * @return mixed
+     */
     public function actionComentar()
     {
         $datos = Yii::$app->request->post()['ComentariosCompletados'];
@@ -52,6 +60,12 @@ class ComentariosCompletadosController extends Controller
         return $this->goBack();
     }
 
+    /**
+     * Borra un comentario
+     *
+     * @param int $id el ID del comentario
+     * @return mixed
+     */
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
@@ -61,6 +75,12 @@ class ComentariosCompletadosController extends Controller
         return $this->redirect(['/completados/view', 'id' => $id]);
     }
 
+    /**
+     * Modifica un comentario
+     *
+     * @param int $id el ID del comentario
+     * @return mixed
+     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -74,6 +94,16 @@ class ComentariosCompletadosController extends Controller
         ]);
     }
 
+    /**
+     * Finds the ComentariosCompletados model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     *
+     * @param integer $id
+     *
+     * @return ComentariosCompletados the loaded model
+     *
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     protected function findModel($id)
     {
         if (($model = ComentariosCompletados::findOne($id)) !== null) {

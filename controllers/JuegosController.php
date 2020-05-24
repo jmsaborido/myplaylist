@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\helpers\Utility;
 use app\models\Generos;
 use app\models\Juegos;
 use app\models\JuegosSearch;
@@ -18,6 +19,9 @@ use yii\helpers\Url;
 
 class JuegosController extends Controller
 {
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -52,7 +56,10 @@ class JuegosController extends Controller
         ];
     }
 
-
+    /**
+     * Lists all Juegos models.
+     * @return mixed
+     */
     public function actionIndex()
     {
         $JuegosSearch = new JuegosSearch();
@@ -64,31 +71,30 @@ class JuegosController extends Controller
         ]);
     }
 
+    /**
+     * Displays a single Juegos model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     public function actionView($id)
     {
 
         $model = $this->findJuego($id);
-
         $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
-
         $respuesta = $searchBuilder
             ->addEndpoint('games')
             ->searchById($model->api)
             ->get();
-
         $searchBuilder->clear();
-
         $imagen = $searchBuilder
             ->addEndpoint('covers')
             ->searchById($respuesta->cover)
             ->get();
-
-
         $lista = Generos::lista();
         $out = [];
         foreach ($respuesta->genres as $value) array_push($out, $lista[$value]);
         $generos = implode(', ', $out);
-
         return $this->render('view', [
             'model' => $model,
             'respuesta' => $respuesta,
@@ -97,13 +103,17 @@ class JuegosController extends Controller
         ]);
     }
 
+    /**
+     * Creates a new Juegos model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
     public function actionCreate()
     {
         $model = new Juegos();
 
         if ($model->load(Yii::$app->request->post())) {
             $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
-
             try {
                 $respuesta = $searchBuilder
                     ->addEndpoint('games')
@@ -113,33 +123,32 @@ class JuegosController extends Controller
                     ->search()
                     ->get();
             } catch (\Throwable $th) {
-
                 return $this->render('create', [
                     'model' => $model,
                     'noEnc' => true
                 ]);
             }
-
-
             return $this->render('create', [
                 'model' => $model,
                 'respuesta' => $respuesta
             ]);
-
-            // return ActiveForm::validate($model);
         }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
-
         return $this->render('create', [
             'model' => $model,
         ]);
     }
 
+    /**
+     * Deletes an existing Juegos model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
     public function actionDelete($id)
     {
-
         $model = $this->findJuego($id);
         if (Yii::$app->user->identity['rol'] == 'ADMIN') {
             $model->delete();
@@ -147,37 +156,41 @@ class JuegosController extends Controller
         } else {
             Yii::$app->session->setFlash('error', 'Solo puedes borrar los juegos los administradores.');
         }
-
         return $this->redirect(['index']);
     }
 
+    /**
+     * Finds the Juegos model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Generos the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     protected function findJuego($id)
     {
         if (($juego = Juegos::findOne($id)) === null) {
             throw new NotFoundHttpException('No se ha encontrado el juego.');
         }
-
         return $juego;
     }
 
-
+    /**
+     * Crea los juegos desde la API de IGDB
+     *
+     * @param int $id
+     * @return mixed
+     */
     public function actionCreateApi($id)
     {
-
-
         $total = Juegos::find()->where(['api' => $id])->count();
         if ($total === 0) {
             $model = new Juegos();
-
             $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
-
             $respuesta = $searchBuilder
                 ->addEndpoint('games')
                 ->searchById($id)
                 ->get();
-
             $searchBuilder->clear();
-
             if (!isset($respuesta->cover)) {
                 goto terminar;
             }
@@ -186,7 +199,6 @@ class JuegosController extends Controller
                 ->searchById($respuesta->cover)
                 ->get();
             $model->img_api = $imagen->image_id;
-
             $model->api = $id;
             $model->nombre = $respuesta->name;
             $model->year_debut = isset($respuesta->first_release_date) ? date("Y",  $respuesta->first_release_date) : 0;
@@ -197,16 +209,19 @@ class JuegosController extends Controller
             }
             $model->save();
             Yii::$app->session->setFlash('success', $model->nombre . " se ha creado con exito");
-
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            Yii::$app->session->setFlash('error', 'El juego no se ha podido crear');
-
-            terminar: return $this->goBack();
+            terminar: Yii::$app->session->setFlash('error', 'El juego no se ha podido crear');
+            return $this->goBack();
         }
     }
 
-
+    /**
+     * Recomienda juegos mediante correo
+     *
+     * @param int $id El ID del juego
+     * @return mixed
+     */
     public function actionRecomendar($id)
     {
         $model = new RecomendarForm();
@@ -221,8 +236,7 @@ class JuegosController extends Controller
                 <p>Hola $model->email te han recomendado completar $juego->nombre</p>
                 <p>Mira la entrada del juego <a href="$url">aqui</a> en nuestra web</p>
             EOT;
-            $this->enviarMail($body, $model->email, $subject);
-
+            Utility::enviarMail($body, $model->email, $subject);
             Yii::$app->session->setFlash('success', 'Juego recomendado');
             return $this->refresh();
         }
@@ -230,16 +244,5 @@ class JuegosController extends Controller
             'model' => $model,
             'juego' => $juego,
         ]);
-    }
-
-
-    public function enviarMail($cuerpo, $dest, $subject)
-    {
-        return Yii::$app->mailer->compose()
-            ->setFrom(Yii::$app->params['smtpUsername'])
-            ->setTo($dest)
-            ->setSubject($subject)
-            ->setHtmlBody($cuerpo)
-            ->send();
     }
 }

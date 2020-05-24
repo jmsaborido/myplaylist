@@ -27,6 +27,11 @@ class Seguidores extends \yii\db\ActiveRecord
         return 'seguidores';
     }
 
+    /**
+     * Gets query for [[Usuario]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
     public function attributes()
     {
         return array_merge(parent::attributes(), ['seguido.username'], ['seguidor.username']);
@@ -82,6 +87,12 @@ class Seguidores extends \yii\db\ActiveRecord
         return $this->hasOne(Usuarios::className(), ['id' => 'seguido_id'])->inverseOf('seguidos');
     }
 
+    /**
+     * Devuelve si el usuario actual sigue a otro en concreto
+     *
+     * @param int $seguido_id El ID del usuario seguido
+     * @return boolean si sigue o no a ese usuario
+     */
     public static function estaSiguiendo($seguido_id)
     {
         $dev = Seguidores::find()->where(

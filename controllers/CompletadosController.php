@@ -131,9 +131,12 @@ class CompletadosController extends Controller
             }
             return $this->redirect(['index']);
         }
-
-        $pendiente = new Pendientes(['id' => $pend_id, 'juego_id' => $id, 'pasado' => $pasado, 'consola_id' => $consola]);
-
+        $pendiente = new Pendientes([
+            'id' => $pend_id,
+            'juego_id' => $id,
+            'pasado' => $pasado,
+            'consola_id' => $consola
+        ]);
         return $this->render('create', [
             'model' => $model,
             'totalC' => Consolas::lista(),
@@ -152,16 +155,13 @@ class CompletadosController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findCompletado($id);
-
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
-
         return $this->render('update', [
             'model' => $model,
             'totalC' => Consolas::lista()
@@ -199,7 +199,6 @@ class CompletadosController extends Controller
         if (($model = Completados::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

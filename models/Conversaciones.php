@@ -109,8 +109,6 @@ class Conversaciones extends \yii\db\ActiveRecord
         return Usuarios::findOne(['id' => $this->id_user1 == Yii::$app->user->id ? $this->id_user2 : $this->id_user1]);
     }
 
-
-
     /**
      * Gets query for [[User1]].
      *

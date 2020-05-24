@@ -77,8 +77,8 @@ class CompletadosSearch extends Completados
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'usuario_id' => $this->usuario_id,
+            'id' => $this->id,
             'juego_id' => $this->juego_id,
             'consola_id' => $this->getAttribute('consola.denom'),
             'j.genero_id' => $this->getAttribute('juego.genero.denom'),
@@ -87,7 +87,6 @@ class CompletadosSearch extends Completados
             'j.year_debut' =>  $this->getAttribute('juego.year_debut'),
         ]);
         $query->andFilterWhere(['ilike', 'j.nombre', $this->getAttribute('juego.nombre')]);
-
 
         return $dataProvider;
     }

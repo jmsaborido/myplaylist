@@ -39,6 +39,10 @@ class Consolas extends \yii\db\ActiveRecord
         ];
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
     public function attributes()
     {
         return array_merge(parent::attributes(), ['completados.usuario_id']);
@@ -56,11 +60,22 @@ class Consolas extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * Define cual es el total de juegos completados en esta consola
+     *
+     * @param int $total el total de juegos completados
+     * @return void
+     */
     public function setTotal($total)
     {
         $this->_total = $total;
     }
 
+    /**
+     * Devuelve el total de juegos completados en esta consola
+     *
+     * @return $_total el total de juegos completados
+     */
     public function getTotal()
     {
         if ($this->_total === null && !$this->isNewRecord) {
@@ -92,6 +107,11 @@ class Consolas extends \yii\db\ActiveRecord
             ->groupBy('consolas.id');
     }
 
+    /**
+     * Busca las consolas con el atributo virtual total
+     *
+     * @return ActiveQuery
+     */
     public static function findWithTotal()
     {
         return static::find()
@@ -99,6 +119,12 @@ class Consolas extends \yii\db\ActiveRecord
             ->joinWith('completados c', false)
             ->groupBy('consolas.id');
     }
+
+    /**
+     * Devuelve una lista de las consolas
+     *
+     * @return [] La lista de consolas
+     */
     public static function lista()
     {
         return static::find()->select('denom')->indexBy('id')->column();

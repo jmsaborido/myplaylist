@@ -45,6 +45,9 @@ class Juegos extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function attributes()
     {
         return array_merge(parent::attributes(), ['genero.denom']);

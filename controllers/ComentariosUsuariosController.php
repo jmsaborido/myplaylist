@@ -13,6 +13,9 @@ use yii\filters\VerbFilter;
 
 class ComentariosUsuariosController extends Controller
 {
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -35,6 +38,11 @@ class ComentariosUsuariosController extends Controller
             ],
         ];
     }
+    /**
+     * Permite comentar usuarios
+     *
+     * @return mixed
+     */
     public function actionComentar()
     {
         $datos = Yii::$app->request->post()['ComentariosUsuarios'];
@@ -52,6 +60,13 @@ class ComentariosUsuariosController extends Controller
         return $this->goBack();
     }
 
+
+    /**
+     * Borra un comentario
+     *
+     * @param int $id el ID del comentario
+     * @return mixed
+     */
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
@@ -61,6 +76,12 @@ class ComentariosUsuariosController extends Controller
         return $this->redirect(['/usuarios/view', 'id' => $id]);
     }
 
+    /**
+     * Modifica un comentario
+     *
+     * @param int $id el ID del comentario
+     * @return mixed
+     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -74,6 +95,16 @@ class ComentariosUsuariosController extends Controller
         ]);
     }
 
+    /**
+     * Finds the ComentariosUsuarios model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     *
+     * @param integer $id
+     *
+     * @return ComentariosUsuarios the loaded model
+     *
+     * @throws NotFoundHttpException if the model cannot be found
+     */
     protected function findModel($id)
     {
         if (($model = ComentariosUsuarios::findOne($id)) !== null) {

@@ -45,7 +45,6 @@ class PendientesController extends Controller
         $usuario_id = $usuario_id === null ? Yii::$app->user->id : $usuario_id;
         $searchModel = new PendientesSearch(['usuario_id' => $usuario_id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -63,21 +62,16 @@ class PendientesController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-
         $searchBuilder = new SearchBuilder(Yii::$app->params['igdb']['key']);
-
         $respuesta = $searchBuilder
             ->addEndpoint('games')
             ->searchById($model->juego->api)
             ->get();
-
         $searchBuilder->clear();
-
         $lista = Generos::lista();
         $out = [];
         foreach ($respuesta->genres as $value) array_push($out, $lista[$value]);
         $generos = implode(', ', $out);
-
         return $this->render('view', [
             'model' => $model,
             'respuesta' => $respuesta,
@@ -117,11 +111,9 @@ class PendientesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
         return $this->render('update', [
             'model' => $model,
             'totalC' => Consolas::lista(),
@@ -138,7 +130,6 @@ class PendientesController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
@@ -154,7 +145,6 @@ class PendientesController extends Controller
         if (($model = Pendientes::findOne($id)) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

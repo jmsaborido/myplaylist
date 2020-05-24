@@ -139,6 +139,12 @@ class ConversacionesController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    /**
+     * Busca usuarios por nombre
+     *
+     * @param string $name Nombre del usuario a buscar
+     * @return array Nombres de los usuario encontrados
+     */
     public function actionBuscarUsuario($name = null)
     {
         $users = [];
