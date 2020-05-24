@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 $js = <<<EOT
 window.setInterval(()=>{
     $.pjax.reload({container: '#pjax', async: true});
-}, 1000);
+}, 5000);
 var element = document.getElementById("list");
 element.scrollTop = element.scrollHeight;
 element.scrollTop = element.scrollTop;

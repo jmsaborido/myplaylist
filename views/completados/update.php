@@ -1,5 +1,6 @@
 <?php
 
+use kartik\date\DatePicker;
 use yii\bootstrap4\ActiveForm;
 use yii\bootstrap4\Html;
 
@@ -22,8 +23,22 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $form->field($model, 'consola_id')->dropDownList($totalC)->label('Consola') ?>
 
-    <?= $form->field($model, 'fecha')->textInput() ?>
+    <?= $form->field($model, 'fecha')
+        ->widget(
+            DatePicker::classname(),
+            [
+                'readonly' => true,
+                'options' => ['placeholder' => date('d/m/Y')],
+                'removeButton' => false,
+                'pluginOptions' => [
+                    'todayHighlight' => true,
+                    'todayBtn' => true,
+                    'autoclose' => true,
+                    'format' => 'yyyy/m/dd'
+                ]
 
+            ]
+        ); ?>
     <?= $form->field($model, 'pasado')->checkbox() ?>
 
     <div class="form-group">
