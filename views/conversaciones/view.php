@@ -4,11 +4,15 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\ActiveForm;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Group */
 
 $js = <<<EOT
+window.setInterval(()=>{
+    $.pjax.reload({container: '#pjax', async: true});
+}, 1000);
 var element = document.getElementById("list");
 element.scrollTop = element.scrollHeight;
 element.scrollTop = element.scrollTop;
@@ -25,6 +29,7 @@ $templateMessage = '{label}<div class="input-group">{input}
 ?>
 <?= Html::a('Volver A Las Conversaciones', Url::to(['conversaciones/index', 'id' => Yii::$app->user->id]), ['class' => 'btn btn-primary']) ?>
 <h3>Mensajes con <?= $receiver->nombre . " " . $receiver->apellidos  ?></h3>
+<?php Pjax::begin(['id' => 'pjax']); ?>
 <div class="list" id="list">
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
@@ -38,6 +43,7 @@ $templateMessage = '{label}<div class="input-group">{input}
         'itemView' => '../mensajes/_view.php',
     ]) ?>
 </div>
+<?php Pjax::end(); ?>
 <div class="message-form">
 
     <?php $form = ActiveForm::begin(); ?>
