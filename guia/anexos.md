@@ -8,7 +8,7 @@
 
 ![Validación HTML](images/anexo/html.png)
 
-[Enlace a la validación HTML]()
+[Enlace a la validación HTML](https://validator.w3.org/nu/?doc=http%3A%2F%2Fmyplay-list.herokuapp.com%2F)
 
 *CSS*
 
@@ -76,13 +76,21 @@ En la imagen sale sin errores, pero si pulsas el enlace, te lleva a la validaci�
 
 ---
 
-### *([R25](https://github.com/FranBarGar/netflox/issues/25)) Codeception*
+### *([R25](https://github.com/jmsaborido/myplaylist/issues/25)) Codeception*
 
 ![Pruebas Codeception](images/anexo/codeception.png)
 
 ---
 
-### *(RXX)) Tecnologias usadas*
+### *([R26](https://github.com/jmsaborido/myplaylist/issues/26)) Code Climate*
+
+![Pruebas Codeception](images/anexo/codeclimate.png)
+
+Los problemas que da son de codigos que pasan de 25 lineas, de codigos de los plugin o codigos que se repiten(los controladores declaran el namespace de controller)
+
+---
+
+### *(RXX) Tecnologias usadas*
 
 - Ubuntu 20.04 como sistema operativo
 - Heroku como alojamiento cloud
