@@ -40,7 +40,7 @@ class Utility
      * @param string $subject el asunto
      * @return void
      */
-    public function enviarMail($cuerpo, $dest, $subject)
+    public static function enviarMail($cuerpo, $dest, $subject)
     {
         return Yii::$app->mailer->compose()
             ->setFrom(Yii::$app->params['smtpUsername'])

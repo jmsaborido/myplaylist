@@ -1,24 +1,23 @@
 # Descripción general del proyecto
 
-Explicar.
+MyPlayList es una aplicacion web que te permite mantener el registro de tus juegos completados, juegos pendientes y obtener estadísticas sobre los juegos copmpletados
 
 ## Funcionalidad principal de la aplicación
 
-Explicar.
+Mantener un registro de los juegos completaods
 
 ## Objetivos generales
 
-A diferencia de los casos de uso, los objetivos no tienen principio ni fin.
+* Mantener un registro de los juegos completados
+* Mantener un registro de los juegos pendientes
+* Obtener estadisticas de los juegos completados
+* Gestión de los usuarios
 
-Por ejemplo:
-
-* Objetivo: "gestionar los alquileres y las devoluciones de las películas".
-* Casos de uso: "alquilar una película", "devolver una película".
 
 ## URL del repositorio
 
-[https://github.com/ricpelo/proyecto](https://github.com/ricpelo/proyecto)
+[https://github.com/jmsaborido/myplaylist](https://github.com/jmsaborido/myplaylist)
 
 ## URL de la documentación
 
-[https://ricpelo.github.io/proyecto](https://ricpelo.github.io/proyecto)
+[https://jmsaborido.github.io/myplaylist](https://jmsaborido.github.io/myplaylist)
