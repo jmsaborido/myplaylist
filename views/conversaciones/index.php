@@ -36,7 +36,7 @@ $this->title = 'Conversaciones';
             ],
             [
                 'attribute' => 'last.momento',
-                'label' => 'fecha',
+                'label' => 'Fecha',
                 'format' => 'DateTime',
                 'value' => function ($model, $key, $index, $widget) {
                     $last = $model->getLast();

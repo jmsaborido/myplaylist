@@ -36,11 +36,11 @@ class JuegosController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'recomendar']
+                        'actions' => ['index', 'view']
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['create', 'create-api'],
+                        'actions' => ['create', 'create-api', 'recomendar'],
                         'roles' => ['@'],
                     ],
                     [

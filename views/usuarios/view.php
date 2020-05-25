@@ -80,9 +80,7 @@ $this->registerJs($js);
             'username',
             'nombre',
             'apellidos',
-            'email',
             'created_at:dateTime',
-            'rol',
         ],
     ]);
     if (Yii::$app->user->id === $model->id) {

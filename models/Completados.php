@@ -73,8 +73,6 @@ class Completados extends \yii\db\ActiveRecord
         ];
     }
 
-
-
     /**
      * Gets query for [[Consola]].
      *

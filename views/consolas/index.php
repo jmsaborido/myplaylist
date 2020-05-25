@@ -9,7 +9,6 @@ use yii\widgets\Pjax;
 
 $this->title = 'Consolas';
 $this->params['breadcrumbs'][] = $this->title;
-Yii::debug(date('h:i:s a', time()))
 
 ?>
 <div class="consolas-index">

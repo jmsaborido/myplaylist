@@ -140,10 +140,9 @@ class SiteController extends Controller
             'name' => 'aceptar',
             'value' => '1',
             'expire' => time() + 3600 * 24 * 365,
-            'domain' => '                                  20:47:58 
-  ~/web/myplaylist',
+            'domain' => '',
         ]));
-        Yii::debug($cookies);
+        Yii::$app->session->removeFlash('error');
         return $this->goBack();
     }
 }

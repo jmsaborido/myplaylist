@@ -33,7 +33,8 @@ class ConsolasController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view']
+                        'actions' => ['index', 'view'],
+                        'roles' => ['@']
                     ],
                     [
                         'allow' => true,
