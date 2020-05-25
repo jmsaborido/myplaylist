@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
                 'label' => '',
                 'value' => function ($model) {
-                    return Html::a(Html::img('https://images.igdb.com/igdb/image/upload/t_cover_small/' . $model->juego->img_api . '.jpg', ['width' => '60px']), ['completados/view', 'id' => $model->id]);
+                    return Html::a(Html::img('https://images.igdb.com/igdb/image/upload/t_cover_small/' . $model->juego->img_api . '.jpg', ['width' => '60']), ['completados/view', 'id' => $model->id]);
                 },
             ],
             [

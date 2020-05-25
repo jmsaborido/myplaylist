@@ -6,9 +6,9 @@ return [
     'adminEmail' => 'admin@example.com',
     'senderEmail' => 'noreply@example.com',
     'senderName' => 'Example.com mailer',
-    'smtpUsername' => 'myplaylist.web@gmail.com',
+    'smtpUsername' => getenv('SMTP_USERNAME'),
     'igdb' => [
-        'key' => getenv('apiKey'),
+        'key' => getenv('APIKEY'),
         'url' => 'https://api-v3.igdb.com',
         'cache' => 5
     ],
