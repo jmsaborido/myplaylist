@@ -45,7 +45,7 @@ class Conversaciones extends \yii\db\ActiveRecord
                 'skipOnError' => true,
                 'targetClass' => Usuarios::className(),
                 'targetAttribute' => ['username' => 'username'],
-                'message' =>  "El nombre de usuario no existe, asegurate de que lo has escrito bien",
+                'message' =>  'El nombre de usuario no existe, asegurate de que lo has escrito bien',
             ],
         ];
     }

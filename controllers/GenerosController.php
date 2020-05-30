@@ -10,7 +10,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-
 class GenerosController extends Controller
 {
     /**

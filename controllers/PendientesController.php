@@ -80,7 +80,9 @@ class PendientesController extends Controller
         $searchBuilder->clear();
         $lista = Generos::lista();
         $out = [];
-        foreach ($respuesta->genres as $value) array_push($out, $lista[$value]);
+        foreach ($respuesta->genres as $value) {
+            array_push($out, $lista[$value]);
+        }
         $generos = implode(', ', $out);
         return $this->render('view', [
             'model' => $model,

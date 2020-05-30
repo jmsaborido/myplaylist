@@ -115,7 +115,7 @@ class SiteController extends Controller
                 <p>Cuerpo: $model->body</p>
                 <p>Hora de la incidencia: $actual</p>
             EOT;
-            $subject = "Incidencia ADMIN myplaylist";
+            $subject = 'Incidencia ADMIN myplaylist';
             $correos = Usuarios::correoAdmin();
             foreach ($correos as $key => $value) {
                 Utility::enviarMail($body, $value, $subject);

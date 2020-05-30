@@ -6,6 +6,7 @@ use yii\web\UploadedFile;
 use \yii\imagine\Image;
 use Yii;
 use yii\helpers\Url;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "usuarios".
@@ -33,7 +34,7 @@ use yii\helpers\Url;
  * @property Seguidores[] $seguidores
  * @property Seguidores[] $seguidos
  */
-class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
+class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
 {
     /**
      * Escenario de crear un usuario
@@ -94,7 +95,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
             [['email'], 'email'],
             [['username'], 'unique'],
             [['password_repeat'], 'required', 'on' => self::SCENARIO_CREAR],
-            [['eventImage'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
+            // [['eventImage'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [
                 ['password_repeat'],
@@ -156,7 +157,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
      */
     public static function findIdentity($id)
     {
-        return static::findOne($id);
+        return static::findOne(['id' => $id]);
     }
 
     /**
@@ -164,7 +165,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['access_token' => $token]);
+        return static::findOne(['auth_key' => $token]);
     }
 
     /**
@@ -232,7 +233,7 @@ class Usuarios extends \yii\db\ActiveRecord implements \yii\web\IdentityInterfac
                 if ($this->password === '') {
                     $this->password = $this->getOldAttribute('password');
                 } else {
-                    $this->password = $security->generatePasswordHash($this->password);
+                    $this->password = Yii::$app->security->generatePasswordHash($this->password);
                 }
             }
         }

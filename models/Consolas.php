@@ -91,7 +91,7 @@ class Consolas extends \yii\db\ActiveRecord
      */
     public function getCompletados()
     {
-        return $this->hasMany(Completados::className(), ['consola_id' => 'id'])->inverseOf('consola');;
+        return $this->hasMany(Completados::className(), ['consola_id' => 'id'])->inverseOf('consola');
     }
 
     /**
