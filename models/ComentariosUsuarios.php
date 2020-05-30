@@ -36,7 +36,7 @@ class ComentariosUsuarios extends \yii\db\ActiveRecord
             [['usuario_id', 'perfil_id', 'cuerpo'], 'required'],
             [['usuario_id', 'perfil_id'], 'default', 'value' => null],
             [['usuario_id', 'perfil_id'], 'integer'],
-            [['cuerpo'], 'string'],
+            [['cuerpo'], 'string', 'max' => 80],
             [['created_at', 'edited_at'], 'safe'],
             [['usuario_id'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_id' => 'id']],
             [['perfil_id'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['perfil_id' => 'id']],

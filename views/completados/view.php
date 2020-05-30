@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php if (!Yii::$app->user->isGuest && $model->usuario_id === Yii::$app->user->id) : ?>
 
         <p>
-            <?= Html::a('Modificar', ['update', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Modificar', ['update', 'id' => $model->id],  ['class' => 'btn btn-success', 'id' => 'modificar']) ?>
             <?= Html::a('Borrar', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
@@ -65,35 +65,28 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <?php if ($comentarios != null) ?>
-    <div class="comentarios">
+    <article class="comentarios">
+        <h2>Comentarios</h2>
         <?php foreach ($comentarios as $key => $value) { ?>
-            <p>
-                <?= Html::encode($value->usuario->username) . ": " .
-                    Html::encode($value->cuerpo) . " " .
-                    Yii::$app->formatter->asDateTime($value->created_at) .
-                    ($value->usuario_id === Yii::$app->user->id ?
-                        Html::a(
-                            '<span class="glyphicon glyphicon-pencil"></span>',
-                            ['comentarios-completados/update', 'id' => $value->id]
-                        ) . Html::a(
-                            '<span class="glyphicon glyphicon-trash"></span>',
-                            ['comentarios-completados/delete', 'id' => $value->id,],
-                            ['data-method' => 'post']
-                        ) : " ")
-                ?>
-            </p>
-        <?php } ?>
-    </div>
-
-    <?php if (!Yii::$app->user->isGuest) : ?>
-        <?php $form = ActiveForm::begin(['action' => ['comentarios-completados/comentar']]);
-        ?>
-
-        <?= $form->field($model2, 'cuerpo')->label(false) ?>
-        <?= $form->field($model2, 'id')->hiddenInput(['value' => $model->id])->label(false) ?>
-
-
-        <div class="form-group">
+            <section id="comentario" class="row justify-content-between">
+                <p id="cuerpo">
+                    <?= Html::a(Html::encode($value->usuario->username), ['usurios/view', 'id' => $value->usuario_id]) . " : " .
+                        Html::encode($value->cuerpo) . " " . "</p> <p id='fecha'>" .
+                        Yii::$app->formatter->asDateTime($value->created_at) .
+                        ($value->usuario_id === Yii::$app->user->id ?
+                            Html::a(
+                                '<span class="glyphicon glyphicon-pencil"></span>',
+                                ['comentarios-completados/update', 'id' => $value->id]
+                            ) . Html::a(
+                                '<span class="glyphicon glyphicon-trash"></span>',
+                                ['comentarios-completados/delete', 'id' => $value->id,],
+                                ['data-method' => 'post']
+                            ) : " ")
+                    ?>
+                </p>
+            </section> <?php } ?>
+    </article> <?php if (!Yii::$app->user->isGuest) : ?> <?php $form = ActiveForm::begin(['action' => ['comentarios-completados/comentar']]);
+                                                            ?> <?= $form->field($model2, 'cuerpo')->label(false) ?> <?= $form->field($model2, 'id')->hiddenInput(['value' => $model->id])->label(false) ?> <div class="form-group">
             <?= Html::submitButton('Comentar', ['class' => 'btn btn-success']) ?>
         </div>
         <?php ActiveForm::end(); ?>
