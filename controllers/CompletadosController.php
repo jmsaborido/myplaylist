@@ -18,8 +18,6 @@ use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\bootstrap4\ActiveForm;
 
-
-
 /**
  * CompletadosController implements the CRUD actions for Completados model.
  */
@@ -101,7 +99,9 @@ class CompletadosController extends Controller
 
         $lista = Generos::lista();
         $out = [];
-        foreach ($respuesta->genres as $value) array_push($out, $lista[$value]);
+        foreach ($respuesta->genres as $value) {
+            array_push($out, $lista[$value]);
+        }
         $generos = implode(', ', $out);
 
         return $this->render('view', [

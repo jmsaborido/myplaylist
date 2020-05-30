@@ -2,14 +2,12 @@
 
 namespace app\controllers;
 
-
 use Yii;
 use app\models\ComentariosCompletados;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
 
 class ComentariosCompletadosController extends Controller
 {

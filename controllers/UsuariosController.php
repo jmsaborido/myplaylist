@@ -72,7 +72,7 @@ class UsuariosController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
             'model2' => new ComentariosUsuarios(['usuario_id' => Yii::$app->user->id]),
-            'siguiendo' => Seguidores::find()->where(['seguidor_id' => $id, 'ended_at' => null],)->count(),
+            'siguiendo' => Seguidores::find()->where(['seguidor_id' => $id, 'ended_at' => null])->count(),
             'seguidores' => Seguidores::find()->where(['seguido_id' => $id, 'ended_at' => null])->count(),
             'comentarios' => ComentariosUsuarios::find()->where(['perfil_id' => $id])->orderBy('created_at')->all()
         ]);
@@ -96,7 +96,7 @@ class UsuariosController extends Controller
                 <h2>Pulsa el siguiente enlace para confirmar la cuenta de correo.<h2>
                 <a href="$url">Confirmar cuenta</a>
             EOT;
-            $subject = "Confirmar Cuenta";
+            $subject = 'Confirmar Cuenta';
             Utility::enviarMail($body, $model->email, $subject);
             Yii::$app->session->setFlash('success', 'Se ha creado el usuario correctamente.');
             return $this->redirect(['site/login']);

@@ -93,7 +93,9 @@ class JuegosController extends Controller
             ->get();
         $lista = Generos::lista();
         $out = [];
-        foreach ($respuesta->genres as $value) array_push($out, $lista[$value]);
+        foreach ($respuesta->genres as $value) {
+            array_push($out, $lista[$value]);
+        }
         $generos = implode(', ', $out);
         return $this->render('view', [
             'model' => $model,
@@ -201,14 +203,14 @@ class JuegosController extends Controller
             $model->img_api = $imagen->image_id;
             $model->api = $id;
             $model->nombre = $respuesta->name;
-            $model->year_debut = isset($respuesta->first_release_date) ? date("Y",  $respuesta->first_release_date) : 0;
+            $model->year_debut = isset($respuesta->first_release_date) ? date('Y', $respuesta->first_release_date) : 0;
             if (is_array($respuesta->genres)) {
                 $model->genero_id = $respuesta->genres[0];
             } else {
                 $model->genero_id = $respuesta->genres;
             }
             $model->save();
-            Yii::$app->session->setFlash('success', $model->nombre . " se ha creado con exito");
+            Yii::$app->session->setFlash('success', $model->nombre . ' se ha creado con exito');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             terminar: Yii::$app->session->setFlash('error', 'El juego no se ha podido crear');

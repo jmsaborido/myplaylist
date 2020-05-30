@@ -106,7 +106,6 @@ class ConversacionesController extends Controller
                 ->where(['id_user1' => $model->id_user1, 'id_user2' => $model->id_user2])
                 ->orWhere(['id_user2' => $model->id_user1, 'id_user1' => $model->id_user2])->one();
             if ($conversacion == null) {
-
                 $model->save();
                 $model->refresh();
                 return $this->redirect(['view', 'id' => $model->id]);

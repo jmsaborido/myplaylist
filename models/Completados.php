@@ -42,7 +42,7 @@ class Completados extends \yii\db\ActiveRecord
             [['usuario_id', 'juego_id', 'consola_id'], 'default', 'value' => null],
             [['usuario_id', 'juego_id', 'consola_id'], 'integer'],
             [['fecha', 'juego.img_api'], 'safe'],
-            [['fecha'], 'default', 'value' => date("d/M/y")],
+            [['fecha'], 'default', 'value' => date('d/M/y')],
             [['pasado'], 'boolean'],
             [['consola_id'], 'exist', 'skipOnError' => true, 'targetClass' => Consolas::className(), 'targetAttribute' => ['consola_id' => 'id']],
             [['juego_id'], 'exist', 'skipOnError' => true, 'targetClass' => Juegos::className(), 'targetAttribute' => ['juego_id' => 'id']],
