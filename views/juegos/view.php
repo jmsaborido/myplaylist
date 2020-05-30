@@ -11,17 +11,13 @@ $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 
-<div class="juegos-view">
+<main itemscope itemtype="http://schema.org/VideoGame" class="juegos-view">
 
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity['rol'] === 'ADMIN') : ?>
-
-
-    <?php endif ?>
+    <h1 itemprop="name"><?= Html::encode($this->title) ?></h1>
 
     <div class="row mb-3">
-        <div class="col text-center">
+        <div itemprop="image" class="col text-center">
             <?= Html::img('https://images.igdb.com/igdb/image/upload/t_cover_big/' . $imagen->image_id . '.jpg') ?>
         </div>
     </div>
@@ -33,8 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             [
                 'label' => 'Fecha de salida',
-                'value' =>  $respuesta->first_release_date,
-                'format' => 'date'
+                'value' =>  "<span itemprop='dateCreated'>" . Yii::$app->formatter->asDate($respuesta->first_release_date) . "</span>",
+                'format' => 'raw'
             ],
             [
                 'label' => 'Todos los generos',
@@ -42,7 +38,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'label' => 'Puntuacion media',
-                'value' => isset($respuesta->total_rating) ? round($respuesta->total_rating) : null,
+                'value' => isset($respuesta->total_rating) ? "<span itemprop='aggregateRating'>" . round($respuesta->total_rating) . "</span>" : null,
+                'format' => 'raw'
             ]
         ],
     ]) ?>
@@ -59,4 +56,4 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-</div>
+</main>
