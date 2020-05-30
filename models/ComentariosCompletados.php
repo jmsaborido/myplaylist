@@ -36,7 +36,7 @@ class ComentariosCompletados extends \yii\db\ActiveRecord
             [['usuario_id', 'completado_id', 'cuerpo'], 'required'],
             [['usuario_id', 'completado_id'], 'default', 'value' => null],
             [['usuario_id', 'completado_id'], 'integer'],
-            [['cuerpo'], 'string'],
+            [['cuerpo'], 'string', 'max' => 80],
             [['created_at', 'edited_at'], 'safe'],
             [['completado_id'], 'exist', 'skipOnError' => true, 'targetClass' => Completados::className(), 'targetAttribute' => ['completado_id' => 'id']],
             [['usuario_id'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::className(), 'targetAttribute' => ['usuario_id' => 'id']],

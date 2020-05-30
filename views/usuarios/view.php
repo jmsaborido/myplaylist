@@ -88,13 +88,13 @@ $this->registerJs($js);
         echo (Html::a(
             'Modificar',
             ['update', 'id' => $model->id],
-            ['class' => 'btn btn-success']
+            ['class' => 'btn btn-success', 'id' => 'modificar']
         ));
-        echo (Html::a(
-            'Cambiar Imagen',
-            ['upload', 'id' => $model->id],
-            ['class' => 'btn btn-success']
-        ));
+        // echo (Html::a(
+        //     'Cambiar Imagen',
+        //     ['upload', 'id' => $model->id],
+        //     ['class' => 'btn btn-success']
+        // ));
     }
     echo (Html::a(
         'Estadisticas',
@@ -105,12 +105,13 @@ $this->registerJs($js);
 
 
     <?php if ($comentarios != null) ?>
-    <div class="comentarios">
+    <article class="comentarios">
+        <h2>Comentarios</h2>
         <?php foreach ($comentarios as $key => $value) { ?>
-            <div>
-                <p>
-                    <?= Html::encode($value->usuario->username) . ": " .
-                        Html::encode($value->cuerpo) . " " .
+            <section id="comentario" class="row justify-content-between">
+                <p id="cuerpo">
+                    <?= Html::a(Html::encode($value->usuario->username), ['usurios/view', 'id' => $value->usuario_id]) . " : " .
+                        Html::encode($value->cuerpo) . " " . "</p> <p id='fecha'>" .
                         Yii::$app->formatter->asDateTime($value->created_at) .
                         ($value->usuario_id === Yii::$app->user->id ?
                             Html::a(
@@ -123,8 +124,8 @@ $this->registerJs($js);
                             ) : " ")
                     ?>
                 </p>
-            </div>
-    </div>
+            </section>
+    </article>
 <?php } ?>
 
 <?php if (!Yii::$app->user->isGuest) : ?>

@@ -118,3 +118,24 @@ a:hover {
 #stats th {
     font-weight: 500;
 }
+
+/* #comentarios{
+    background-color: #d1d1d3;
+} */
+
+#comentario {
+    margin-bottom: 1em;
+    background-color: #18181a;
+}
+
+#cuerpo {
+    margin: 1em;
+}
+
+#fecha {
+    margin: 1em;
+}
+
+#modificar {
+    margin-right: 1em;
+}
