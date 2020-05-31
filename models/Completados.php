@@ -128,38 +128,57 @@ class Completados extends \yii\db\ActiveRecord
      * Obtiene los datos para calcular las estadisticas a mostrar de un usuario
      *
      * @param int $id El ID del usuario
+     * @param [] $seleccion Los datos a caluclar
      * @return [] $datos Los datos calculados
      */
-    public static function obtenerDatos($id)
+    public static function obtenerDatos($id, $seleccion)
     {
-        $datos['debut'] = static::find()
-            ->select('juegos.year_debut')
-            ->joinWith('juego')
-            ->where(['usuario_id' => $id])
-            ->indexBy('id')
-            ->column();
-        $datos['total'] = count($datos['debut']);
+        $datos['total'] = Completados::find()->where(['usuario_id' => $id])->count();
         if ($datos['total'] === 0) {
             return [];
         }
-        $datos['anterior'] = static::find()
-            ->where(['usuario_id' => $id, 'pasado' => false])
-            ->count();
-        $datos['fecha'] = static::find()
-            ->select('fecha')
-            ->where(['usuario_id' => $id])
-            ->indexBy('id')
-            ->column();
-        foreach ($datos['fecha'] as $key => $value) {
-            $value = new DateTime($value);
-            $datos['años'][$key] = $value->format('Y');
-            $datos['meses'][$key] = $value->format('m');
-            $datos['dias'][$key] = $value->format('d');
+        if ($seleccion['debut']) {
+            $datos['debut'] = static::find()
+                ->select('juegos.year_debut')
+                ->joinWith('juego')
+                ->where(['usuario_id' => $id])
+                ->indexBy('id')
+                ->column();
+        } else {
+            $datos['debut'] = [];
         }
-        $hoy = new DateTime();
-        $datos['diasT'] = $hoy
-            ->diff(new DateTime($datos['fecha'][array_key_first($datos['fecha'])]))
-            ->days;
+
+        if ($seleccion['anterior']) {
+            $datos['anterior'] = static::find()
+                ->where(['usuario_id' => $id, 'pasado' => false])
+                ->count();
+        } else {
+            $datos['anterior'] = 0;
+        }
+
+        if ($seleccion['fechas']) {
+            $datos['fecha'] = static::find()
+                ->select('fecha')
+                ->where(['usuario_id' => $id])
+                ->indexBy('id')
+                ->column();
+            foreach ($datos['fecha'] as $key => $value) {
+                $value = new DateTime($value);
+                $datos['años'][$key] = $value->format('Y');
+                $datos['meses'][$key] = $value->format('m');
+                $datos['dias'][$key] = $value->format('d');
+            }
+            $hoy = new DateTime();
+            $datos['diasT'] = $hoy
+                ->diff(new DateTime($datos['fecha'][array_key_first($datos['fecha'])]))
+                ->days;
+        } else {
+            $datos['fecha'] = [];
+            $datos['años'] = 0;
+            $datos['meses'] = 0;
+            $datos['dias'] = 0;
+            $datos['diasT'] = 0;
+        }
         return $datos;
     }
 }

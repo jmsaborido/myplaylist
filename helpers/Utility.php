@@ -17,6 +17,9 @@ class Utility
      */
     public static function media($array)
     {
+        if (empty($array)) {
+            return 0;
+        }
         $array = array_filter($array);
         return array_sum($array) / count($array);
     }
@@ -28,6 +31,9 @@ class Utility
      */
     public static function moda($array)
     {
+        if (empty($array)) {
+            return 0;
+        }
         $values = array_count_values($array);
         return  array_search(max($values), $values);
     }

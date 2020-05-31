@@ -120,6 +120,15 @@ CREATE TABLE mensajes (
     id_conversacion BIGINT NOT NULL REFERENCES conversaciones(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+DROP TABLE IF EXISTS seleccion CASCADE;
+
+CREATE TABLE seleccion (
+    usuario_id BIGINT PRIMARY KEY REFERENCES usuarios (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    fechas boolean DEFAULT TRUE,
+    anterior boolean DEFAULT TRUE,
+    debut boolean DEFAULT TRUE
+);
+
 INSERT INTO
     usuarios (
         username,
@@ -161,6 +170,11 @@ INSERT INTO
     mensajes(id_sender, id_conversacion, cuerpo)
 VALUES
     (1, 1, 'Hola');
+
+INSERT INTO
+    seleccion (usuario_id)
+VALUES
+    (1);
 
 INSERT INTO
     consolas (denom)

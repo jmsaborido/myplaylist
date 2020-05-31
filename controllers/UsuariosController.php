@@ -6,6 +6,7 @@ use app\helpers\Utility;
 use app\models\ComentariosUsuarios;
 use app\models\Completados;
 use app\models\Seguidores;
+use app\models\Seleccion;
 use app\models\Usuarios;
 use app\models\UsuariosSearch;
 use Yii;
@@ -30,7 +31,7 @@ class UsuariosController extends Controller
                     // allow authenticated users
                     [
                         'allow' => true,
-                        'actions' => ['update'],
+                        'actions' => ['update', 'seleccion'],
                         'roles' => ['@'],
                         'matchCallback' => function ($rules, $action) {
                             return Yii::$app->user->id == Yii::$app->request->get()['id'];
@@ -170,6 +171,41 @@ class UsuariosController extends Controller
         throw new NotFoundHttpException('La página no existe.');
     }
 
+    /**
+     * Renderiza la vista de las estadisticas de un usuario
+     *
+     * @param int $id el ID del usuario
+     * @return mixed
+     */
+    public function actionStats($id = null)
+    {
+        $id = $id === null ? Yii::$app->user->id : $id;
+        $seleccion = Usuarios::seleccion($id);
+        return $this->render('stats', [
+            'datos' => Completados::obtenerDatos($id, $seleccion),
+            'model' => $this->findModel($id),
+            'seleccion' => $seleccion
+        ]);
+    }
+
+    /**
+     * Renderiza un formulario para seleccionar que estadisticas mostrar
+     *
+     * @return mixed
+     */
+    public function actionSeleccion()
+    {
+        $id = Yii::$app->user->id;
+        Usuarios::seleccion($id);
+        $model = Seleccion::findOne(['usuario_id' => $id]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Se ha modificado correctamente.');
+            return $this->redirect(['stats', ['id' => $id]]);
+        }
+        return $this->render('seleccion', [
+            'model' => $model
+        ]);
+    }
 
     // public function actionUpload($id)
     // {
@@ -183,18 +219,5 @@ class UsuariosController extends Controller
     //     return $this->render('upload', ['model' => $model]);
     // }
 
-    /**
-     * Renderiza la vista de las estadisticas de un usuario
-     *
-     * @param int $id el ID del usuario
-     * @return mixed
-     */
-    public function actionStats($id = null)
-    {
-        $id = $id === null ? Yii::$app->user->id : $id;
-        return $this->render('stats', [
-            'datos' => Completados::obtenerDatos($id),
-            'model' => $this->findModel($id)
-        ]);
-    }
+
 }
