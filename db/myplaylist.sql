@@ -592,7 +592,8 @@ VALUES
         2005,
         'eeq4sjbaildexl0kshh8'
     ),
-    (22917, 'GRIS', 8, 2018, 'co1qv5');
+    (22917, 'GRIS', 8, 2018, 'co1qv5'),
+    (131705,'SLUDGE LIFE',31,2020,'co205p');
 
 INSERT INTO
     completados(usuario_id, juego_id, consola_id, fecha, pasado)
@@ -686,6 +687,7 @@ VALUES
     (1, 84, 8, '2020/3/10', FALSE),
     (1, 85, 3, '2020/4/8', FALSE),
     (1, 86, 8, '2020/4/25', FALSE),
+    (1, 87, 8, '2020/5/31', FALSE),
     (2, 85, 4, '2020/3/27', FALSE);
 
 INSERT INTO
