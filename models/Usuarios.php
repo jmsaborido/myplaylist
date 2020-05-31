@@ -366,6 +366,27 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             ->column();
     }
 
+    /**
+     * Obtiene las estadisticas a mostrar de un usuario y si no lo ha definido lo crea
+     *
+     * @param int $id el id del usuario
+     * @return Seleccion modelo de la seleccion de estadisticas
+     */
+    public static function seleccion($id = null)
+    {
+        $id = $id === null ? Yii::$app->user->id : $id;
+        if (!Seleccion::findOne(['usuario_id' => $id])) {
+            $model = new Seleccion(['usuario_id' => $id]);
+            $model->save();
+        }
+        $seleccion = Seleccion::findOne(['usuario_id' => $id]);
+        return array_merge(
+            ['fechas' => $seleccion->fechas],
+            ['debut' => $seleccion->debut],
+            ['anterior' => $seleccion->anterior]
+        );
+    }
+
     // public function upload()
     // {
     //     if ($this->validate()) {
