@@ -214,7 +214,9 @@ VALUES
     (31, 'Aventuras'),
     (32, 'Indie'),
     (33, 'Arcade'),
-    (34, 'Novela Grafica');
+    (34, 'Novela Grafica'),
+    (35, 'Juegos de mesa'),
+    (36, 'MOBA');
 
 INSERT INTO
     juegos (api, nombre, genero_id, year_debut, img_api)
@@ -593,7 +595,7 @@ VALUES
         'eeq4sjbaildexl0kshh8'
     ),
     (22917, 'GRIS', 8, 2018, 'co1qv5'),
-    (131705,'SLUDGE LIFE',31,2020,'co205p');
+    (131705, 'SLUDGE LIFE', 31, 2020, 'co205p');
 
 INSERT INTO
     completados(usuario_id, juego_id, consola_id, fecha, pasado)
