@@ -55,10 +55,13 @@ AppAsset::register($this);
                     Yii::$app->user->isGuest ? [
                         ['label' => 'Login', 'url' => ['/site/login']],
                         ['label' => 'Registrarse', 'url' => ['usuarios/registrar']],
+                        ['label' => 'Incidencias', 'url' => ['site/incidencias']],
                     ] : [
                         ['label' => 'Ver Perfil', 'url' => ['usuarios/view', 'id' => Yii::$app->user->id]],
                         ['label' => 'Conversaciones', 'url' => ['conversaciones/index', 'id' => Yii::$app->user->id]],
                         ['label' => 'Modificar', 'url' => ['usuarios/update', 'id' => Yii::$app->user->id]],
+                        ['label' => 'Incidencias', 'url' => ['site/incidencias']],
+
 
                         (Html::beginForm(['/site/logout'], 'post')
                             . Html::submitButton(

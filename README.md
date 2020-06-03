@@ -8,4 +8,4 @@
 
 MyPlayList es una aplicación web en la cual podrás mantener el registro de tus videojuegos completados, ademas de ver las estadísticas
 
-Para la información técnica visita el README.md en la carpeta guia.
+Para la información técnica visita nuestro [GitHub Pages](https://jmsaborido.github.io/myplaylist/)

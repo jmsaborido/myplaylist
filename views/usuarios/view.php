@@ -125,23 +125,23 @@ $this->registerJs($js);
                     ?>
                 </p>
             </section>
+        <?php } ?>
     </article>
-<?php } ?>
 
-<?php if (!Yii::$app->user->isGuest) : ?>
-    <?php $form = ActiveForm::begin(['action' => ['comentarios-usuarios/comentar']]);
-    ?>
+    <?php if (!Yii::$app->user->isGuest) : ?>
+        <?php $form = ActiveForm::begin(['action' => ['comentarios-usuarios/comentar']]);
+        ?>
 
-    <?= $form->field($model2, 'cuerpo')->label(false) ?>
-    <?= $form->field($model2, 'id')->hiddenInput(['value' => $model->id])->label(false) ?>
+        <?= $form->field($model2, 'cuerpo')->label(false) ?>
+        <?= $form->field($model2, 'id')->hiddenInput(['value' => $model->id])->label(false) ?>
 
 
-    <div class="form-group">
-        <?= Html::submitButton('Comentar', ['class' => 'btn btn-success']) ?>
-    </div>
-    <?php ActiveForm::end(); ?>
+        <div class="form-group">
+            <?= Html::submitButton('Comentar', ['class' => 'btn btn-success']) ?>
+        </div>
+        <?php ActiveForm::end(); ?>
 
-<?php endif ?>
+    <?php endif ?>
 
 
 </div>
