@@ -206,7 +206,6 @@ class UsuariosController extends Controller
             'model' => $model
         ]);
     }
-
     // public function actionUpload($id)
     // {
     //     $model = $this->findModel($id);
@@ -218,6 +217,4 @@ class UsuariosController extends Controller
     //     }
     //     return $this->render('upload', ['model' => $model]);
     // }
-
-
 }
