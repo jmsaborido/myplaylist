@@ -53,13 +53,6 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
      */
     private $_total = null;
 
-    /**
-     * Imagen por defecto.
-     * @var string
-     */
-    const IMAGE = '@img/user.png';
-
-    // public $eventImage;
 
     public $password_repeat;
     /**
@@ -95,7 +88,6 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             [['email'], 'email'],
             [['username'], 'unique'],
             [['password_repeat'], 'required', 'on' => self::SCENARIO_CREAR],
-            // [['eventImage'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [
                 ['password_repeat'],
@@ -386,26 +378,4 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             ['anterior' => $seleccion->anterior]
         );
     }
-
-    // public function upload()
-    // {
-    //     if ($this->validate()) {
-    //         $path = $this->uploadPath() . $this->id . '.' . $this->eventImage->extension;
-    //         $this->eventImage->saveAs($path);
-    //         $this->image = $this->id . '.' . $this->eventImage->extension;
-    //         $this->eventImage->saveAs($this->image);
-
-    //         //try delete imageFile file variable before save model
-
-    //         $this->eventImage = null;
-
-    //         $this->save();
-    //         return true;
-    //     }
-    //     return false;
-    // }
-    // public function uploadPath()
-    // {
-    //     return Url::to('@uploads/');
-    // }
 }

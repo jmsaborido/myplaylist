@@ -825,14 +825,14 @@ Array
 
     [137] => Array
         (
-            [line] => 209
+            [line] => 201
             [file] => ./models/Usuarios.php
             [message] => Method validatePassword has no parent to inherit from in app\models\Usuarios.
         )
 
     [138] => Array
         (
-            [line] => 209
+            [line] => 201
             [file] => ./models/Usuarios.php
             [message] => Method validatePassword has no parent to inherit from in app\models\Usuarios.
         )

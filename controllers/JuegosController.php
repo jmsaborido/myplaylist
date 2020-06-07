@@ -8,12 +8,10 @@ use app\models\Juegos;
 use app\models\JuegosSearch;
 use Jschubert\Igdb\Builder\SearchBuilder;
 use Yii;
-use yii\bootstrap4\ActiveForm;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\Response;
 use app\models\RecomendarForm;
 use yii\helpers\Url;
 

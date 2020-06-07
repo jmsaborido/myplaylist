@@ -100,7 +100,7 @@ Array
 
     [14] => Array
         (
-            [line] => 20
+            [line] => 18
             [file] => ./controllers/JuegosController.php
             [message] => No docblock for element 'app\controllers\JuegosController'
         )
@@ -114,7 +114,7 @@ Array
 
     [16] => Array
         (
-            [line] => 19
+            [line] => 18
             [file] => ./controllers/UsuariosController.php
             [message] => No docblock for element 'app\controllers\UsuariosController'
         )
@@ -282,14 +282,14 @@ Array
 
     [40] => Array
         (
-            [line] => 64
+            [line] => 57
             [file] => ./models/Usuarios.php
             [message] => No docblock for element '$password_repeat'
         )
 
     [41] => Array
         (
-            [line] => 64
+            [line] => 57
             [file] => ./models/Usuarios.php
             [message] => No short description for element '$password_repeat'
         )

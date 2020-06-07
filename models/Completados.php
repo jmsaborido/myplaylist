@@ -3,7 +3,6 @@
 namespace app\models;
 
 use DateTime;
-use Jschubert\Igdb\Builder\SearchBuilder;
 use Yii;
 
 /**
