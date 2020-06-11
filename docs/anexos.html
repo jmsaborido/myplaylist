@@ -113,175 +113,164 @@
 <li><p>Instalamos Bind 9 con el siguiente comando <code>sudo apt install bind9</code></p>
 </li>
 <li>Una vez instalado nos movemos al fichero <code>name.conf.local</code> localizado en <code>/etc/bind</code></li>
-<li><p>Dentro del archivo lo modificamos de la siguiente manera:</p>
-<p>  <code>`</code>
-   zone "myplaylist.com" IN{</p>
-<pre><code class="hljs nginx">  <span class="hljs-attribute">type</span> master:
-  file <span class="hljs-string">"/etc/bind/db.myplaylist"</span>
+<li>Dentro del archivo lo modificamos de la siguiente manera:</li>
+</ul>
+<pre><code class="hljs nginx">
+     <span class="hljs-attribute">zone</span> <span class="hljs-string">"myplaylist.com"</span> IN{
+        <span class="hljs-attribute">type</span> master:
+        file <span class="hljs-string">"/etc/bind/db.myplaylist"</span>
+    }
+
 </code></pre>
-<p>  }
-  <code>`</code></p>
-</li>
+<ul>
 <li><p>Creamos el archivo db.myplaylist con el fichero original db.local de la siguiente manera <code>cp /etc/bind/db.local   /etc/bind/db.myplaylist</code></p>
 </li>
 <li><p>Modificamos el fichero creado y lo dejamos de la siguiente manera:</p>
 </li>
 </ul>
-<pre><code class="hljs markdown">;
-; BIND data file for local loopback interface
+<pre><code class="hljs bash">;
+; BIND data file <span class="hljs-keyword">for</span> <span class="hljs-built_in">local</span> loopback interface
 ;
-$TTL    604800
+<span class="hljs-variable">$TTL</span>    604800
 @    IN    SOA    myplaylist.com. root.myplaylist.com. (
-<span class="hljs-code">                  2        ; Serial</span>
-<span class="hljs-code">             604800        ; Refresh</span>
-<span class="hljs-code">              86400        ; Retry</span>
-<span class="hljs-code">            2419200        ; Expire</span>
-<span class="hljs-code">             604800 )    ; Negative Cache TTL</span>
+                  2        ; Serial
+             604800        ; Refresh
+              86400        ; Retry
+            2419200        ; Expire
+             604800 )    ; Negative Cache TTL
 ;
 @      IN    NS    myplaylist.com.
 @      IN    A    192.168.100.1
 ns     IN    A    192.168.100.1
 www    IN    A    192.168.100.1
 
- <span class="hljs-code">```</span>
+</code></pre>
+<ol>
+<li>Gestionar y administrar el servidor apache</li>
+</ol>
+<p>   2.1. Instalar el servidor y configurarlo</p>
+<ul>
+<li>Para instalar apache usariamos el comando <code>sudo apt install apache2 </code></li>
+<li>Instalariamos el modulo de PHP con este comando <code>sudo apt-get install libapache2-mod-php</code></li>
+<li>Tambien instalariamos un driver para el pdo de psql en apache <code>sudo apt-get install php-pgsql</code></li>
+<li>Clonariamos el repositorio en el directorio <code>/var/www/html/</code></li>
+<li>Hariamos un <code>make install</code>, <code>db/create.sh</code> y <code>db/load.sh</code></li>
+<li>Una vez hecho todo esto, reiniciamos apache para confirmar las configuraciones <code>sudo systemctl restart apache2</code></li>
+</ul>
+<p>   2.2. Configurar directivas</p>
+<pre><code class="hljs markdown"><span class="hljs-bullet">* </span>Nos movemos a la ruta <span class="hljs-code">`/etc/apache2/sites-available`</span> y modificamos el fichero <span class="hljs-code">`000-default.conf`</span>
 <span class="hljs-bullet">
-1. </span>Gestionar y administrar el servidor apache
-
-
-   2.1. Instalar el servidor y configurarlo
-<span class="hljs-bullet">
-   * </span>Para instalar apache usariamos el comando <span class="hljs-code">`sudo apt install apache2 `</span>
-<span class="hljs-bullet">   * </span>Instalariamos el modulo de PHP con este comando <span class="hljs-code">`sudo apt-get install libapache2-mod-php`</span>
-<span class="hljs-bullet">   * </span>Tambien instalariamos un driver para el pdo de psql en apache <span class="hljs-code">`sudo apt-get install php-pgsql`</span>
-<span class="hljs-bullet">   * </span>Clonariamos el repositorio en el directorio <span class="hljs-code">`/var/www/html/`</span>
-<span class="hljs-bullet">   * </span>Hariamos un <span class="hljs-code">`make install`</span>, <span class="hljs-code">`db/create.sh`</span> y <span class="hljs-code">`db/load.sh`</span>
-<span class="hljs-bullet">   * </span>Una vez hecho todo esto, reiniciamos apache para confirmar las configuraciones <span class="hljs-code">`sudo systemctl restart apache2`</span>
-
-   2.2. Configurar directivas
-<span class="hljs-bullet">
-    * </span>Nos movemos a la ruta <span class="hljs-code">`/etc/apache2/sites-available`</span> y modificamos el fichero <span class="hljs-code">`000-default.conf`</span>
-<span class="hljs-bullet">
-    * </span>Lo dejariamos de la siguiente manera
-
-
-<span class="hljs-code">    ```</span>
-<span class="hljs-code">    &lt;Directory "/var/www/html/myplaylist/web"&gt;</span>
-<span class="hljs-code">                Options +indexes</span>
-<span class="hljs-code">                AuthType Digest</span>
-<span class="hljs-code">                AuthName "myplaylist"</span>
-<span class="hljs-code">                AuthDigestProvider file</span>
-<span class="hljs-code">                AuthUserFile /etc/claves/digest</span>
-<span class="hljs-code">                Require user pepe</span>
-<span class="hljs-code">    &lt;/Directory&gt;</span>
-<span class="hljs-code">    ```</span>
-
-
-   2.3. Usar directorios virtuales y redireccionamientos.
-<span class="hljs-bullet">
-    * </span>Copiamos el fichero 000-default.conf de la siguiente manera <span class="hljs-code">`cp 000-default.conf  myplaylist.conf`</span> en el directorio <span class="hljs-code">`/etc/apache2/sites-available`</span>
-<span class="hljs-bullet">
-    * </span>Una vez copiado detenemos el 000-default con <span class="hljs-code">`site a2dissite 000-default.conf`</span>
-<span class="hljs-bullet">
-    * </span>Activamos el sitio de nuestra web con   <span class="hljs-code">`site a2ensite myplaylist.conf`</span>
-
-   2.4. Usar diferentes módulos estáticos y dinámicos.
-
-   2.5. Usar autenticaciones.
-<span class="hljs-bullet">
-   * </span>Añadimos el modulo de digest con <span class="hljs-code">`sudo a2enmod auth_digest`</span>
-<span class="hljs-bullet">   * </span>Creamos el fichero de las claves en <span class="hljs-code">`/etc/claves/digest`</span>
-<span class="hljs-bullet">    * </span>Añadimos al usuario con el siguiente comando <span class="hljs-code">`sudo htdigest -c /etc/claves/ myplaylist pepe`</span>
-<span class="hljs-bullet">    * </span>Una vez hecho esto nos pedira una contraseña y confirmarla
-<span class="hljs-bullet">    * </span>Para terminar podriamos añadir la directiva <span class="hljs-code">`Require user pepe`</span> para que solo pepe pudiera entrar a la aplicacion
-
-   2.6. Usar ficheros de configuración personalizada de directorios.
-<span class="hljs-bullet">
-    * </span>Ya estaria hecho en el punto 2.3.
-
-
-   2.7. Usar HTTPS y certificados Digitales.
-<span class="hljs-bullet">
-   * </span>Crearemos un par de clave y certificado autofirmados con OpenSSL con este comando
-   <span class="hljs-code">`sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt`</span>
-<span class="hljs-bullet">    * </span>Con este comando nos iria preguntando la informacion que hay que añadir.
-
-<span class="hljs-code">    ```</span>
-<span class="hljs-code">    Output</span>
-<span class="hljs-code">    Country Name (2 letter code) [AU]:ES</span>
-<span class="hljs-code">    State or Province Name (full name) [Some-State]:Cadiz</span>
-<span class="hljs-code">    Locality Name (eg, city) []:Sanlucar De Barrameda</span>
-<span class="hljs-code">    Organization Name (eg, company) [Internet Widgits Pty Ltd]:IES Doñana</span>
-<span class="hljs-code">    Organizational Unit Name (eg, section) []:</span>
-<span class="hljs-code">    Common Name (e.g. server FQDN or YOUR name) []:192.168.100.1</span>
-<span class="hljs-code">    Email Address []: myplaylist.web@gmail.com</span>
-
-<span class="hljs-code">    ```</span>
-<span class="hljs-bullet">
- * </span>Creamos un nuevo fichero en el directorio <span class="hljs-code">`/etc/apache2/conf-available`</span>. Daremos el nombre <span class="hljs-code">`ssl-params.conf`</span> al archivo para que quede claro su propósito
-<span class="hljs-bullet"> * </span>Le añadimos la siguiente informacion al fichero
-<span class="hljs-code">    ```</span>
-<span class="hljs-code">    &lt;IfModule mod_ssl.c&gt;</span>
-<span class="hljs-code">        &lt;VirtualHost _default_:443&gt;</span>
-<span class="hljs-code">                ServerAdmin myplaylist.web@gmail.com</span>
-<span class="hljs-code">                ServerName www.myplaylist.com</span>
-
-<span class="hljs-code">                DocumentRoot /var/www/html/myplaylist</span>
-
-<span class="hljs-code">                ErrorLog ${APACHE_LOG_DIR}/error.log</span>
-<span class="hljs-code">                CustomLog ${APACHE_LOG_DIR}/access.log combined</span>
-
-<span class="hljs-code">                SSLEngine on</span>
-
-<span class="hljs-code">                SSLCertificateFile      /etc/ssl/certs/apache-selfsigned.crt</span>
-<span class="hljs-code">                SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key</span>
-
-<span class="hljs-code">                &lt;FilesMatch "\.(cgi|shtml|phtml|php)$"&gt;</span>
-<span class="hljs-code">                                SSLOptions +StdEnvVars</span>
-<span class="hljs-code">                &lt;/FilesMatch&gt;</span>
-<span class="hljs-code">                &lt;Directory /usr/lib/cgi-bin&gt;</span>
-<span class="hljs-code">                                SSLOptions +StdEnvVars</span>
-<span class="hljs-code">                &lt;/Directory&gt;</span>
-
-<span class="hljs-code">        &lt;/VirtualHost&gt;</span>
-<span class="hljs-code">    &lt;/IfModule&gt;</span>
-<span class="hljs-code">    ```</span>
-<span class="hljs-bullet">
-    * </span>Habilitamos mod<span class="hljs-emphasis">_ssl, el módulo SSL de Apache y mod_</span>headers, que necesitan algunas de las configuraciones de nuestro fragmento SSL, con el comando a2enmod:
-
-<span class="hljs-code">    ```</span>
-<span class="hljs-code">    sudo a2enmod ssl</span>
-<span class="hljs-code">    sudo a2enmod headers</span>
-<span class="hljs-code">    ```</span>
-
-   *A continuación, habilitamos nuestro host virtual SSL con el comando a2ensite:
-
-<span class="hljs-code">    `sudo a2ensite default-ssl`</span>
-<span class="hljs-bullet">
-   * </span>También debemos habilitar nuestro archivo ssl-params.conf, para leer los valores que configuramos:
-
-<span class="hljs-code">    `sudo a2enconf ssl-params`</span>
-<span class="hljs-bullet">
-    * </span>Para finalizar, reiniciamos apache y listo.
-
----
-
-<span class="hljs-section">### *(RXX) Tecnologias usadas*</span>
-<span class="hljs-bullet">
-- </span>Ubuntu 20.04 como sistema operativo
-<span class="hljs-bullet">- </span>Heroku como alojamiento cloud
-<span class="hljs-bullet">- </span>Yii2 como framework
-<span class="hljs-bullet">- </span>GIT, GITHUB y GIT-FLOW para el control de versiones
-<span class="hljs-bullet">- </span>Visual Studio Code como IDE
-<span class="hljs-bullet">- </span>Brave como navegador principal
-<span class="hljs-bullet">- </span>Dbeaver como interfaz grafico SQL
-<span class="hljs-bullet">- </span>Umlet como editor de diagramas
-<span class="hljs-bullet">- </span>Codeception para las pruebas unitarias
-<span class="hljs-bullet">- </span>AWS S3 como almacenamiento cloud de archivos
-<span class="hljs-bullet">- </span>IGDB como API para obtener datos adicionales de los juegos.
-
----
+* </span>Lo dejariamos de la siguiente manera
+</code></pre>
+<pre><code class="hljs apache">
+    <span class="hljs-section">&lt;Directory "/var/www/html/myplaylist/web"&gt;</span>
+                <span class="hljs-attribute"><span class="hljs-nomarkup">Options</span></span> +indexes
+                <span class="hljs-attribute">AuthType</span> Digest
+                <span class="hljs-attribute">AuthName</span> <span class="hljs-string">"myplaylist"</span>
+                <span class="hljs-attribute">AuthDigestProvider</span> file
+                <span class="hljs-attribute">AuthUserFile</span> /etc/claves/digest
+                <span class="hljs-attribute">Require</span> user pepe
+    <span class="hljs-section">&lt;/Directory&gt;</span>
 
 </code></pre>
+<p>   2.3. Usar directorios virtuales y redireccionamientos.</p>
+<pre><code class="hljs markdown"><span class="hljs-bullet">* </span>Copiamos el fichero 000-default.conf de la siguiente manera <span class="hljs-code">`cp 000-default.conf  myplaylist.conf`</span> en el directorio <span class="hljs-code">`/etc/apache2/sites-available`</span>
+<span class="hljs-bullet">
+* </span>Una vez copiado detenemos el 000-default con <span class="hljs-code">`site a2dissite 000-default.conf`</span>
+<span class="hljs-bullet">
+* </span>Activamos el sitio de nuestra web con   <span class="hljs-code">`site a2ensite myplaylist.conf`</span>
+</code></pre>
+<p>   2.4. Usar diferentes módulos estáticos y dinámicos.</p>
+<p>   2.5. Usar autenticaciones.</p>
+<ul>
+<li>Añadimos el modulo de digest con <code>sudo a2enmod auth_digest</code></li>
+<li>Creamos el fichero de las claves en <code>/etc/claves/digest</code></li>
+<li>Añadimos al usuario con el siguiente comando <code>sudo htdigest -c /etc/claves/ myplaylist pepe</code></li>
+<li>Una vez hecho esto nos pedira una contraseña y confirmarla</li>
+<li>Para terminar podriamos añadir la directiva <code>Require user pepe</code> para que solo pepe pudiera entrar a la aplicacion</li>
+</ul>
+<p>   2.6. Usar ficheros de configuración personalizada de directorios.</p>
+<pre><code class="hljs css">* <span class="hljs-selector-tag">Ya</span> <span class="hljs-selector-tag">estaria</span> <span class="hljs-selector-tag">hecho</span> <span class="hljs-selector-tag">en</span> <span class="hljs-selector-tag">el</span> <span class="hljs-selector-tag">punto</span> 2<span class="hljs-selector-class">.3</span>.
+</code></pre>
+<p>   2.7. Usar HTTPS y certificados Digitales.</p>
+<ul>
+<li>Crearemos un par de clave y certificado autofirmados con OpenSSL con este comando
+   <code>sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt</code></li>
+<li>Con este comando nos iria preguntando la informacion que hay que añadir.</li>
+</ul>
+<pre><code class="hljs less">
+    <span class="hljs-selector-tag">Output</span>
+    <span class="hljs-selector-tag">Country</span> <span class="hljs-selector-tag">Name</span> (<span class="hljs-number">2</span> letter code) <span class="hljs-selector-attr">[AU]</span><span class="hljs-selector-pseudo">:ES</span>
+    <span class="hljs-selector-tag">State</span> <span class="hljs-selector-tag">or</span> <span class="hljs-selector-tag">Province</span> <span class="hljs-selector-tag">Name</span> (full name) <span class="hljs-selector-attr">[Some-State]</span><span class="hljs-selector-pseudo">:Cadiz</span>
+    <span class="hljs-selector-tag">Locality</span> <span class="hljs-selector-tag">Name</span> (eg, city) <span class="hljs-selector-attr">[]</span><span class="hljs-selector-pseudo">:Sanlucar</span> <span class="hljs-selector-tag">De</span> <span class="hljs-selector-tag">Barrameda</span>
+    <span class="hljs-selector-tag">Organization</span> <span class="hljs-selector-tag">Name</span> (eg, company) <span class="hljs-selector-attr">[Internet Widgits Pty Ltd]</span><span class="hljs-selector-pseudo">:IES</span> <span class="hljs-selector-tag">Doñana</span>
+    <span class="hljs-selector-tag">Organizational</span> <span class="hljs-selector-tag">Unit</span> <span class="hljs-selector-tag">Name</span> (eg, section) <span class="hljs-selector-attr">[]</span>:
+    <span class="hljs-selector-tag">Common</span> <span class="hljs-selector-tag">Name</span> (e.g. server FQDN or YOUR name) <span class="hljs-selector-attr">[]</span><span class="hljs-selector-pseudo">:192.168.100.1</span>
+    <span class="hljs-selector-tag">Email</span> <span class="hljs-selector-tag">Address</span> <span class="hljs-selector-attr">[]</span>: <span class="hljs-selector-tag">myplaylist</span><span class="hljs-selector-class">.web</span>@<span class="hljs-selector-tag">gmail</span><span class="hljs-selector-class">.com</span>
+
+</code></pre>
+<ul>
+<li>Creamos un nuevo fichero en el directorio <code>/etc/apache2/conf-available</code>. Daremos el nombre <code>ssl-params.conf</code> al archivo para que quede claro su propósito</li>
+<li><p>Le añadimos la siguiente informacion al fichero
+ <code>`</code>
+ <IfModule mod_ssl.c></p>
+<pre><code class="hljs apache"> <span class="hljs-section">&lt;VirtualHost _default_:443&gt;</span>
+         <span class="hljs-attribute">ServerAdmin</span> myplaylist.web@gmail.com
+         <span class="hljs-attribute"><span class="hljs-nomarkup">ServerName</span></span> www.myplaylist.com
+
+         <span class="hljs-attribute"><span class="hljs-nomarkup">DocumentRoot</span></span> /var/www/html/myplaylist
+
+         <span class="hljs-attribute">ErrorLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/error.log
+         <span class="hljs-attribute">CustomLog</span> <span class="hljs-variable">${APACHE_LOG_DIR}</span>/access.log combined
+
+         <span class="hljs-attribute">SSLEngine</span> <span class="hljs-literal">on</span>
+
+         <span class="hljs-attribute">SSLCertificateFile</span>      /etc/ssl/certs/apache-selfsigned.crt
+         <span class="hljs-attribute">SSLCertificateKeyFile</span> /etc/ssl/private/apache-selfsigned.key
+
+         <span class="hljs-section">&lt;FilesMatch "\.(cgi|shtml|phtml|php)$"&gt;</span>
+                         <span class="hljs-attribute">SSLOptions</span> +StdEnvVars
+         <span class="hljs-section">&lt;/FilesMatch&gt;</span>
+         <span class="hljs-section">&lt;Directory /usr/lib/cgi-bin&gt;</span>
+                         <span class="hljs-attribute">SSLOptions</span> +StdEnvVars
+         <span class="hljs-section">&lt;/Directory&gt;</span>
+
+ <span class="hljs-section">&lt;/VirtualHost&gt;</span>
+</code></pre>
+<p> </IfModule>
+ <code>`</code></p>
+<ul>
+<li>Habilitamos mod_ssl, el módulo SSL de Apache y mod_headers, que necesitan algunas de las configuraciones de nuestro fragmento SSL, con el comando a2enmod:</li>
+</ul>
+<p> <code> sudo a2enmod ssl
+ sudo a2enmod headers
+</code></p>
+<p>*A continuación, habilitamos nuestro host virtual SSL con el comando a2ensite:</p>
+<p> <code>sudo a2ensite default-ssl</code></p>
+<ul>
+<li>También debemos habilitar nuestro archivo ssl-params.conf, para leer los valores que configuramos:</li>
+</ul>
+<p> <code>sudo a2enconf ssl-params</code></p>
+<ul>
+<li>Para finalizar, reiniciamos apache y listo.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3><em>(RXX) Tecnologias usadas</em> <span id="rxx-tecnologias-usadas"></span><a href="#rxx-tecnologias-usadas" class="hashlink">&para;</a></h3><ul>
+<li>Ubuntu 20.04 como sistema operativo</li>
+<li>Heroku como alojamiento cloud</li>
+<li>Yii2 como framework</li>
+<li>GIT, GITHUB y GIT-FLOW para el control de versiones</li>
+<li>Visual Studio Code como IDE</li>
+<li>Brave como navegador principal</li>
+<li>Dbeaver como interfaz grafico SQL</li>
+<li>Umlet como editor de diagramas</li>
+<li>Codeception para las pruebas unitarias</li>
+<li>AWS S3 como almacenamiento cloud de archivos</li>
+<li>IGDB como API para obtener datos adicionales de los juegos.</li>
+</ul>
+<hr />
         <div class="toplink"><a href="#" class="h1" title="go to top"><span class="glyphicon glyphicon-arrow-up"></a></div>
     </div>
 </div>
@@ -290,7 +279,7 @@ www    IN    A    192.168.100.1
 </div>
 
 <footer class="footer">
-        <p class="pull-right"><small>Page generated on Sun, 07 Jun 2020 16:23:39 +0000</small></p>
+        <p class="pull-right"><small>Page generated on Thu, 11 Jun 2020 09:39:52 +0000</small></p>
     Powered by <a href="http://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
 
 <script>jQuery(function ($) {

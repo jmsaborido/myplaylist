@@ -23,8 +23,6 @@ composer install
 3. Crear las variable de entorno en el archivo `.env` listadas en su pariente versionado `.env.dist`:
     * `SMTP_PASS` con la clave de aplicacion de la dirección de correo.
     * `SMTP_USERNAME` con la direccion de correo electronico.
-    * `S3_KEY` Con la key de Amazon S3
-    * `S3_SECRET` Con el password de Amazon S3
     * `APIKEY`  Con la clave de acceso a la plataforma IGDB
 
 4. Creamos la base de datos y las respectivas tablas para hacer funcionar la aplicación:
@@ -58,8 +56,6 @@ heroku psql < db/myplaylist.sql -a nombre_aplicacion
     * `DATABASE_URL` con la URL de la base de datos proporcionada en el paso 3.
      * `SMTP_PASS` con la clave de aplicacion   de la dirección de correo.
     * `SMTP_USERNAME` con la direccion de correo electronico.
-    * `S3_KEY` Con la key de Amazon S3
-    * `S3_SECRET` Con el password de Amazon S3
     * `APIKEY`  Con la clave de acceso a la plataforma IGDB
     *  `TZ` con la zona horaria en la que estes.
 

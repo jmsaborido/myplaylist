@@ -101,12 +101,14 @@ Debido a que no me funciona las maquinas virtuales en mi ordeandor voy a documen
 * Una vez instalado nos movemos al fichero `name.conf.local` localizado en `/etc/bind`
 * Dentro del archivo lo modificamos de la siguiente manera:
 
-    ```
+```
+
      zone "myplaylist.com" IN{
         type master:
         file "/etc/bind/db.myplaylist"
     }
-    ```
+
+```
 
 *  Creamos el archivo db.myplaylist con el fichero original db.local de la siguiente manera `cp /etc/bind/db.local   /etc/bind/db.myplaylist`
 
@@ -129,7 +131,7 @@ $TTL    604800
 ns     IN    A    192.168.100.1
 www    IN    A    192.168.100.1
 
- ```
+```
 
 1. Gestionar y administrar el servidor apache
 
@@ -149,8 +151,8 @@ www    IN    A    192.168.100.1
 
     * Lo dejariamos de la siguiente manera
 
+```
 
-    ```
     <Directory "/var/www/html/myplaylist/web">
                 Options +indexes
                 AuthType Digest
@@ -159,7 +161,8 @@ www    IN    A    192.168.100.1
                 AuthUserFile /etc/claves/digest
                 Require user pepe
     </Directory>
-    ```
+
+```
 
 
    2.3. Usar directorios virtuales y redireccionamientos.
@@ -191,7 +194,8 @@ www    IN    A    192.168.100.1
    `sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt`
     * Con este comando nos iria preguntando la informacion que hay que añadir.
 
-    ```
+```
+
     Output
     Country Name (2 letter code) [AU]:ES
     State or Province Name (full name) [Some-State]:Cadiz
@@ -201,7 +205,7 @@ www    IN    A    192.168.100.1
     Common Name (e.g. server FQDN or YOUR name) []:192.168.100.1
     Email Address []: myplaylist.web@gmail.com
 
-    ```
+```
 
  * Creamos un nuevo fichero en el directorio `/etc/apache2/conf-available`. Daremos el nombre `ssl-params.conf` al archivo para que quede claro su propósito
  * Le añadimos la siguiente informacion al fichero
