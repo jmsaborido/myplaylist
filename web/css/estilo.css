@@ -139,3 +139,23 @@ a:hover {
 #modificar {
     margin-right: 1em;
 }
+
+#message-wrapper {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+    background-color: #18181a;
+}
+
+#sender {
+    margin: 1em;
+    padding: 1em;
+    background-color: #aa4939;
+}
+
+#nosender {
+    margin: 1em;
+    padding: 1em;
+    background-color: #222220;
+    color: #f2ddbc;
+}

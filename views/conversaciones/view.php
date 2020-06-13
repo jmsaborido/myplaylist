@@ -13,12 +13,6 @@ $js = <<<EOT
 window.setInterval(()=>{
     $.pjax.reload({container: '#pjax', async: true});
 }, 5000);
-var element = document.getElementById("list");
-element.scrollTop = element.scrollHeight;
-element.scrollTop = element.scrollTop;
-$(document).on('ready', ()=> {
-    $('.field-message-content #message-content').focus();
-});
 EOT;
 $this->registerJs($js);
 $templateMessage = '{label}<div class="input-group">{input}

@@ -71,7 +71,7 @@ class ConversacionesController extends Controller
         $mensaje = new Mensajes();
         $model = $this->findModel($id);
         $dataProvider = new ActiveDataProvider([
-            'query' => Mensajes::find()->where(['id_conversacion' => $id])->orderBy('created_at DESC'),
+            'query' => Mensajes::find()->where(['id_conversacion' => $id])->orderBy('created_at ASC'),
             'pagination' => ['pageSize' => 20],
         ]);
         if ($mensaje->load(Yii::$app->request->post()) && $mensaje->validate(['content'])) {
